@@ -1,0 +1,10 @@
+[MASTER]
+disable=
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-locals,
+    too-many-statements,
+    superfluous-parens,
+    deprecated-method,
+    duplicate-code,
+    no-member
