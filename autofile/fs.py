@@ -59,11 +59,11 @@ class _FileAttributeName():
 
 
 def species(prefix):
-    """ construct the species filesystem [trunk/leaf]
+    """ construct the species filesystem (2 layers)
 
-    two layers with the following specifiers:
-    1. []
-    2. [ich, chg, mul]
+    specifiers:
+        0 - []
+        1 - [ich, chg, mul]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -74,9 +74,10 @@ def species(prefix):
 
 
 def theory(prefix):
-    """ construct the theory filesystem [leaf]
+    """ construct the theory filesystem (1 layer)
 
-    one layer with the following specifiers: [method, basis, orb_type]
+    specifiers:
+        0 - [method, basis, orb_type]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -97,11 +98,11 @@ def theory(prefix):
 
 
 def conformer(prefix):
-    """ construct the conformer filesystem [trunk/leaf]
+    """ construct the conformer filesystem (2 layers)
 
-    two layers with the following specifiers:
-    1. []
-    2. [cid]
+    specifiers:
+        0 - []
+        1 - [cid]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -166,11 +167,11 @@ def conformer(prefix):
 
 
 def single_point(prefix):
-    """ construct the single-point filesystem [trunk/leaf]
+    """ construct the single-point filesystem (2 layers)
 
-    two layers with the following specifiers:
-    1. []
-    2. [method, basis, orb_type]
+    specifiers:
+        0 - []
+        1 - [method, basis, orb_type]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -190,11 +191,11 @@ def single_point(prefix):
 
 
 def high_spin(prefix):
-    """ construct the high-spin, single-point filesystem [trunk/leaf]
+    """ construct the high-spin, single-point filesystem (2 layers)
 
-    two layers with the following specifiers:
-    1. []
-    2. [method, basis, orb_type]
+    specifiers:
+        0 - []
+        1 - [method, basis, orb_type]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -214,12 +215,12 @@ def high_spin(prefix):
 
 
 def scan(prefix):
-    """ construct the scan filesystem
+    """ construct the scan filesystem (3 layers)
 
     three layers with the following specifiers:
-    1. []
-    2. [coo_names]
-    3. [coo_names, coo_vals]
+        0 - []
+        1 - [coo_names]
+        2 - [coo_names, coo_vals]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -268,13 +269,13 @@ def scan(prefix):
 
 
 def cscan(prefix):
-    """ construct the constrained scan filesystem
+    """ construct the constrained scan filesystem (4 layers)
 
-    four layers with the following specifiers:
-    1. []
-    2. [coo_names]
-    3. [coo_names, coo_vals]
-    4. [coo_names, coo_vals, cons_coo_val_dct]
+    specifiers:
+        0 - []
+        1 - [coo_names]
+        2 - [coo_names, coo_vals]
+        3 - [coo_names, coo_vals, cons_coo_val_dct]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -324,11 +325,11 @@ def cscan(prefix):
 
 
 def tau(prefix):
-    """ construct the tau filesystem
+    """ construct the tau filesystem (2 layers)
 
-    two layers with the following specifiers:
-    1. []
-    4. [tid]
+    specifiers:
+        0 - []
+        0 - [tid]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -375,12 +376,12 @@ def tau(prefix):
 
 
 def energy_transfer(prefix):
-    """ construct the energy transfer filesystem [trunk/leaf]
+    """ construct the energy transfer filesystem (3 layers)
 
-    three layers with the following specifiers:
-    1. []
-    2. [ich, chg, mul]
-    3. [ich, chg, mul, method, basis, orb_type]
+    specifiers:
+        0 - []
+        0 - [ich, chg, mul]
+        0 - [ich, chg, mul, method, basis, orb_type]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -410,11 +411,11 @@ def energy_transfer(prefix):
 
 
 def reaction(prefix):
-    """ construct the reaction filesystem
+    """ construct the reaction filesystem (2 layers)
 
-    two layers with the following specifiers:
-    1. []
-    2. [rxn_ichs, rxn_chgs, rxn_muls, ts_mul]
+    specifiers:
+        0 - []
+        1 - [rxn_ichs, rxn_chgs, rxn_muls, ts_mul]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -426,9 +427,10 @@ def reaction(prefix):
 
 
 def ts(prefix):
-    """ construct the ts filesystem
+    """ construct the ts filesystem (1 layer)
 
-    one layer without specifiers
+    specifiers:
+        0 - []  (none)
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -447,9 +449,10 @@ def ts(prefix):
 
 
 def direction(prefix):
-    """ filesystem object for reaction direction
+    """ filesystem object for reaction direction (1 layer)
 
-    one layer with the following specifiers: [forw]
+    specifiers:
+        0 - [forw]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -473,11 +476,11 @@ def direction(prefix):
 
 
 def run(prefix):
-    """ construct the run filesystem
+    """ construct the run filesystem (2 layers)
 
-    two layers with the following specifiers:
-    1. []
-    2. [job]
+    specifiers:
+        0 - []
+        1 - [job]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -499,9 +502,10 @@ def run(prefix):
 
 
 def subrun(prefix):
-    """ construct the subrun filesystem
+    """ construct the subrun filesystem (1 layer)
 
-    one layer with the following specifiers: [macro_idx, micro_idx]
+    specifiers:
+        0 - [macro_idx, micro_idx]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -520,11 +524,11 @@ def subrun(prefix):
 
 
 def build(prefix):
-    """ construct the build filesystem
+    """ construct the build filesystem (2 layers)
 
-    two layers with the following specifiers:
-    1. [head]
-    2. [head, num]
+    specifiers:
+        0 - [head]
+        1 - [head, num]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
