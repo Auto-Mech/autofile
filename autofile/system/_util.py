@@ -49,7 +49,3 @@ def utc_time():
     """ get the current UTC time
     """
     return datetime.datetime.utcnow()
-
-
-if __name__ == '__main__':
-    print(short_hash({1, 2, 3}))
