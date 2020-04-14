@@ -1,0 +1,13 @@
+# cmd: conda build .
+package:
+    name: autofile
+    version: "0.3.0"
+
+source:
+    path: .
+
+requirements:
+    build:
+        - python
+    run:
+        - python

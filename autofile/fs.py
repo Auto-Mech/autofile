@@ -143,6 +143,7 @@ class _FilePrefix():
     MIN = 'min'
     VPT2 = 'vpt2'
     LJ = 'lj'
+    IRC = 'irc'
 
 
 class _FileAttributeName():
@@ -155,10 +156,12 @@ class _FileAttributeName():
     GRAD_INFO = 'gradient_info'
     HESS_INFO = 'hessian_info'
     VPT2_INFO = 'vpt2_info'
+    IRC_INFO = 'irc_info'
     GEOM_INPUT = 'geometry_input'
     GRAD_INPUT = 'gradient_input'
     HESS_INPUT = 'hessian_input'
     VPT2_INPUT = 'vpt2_input'
+    IRC_INPUT = 'irc_input'
     ENERGY = 'energy'
     GEOM = 'geometry'
     ZMAT = 'zmatrix'
@@ -283,7 +286,7 @@ def conformer(prefix):
     hess_dfile = file_.hessian(_FilePrefix.HESS)
     hfreq_dfile = file_.harmonic_frequencies(_FilePrefix.HESS)
     vpt2_inf_dfile = file_.information(
-        _FilePrefix.VPT2, function=info.vpt2_trunk)
+        _FilePrefix.VPT2, function=info.vpt2)
     vpt2_inp_dfile = file_.input_file(_FilePrefix.VPT2)
     anhfreq_dfile = file_.anharmonic_frequencies(_FilePrefix.VPT2)
     anhzpve_dfile = file_.anharmonic_zpve(_FilePrefix.VPT2)
@@ -390,9 +393,11 @@ def scan(prefix):
                 - geometry_info
                 - gradient_info
                 - hessian_info
+                - irc_info
                 - geometry_input
                 - gradient_input
                 - hessian_input
+                - irc_input
                 - energy
                 - geometry
                 - zmatrix
@@ -420,9 +425,11 @@ def scan(prefix):
     geom_inf_dfile = file_.information(_FilePrefix.GEOM, function=info.run)
     grad_inf_dfile = file_.information(_FilePrefix.GRAD, function=info.run)
     hess_inf_dfile = file_.information(_FilePrefix.HESS, function=info.run)
+    irc_inf_dfile = file_.information(_FilePrefix.IRC, function=info.run)
     geom_inp_dfile = file_.input_file(_FilePrefix.GEOM)
     grad_inp_dfile = file_.input_file(_FilePrefix.GRAD)
     hess_inp_dfile = file_.input_file(_FilePrefix.HESS)
+    irc_inp_dfile = file_.input_file(_FilePrefix.IRC)
     ene_dfile = file_.energy(_FilePrefix.GEOM)
     geom_dfile = file_.geometry(_FilePrefix.GEOM)
     zmat_dfile = file_.zmatrix(_FilePrefix.GEOM)
@@ -433,9 +440,11 @@ def scan(prefix):
         _FileAttributeName.GEOM_INFO: geom_inf_dfile,
         _FileAttributeName.GRAD_INFO: grad_inf_dfile,
         _FileAttributeName.HESS_INFO: hess_inf_dfile,
+        _FileAttributeName.IRC_INFO: irc_inf_dfile,
         _FileAttributeName.GEOM_INPUT: geom_inp_dfile,
         _FileAttributeName.GRAD_INPUT: grad_inp_dfile,
         _FileAttributeName.HESS_INPUT: hess_inp_dfile,
+        _FileAttributeName.IRC_INPUT: irc_inp_dfile,
         _FileAttributeName.ENERGY: ene_dfile,
         _FileAttributeName.GEOM: geom_dfile,
         _FileAttributeName.ZMAT: zmat_dfile,
