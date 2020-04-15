@@ -137,6 +137,7 @@ def cscan_branch1(coo_names):
 def cscan_branch2(coo_vals):
     """ scan branch 2 directory name
     """
+    print('coo_vals', coo_vals)
     return '_'.join(map('{:.2f}'.format, coo_vals))
 
 
