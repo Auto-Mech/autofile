@@ -43,7 +43,6 @@ def locator(file_prefix, map_dct_, loc_keys):
     :param loc_keys: Keys to the original locator values.
     :type loc_keys: tuple[str]
     """
-
     def writer_(locs):
         inf_dct = {key: map_(locs) for key, map_ in map_dct_.items()}
         inf_obj = autofile.info.object_(inf_dct)

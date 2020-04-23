@@ -77,16 +77,32 @@ def scan_branch(grids):
     return inf_obj
 
 
-def vpt2_trunk(fermi):
-    """ vpt2 trunk information
+def vpt2(fermi_treatment):
+    """ vpt2 information
 
     :param fermi: description of fermi resonance treatment
     :type fermi: str
     """
 
-    assert isinstance(fermi, str)
-    inf_obj = autofile.info.Info(fermi=fermi)
-    assert autofile.info.matches_function_signature(inf_obj, vpt2_trunk)
+    assert isinstance(fermi_treatment, str)
+    inf_obj = autofile.info.Info(fermi=fermi_treatment)
+    assert autofile.info.matches_function_signature(inf_obj, vpt2)
+    return inf_obj
+
+
+def irc(idxs, coords):
+    """ irc information
+
+    :param idxs: indexes describing position along the IRC
+    :type idxs: list of floats
+    :param coords: mass-weighted coordinates along the IRC
+    :type coords: list of floats
+    """
+
+    assert isinstance(idxs, list)
+    assert isinstance(coords, list)
+    inf_obj = autofile.info.Info(idxs=idxs, coords=coords)
+    assert autofile.info.matches_function_signature(inf_obj, irc)
     return inf_obj
 
 

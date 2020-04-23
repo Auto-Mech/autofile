@@ -2,11 +2,11 @@
 """
 import numbers
 from types import SimpleNamespace
+import yaml
 try:
     from collections.abc import Collection as _Collection
 except ImportError:
     from collections import Collection as _Collection
-import yaml
 from autofile.info._inspect import function_keys as _function_keys
 
 
@@ -50,7 +50,10 @@ def string(inf_obj):
     """ write an information object to a YAML string
     """
     inf_dct = dict(inf_obj)
-    inf_str = yaml.dump(inf_dct, default_flow_style=False)
+    # Losing dct order when writing file
+    # inf_str = yaml.dump(inf_dct, default_flow_style=False)
+    print('inf_dct_dump', inf_dct)
+    inf_str = yaml.dump(inf_dct, default_flow_style=False, sort_keys=False)
     return inf_str
 
 
@@ -58,6 +61,7 @@ def from_string(inf_str):
     """ read an information object from a YAML string
     """
     inf_dct = yaml.load(inf_str, Loader=yaml.FullLoader)
+    print('inf_dct', inf_dct)
     inf_obj = object_(inf_dct)
     return inf_obj
 

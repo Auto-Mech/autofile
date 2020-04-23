@@ -118,7 +118,16 @@ def anharmonic_zpve(zpve):
 def anharmonicity_matrix(xmat):
     """ write anharmonicity matrix (cm^-1) to a string (cm^-1)
     """
-    return _2d_square_matrix(xmat)
+    mat = numpy.array(xmat)
+    assert mat.ndim == 2 or mat.ndim == 0
+    if mat.ndim == 2:
+        assert mat.shape[0] == mat.shape[1]
+
+    mat_str_io = _StringIO()
+    numpy.savetxt(mat_str_io, mat)
+    mat_str = mat_str_io.getvalue()
+    mat_str_io.close()
+    return mat_str
 
 
 def vibro_rot_alpha_matrix(vibro_rot_mat):
@@ -179,15 +188,3 @@ def _frequencies(freq):
     for val in freq:
         freq_str += "{:>8.1f}\n".format(val)
     return freq_str
-
-
-def _2d_square_matrix(mat):
-    mat = numpy.array(mat)
-    assert mat.ndim == 2
-    assert mat.shape[0] == mat.shape[1]
-
-    mat_str_io = _StringIO()
-    numpy.savetxt(mat_str_io, mat)
-    mat_str = mat_str_io.getvalue()
-    mat_str_io.close()
-    return mat_str
