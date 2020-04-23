@@ -276,18 +276,18 @@ def conformer(prefix):
     geom_inf_dfile = file_.information(_FilePrefix.GEOM, function=info.run)
     grad_inf_dfile = file_.information(_FilePrefix.GRAD, function=info.run)
     hess_inf_dfile = file_.information(_FilePrefix.HESS, function=info.run)
+    # need additional vpt2 info file, one for job status and other for fermi
+    vpt2_inf_dfile = file_.information(_FilePrefix.VPT2, function=info.vpt2)
     geom_inp_dfile = file_.input_file(_FilePrefix.GEOM)
     grad_inp_dfile = file_.input_file(_FilePrefix.GRAD)
     hess_inp_dfile = file_.input_file(_FilePrefix.HESS)
+    vpt2_inp_dfile = file_.input_file(_FilePrefix.VPT2)
     ene_dfile = file_.energy(_FilePrefix.GEOM)
     geom_dfile = file_.geometry(_FilePrefix.GEOM)
     zmat_dfile = file_.zmatrix(_FilePrefix.GEOM)
     grad_dfile = file_.gradient(_FilePrefix.GRAD)
     hess_dfile = file_.hessian(_FilePrefix.HESS)
     hfreq_dfile = file_.harmonic_frequencies(_FilePrefix.HESS)
-    vpt2_inf_dfile = file_.information(
-        _FilePrefix.VPT2, function=info.vpt2)
-    vpt2_inp_dfile = file_.input_file(_FilePrefix.VPT2)
     anhfreq_dfile = file_.anharmonic_frequencies(_FilePrefix.VPT2)
     anhzpve_dfile = file_.anharmonic_zpve(_FilePrefix.VPT2)
     xmat_dfile = file_.anharmonicity_matrix(_FilePrefix.VPT2)
@@ -421,6 +421,9 @@ def scan(prefix):
     branch_ds.add_data_files({
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.TRAJ: traj_dfile})
+
+    # Need an irc file in the branch!
+    # Need an run irc file in the forward and backward direction
 
     geom_inf_dfile = file_.information(_FilePrefix.GEOM, function=info.run)
     grad_inf_dfile = file_.information(_FilePrefix.GRAD, function=info.run)

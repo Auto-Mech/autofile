@@ -137,7 +137,6 @@ def cscan_branch1(coo_names):
 def cscan_branch2(coo_vals):
     """ scan branch 2 directory name
     """
-    print('coo_vals', coo_vals)
     return '_'.join(map('{:.2f}'.format, coo_vals))
 
 
@@ -150,6 +149,7 @@ def cscan_leaf(cons_coo_val_dct):
     """
     cons_coo_names = list(cons_coo_val_dct.keys())
     cons_coo_names.sort(key=lambda x: int(x[1:]))  # Sort by int after R,A,D
+    print('cons_coo_names', cons_coo_names)
     cons_coo_vals = [float(round(val, 2)) for val in cons_coo_val_dct.values()]
     cons_coo_val_dct = dict(zip(cons_coo_names, cons_coo_vals))
     return _short_hash(cons_coo_val_dct)
