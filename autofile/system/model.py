@@ -64,7 +64,6 @@ class DataSeries():
         :param info_map_: maps `nlocs` locators to an information object, to
             be written in the data directory
         """
-        print('prefix', prefix)
         assert os.path.isdir(prefix)
         self.prefix = os.path.abspath(prefix)
         self.map_ = map_
