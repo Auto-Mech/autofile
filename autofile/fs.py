@@ -276,7 +276,7 @@ def conformer(prefix):
     geom_inf_dfile = file_.information(_FilePrefix.GEOM, function=info.run)
     grad_inf_dfile = file_.information(_FilePrefix.GRAD, function=info.run)
     hess_inf_dfile = file_.information(_FilePrefix.HESS, function=info.run)
-    # need additional vpt2 info file, one for job status and other for fermi
+    # need addl vpt2 info file, one for job status and other for fermi
     vpt2_inf_dfile = file_.information(_FilePrefix.VPT2, function=info.vpt2)
     geom_inp_dfile = file_.input_file(_FilePrefix.GEOM)
     grad_inp_dfile = file_.input_file(_FilePrefix.GRAD)
