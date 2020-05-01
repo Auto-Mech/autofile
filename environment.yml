@@ -1,5 +1,8 @@
 name: autofile-env
 
+channels:
+    - auto-mech
+
 dependencies:
     - python=3.7
     - numpy
@@ -7,3 +10,4 @@ dependencies:
     - pytest-cov
     - flake8
     - pylint
+    - auto-mech::automol
