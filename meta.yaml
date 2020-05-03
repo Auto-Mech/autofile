@@ -11,3 +11,9 @@ requirements:
         - python
     run:
         - python
+        - numpy
+        - pyyaml
+        - pytest
+        - pytest-cov
+        - flake8
+        - pylint
