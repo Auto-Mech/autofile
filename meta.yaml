@@ -1,4 +1,4 @@
-# cmd: conda build . -c kevinmooreiii -c auto-mech -c rdkit -c openbabel -c conda-forge
+# cmd: conda build . -c kevinmooreiii -c auto-mech -c psi4 -c rdkit -c openbabel -c conda-forge
 package:
     name: autofile
     version: "0.1.0"
@@ -12,13 +12,18 @@ requirements:
     run:
         - python
         - numpy
+        - scipy
         - pyyaml
+        - mako
         - pytest
         - pytest-cov
+        - future
         - flake8
         - pylint
+        - kevinmooreiii::automol
         - kevinmooreiii::autoparse
         - auto-mech::x2z
         - rdkit::rdkit
+        - psi4::psi4
         - openbabel::openbabel
         - conda-forge::qcelemental

@@ -3,6 +3,7 @@ name: autofile-env
 channels:
     - kevinmooreiii
     - auto-mech
+    - psi4
     - rdkit
     - openbabel
     - conda-forge
@@ -10,14 +11,18 @@ channels:
 dependencies:
     - python=3.7
     - numpy
+    - scipy
     - pyyaml
+    - mako
     - pytest
     - pytest-cov
+    - future
     - flake8
     - pylint
     - kevinmooreiii::automol
     - kevinmooreiii::autoparse
     - auto-mech::x2z
+    - psi4::psi4
     - rdkit::rdkit
     - openbabel::openbabel
     - conda-forge::qcelemental
