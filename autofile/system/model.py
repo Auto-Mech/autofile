@@ -249,10 +249,9 @@ def _os_path_split_all(pth):
         if parts[0] == pth:    # sentinel for absolute paths
             allparts.insert(0, parts[0])
             break
-        elif parts[1] == pth:  # sentinel for relative paths
+        if parts[1] == pth:  # sentinel for relative paths
             allparts.insert(0, parts[1])
             break
-        else:
-            pth = parts[0]
-            allparts.insert(0, parts[1])
+        pth = parts[0]
+        allparts.insert(0, parts[1])
     return allparts

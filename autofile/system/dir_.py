@@ -221,8 +221,6 @@ def energy_transfer_trunk(prefix, root_ds=None):
     """
     _map = _pack_arguments(map_.energy_transfer_trunk)
     nlocs = _count_arguments(map_.energy_transfer_trunk)
-    tmp = model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
-                            root_ds=root_ds)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
