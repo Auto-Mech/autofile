@@ -1,4 +1,4 @@
-# cmd: conda build . -c kevinmooreiii -c auto-mech
+# cmd: conda build . -c kevinmooreiii -c auto-mech -c rdkit -c openbabel -c conda-forge
 package:
     name: autofile
     version: "0.1.0"
@@ -18,5 +18,7 @@ requirements:
         - flake8
         - pylint
         - kevinmooreiii::autoparse
-        - kevinmooreiii::automol
         - auto-mech::x2z
+        - rdkit::rdkit
+        - openbabel::openbabel
+        - conda-forge::qcelemental

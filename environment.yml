@@ -3,6 +3,9 @@ name: autofile-env
 channels:
     - kevinmooreiii
     - auto-mech
+    - rdkit
+    - openbabel
+    - conda-forge
 
 dependencies:
     - python=3.7
@@ -14,3 +17,6 @@ dependencies:
     - kevinmooreiii::automol
     - kevinmooreiii::autoparse
     - auto-mech::x2z
+    - rdkit::rdkit
+    - openbabel::openbabel
+    - conda-forge::qcelemental
