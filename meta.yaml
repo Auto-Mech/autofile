@@ -1,4 +1,4 @@
-# cmd: conda build .
+# cmd: conda build . -c kevinmooreiii -c auto-mech
 package:
     name: autofile
     version: "0.1.0"
@@ -17,3 +17,6 @@ requirements:
         - pytest-cov
         - flake8
         - pylint
+        - kevinmooreiii::autoparse
+        - kevinmooreiii::automol
+        - auto-mech::x2z
