@@ -1,7 +1,7 @@
 name: autofile-env
 
 channels:
-    - auto-mech
+    - kevinmooreiii
 
 dependencies:
     - python=3.7
@@ -10,5 +10,6 @@ dependencies:
     - pytest-cov
     - flake8
     - pylint
-    - auto-mech::automol
-    - auto-mech::autoparse
+    - kevinmooreiii::automol
+    - kevinmooreiii::autoparse
+    - auto-mech::x2z
