@@ -283,8 +283,8 @@ def _reactant_leaf(ichs, chgs, muls):
 
 
 # ts
-def ts_trunk():
-    """ ts trunk directory name
+def transition_state_trunk():
+    """ transition state trunk directory name
     """
     return 'TS'
 

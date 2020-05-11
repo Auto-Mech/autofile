@@ -661,7 +661,7 @@ def reaction(prefix):
     return (trunk_ds, leaf_ds)
 
 
-def ts(prefix):
+def transition_state(prefix):
     """ construct the ts filesystem (1 layer)
 
     specifiers:
@@ -674,7 +674,7 @@ def ts(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.ts_trunk(prefix)
+    trunk_ds = dir_.transition_state_trunk(prefix)
 
     geom_dfile = file_.geometry(_FilePrefix.GEOM)
     ene_dfile = file_.energy(_FilePrefix.GEOM)
