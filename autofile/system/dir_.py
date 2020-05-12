@@ -221,8 +221,6 @@ def energy_transfer_trunk(prefix, root_ds=None):
     """
     _map = _pack_arguments(map_.energy_transfer_trunk)
     nlocs = _count_arguments(map_.energy_transfer_trunk)
-    tmp = model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
-                            root_ds=root_ds)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -284,11 +282,11 @@ def reaction_leaf(prefix, root_ds=None):
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
 
-def ts_trunk(prefix, root_ds=None):
-    """ ts trunk DataSeries
+def transition_state_trunk(prefix, root_ds=None):
+    """ transition state trunk DataSeries
     """
-    _map = _pack_arguments(map_.ts_trunk)
-    nlocs = _count_arguments(map_.ts_trunk)
+    _map = _pack_arguments(map_.transition_state_trunk)
+    nlocs = _count_arguments(map_.transition_state_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 

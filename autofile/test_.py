@@ -61,12 +61,12 @@ def test__reaction():
 
 
 def test__ts():
-    """ test autofile.fs.ts
+    """ test autofile.fs.transition_state
     """
     prefix = os.path.join(PREFIX, 'ts')
     os.mkdir(prefix)
 
-    ts_fs = autofile.fs.ts(prefix)
+    ts_fs = autofile.fs.transition_state(prefix)
     print(ts_fs[0].path())
 
     assert not ts_fs[0].exists()
@@ -245,10 +245,10 @@ def test__build():
 
 
 if __name__ == '__main__':
-    test__direction()
-    test__species()
-    test__reaction()
-    # test__ts()
+    # test__direction()
+    # test__species()
+    # test__reaction()
+    test__ts()
     # test__theory()
     # test__conformer()
     # test__tau()
