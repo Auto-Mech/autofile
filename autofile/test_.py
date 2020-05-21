@@ -97,7 +97,7 @@ def test__conformer():
     prefix = os.path.join(PREFIX, 'conformer')
     os.mkdir(prefix)
 
-    locs = [autofile.system.generate_new_conformer_id()]
+    locs = [autofile.schema.generate_new_conformer_id()]
     cnf_fs = autofile.fs.conformer(prefix)
     print(cnf_fs[-1].path(locs))
 
@@ -112,7 +112,7 @@ def test__tau():
     prefix = os.path.join(PREFIX, 'tau')
     os.mkdir(prefix)
 
-    locs = [autofile.system.generate_new_tau_id()]
+    locs = [autofile.schema.generate_new_tau_id()]
     tau_fs = autofile.fs.tau(prefix)
     print(tau_fs[-1].path(locs))
 

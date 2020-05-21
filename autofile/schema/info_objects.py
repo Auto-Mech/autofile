@@ -3,7 +3,7 @@
 import numbers
 import numpy
 import autofile.info
-from autofile.system._util import utc_time as _utc_time
+from autofile.schema._util import utc_time as _utc_time
 
 
 def conformer_trunk(nsamp, tors_ranges):

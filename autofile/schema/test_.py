@@ -1,4 +1,4 @@
-""" test autofile.system
+""" test autofile.schema
 """
 import os
 import numbers
@@ -7,13 +7,13 @@ import numpy
 import pytest
 import automol
 import autofile.info
-import autofile.system
+import autofile.schema
 
 PREFIX = tempfile.mkdtemp()
 print(PREFIX)
 
 # create a dummy root DataSeries for testing
-ROOT_SPEC_DFILE = autofile.system.file_.locator(
+ROOT_SPEC_DFILE = autofile.schema.data_files.locator(
     file_prefix='dir',
     map_dct_={
         'loc1': lambda locs: locs[0],
@@ -24,7 +24,7 @@ ROOT_SPEC_DFILE = autofile.system.file_.locator(
 )
 
 
-def root_data_series_directory(prefix):
+def root_data_seriesdirectory(prefix):
     """ root DataSeries
     """
     return autofile.model.DataSeries(
@@ -36,11 +36,11 @@ def root_data_series_directory(prefix):
 
 
 def test__file__input_file():
-    """ test autofile.system.file_.input_file
+    """ test autofile.schema.data_files.input_file
     """
     ref_inp_str = '<input file contents>'
 
-    inp_dfile = autofile.system.file_.input_file('test')
+    inp_dfile = autofile.schema.data_files.input_file('test')
 
     assert not inp_dfile.exists(PREFIX)
     inp_dfile.write(ref_inp_str, PREFIX)
@@ -52,11 +52,11 @@ def test__file__input_file():
 
 
 def test__file__output_file():
-    """ test autofile.system.file_.output_file
+    """ test autofile.schema.data_files.output_file
     """
     ref_out_str = '<output file contents>'
 
-    out_dfile = autofile.system.file_.output_file('test')
+    out_dfile = autofile.schema.data_files.output_file('test')
 
     assert not out_dfile.exists(PREFIX)
     out_dfile.write(ref_out_str, PREFIX)
@@ -68,7 +68,7 @@ def test__file__output_file():
 
 
 def test__file__information():
-    """ test autofile.system.file_.information
+    """ test autofile.schema.data_files.information
     """
     def information(nsamp, tors_ranges):
         """ base information object
@@ -82,7 +82,8 @@ def test__file__information():
     ref_inf_obj = information(
         nsamp=4, tors_ranges={'d1': (0., 1.), 'd2': (0., 3.)})
 
-    inf_dfile = autofile.system.file_.information('test', function=information)
+    inf_dfile = autofile.schema.data_files.information(
+        'test', function=information)
 
     assert not inf_dfile.exists(PREFIX)
     inf_dfile.write(ref_inf_obj, PREFIX)
@@ -94,11 +95,11 @@ def test__file__information():
 
 
 def test__file__energy():
-    """ test autofile.system.file_.energy
+    """ test autofile.schema.data_files.energy
     """
     ref_ene = -187.38518070487598
 
-    ene_dfile = autofile.system.file_.energy('test')
+    ene_dfile = autofile.schema.data_files.energy('test')
 
     assert not ene_dfile.exists(PREFIX)
     ene_dfile.write(ref_ene, PREFIX)
@@ -110,7 +111,7 @@ def test__file__energy():
 
 
 def test__file__geometry():
-    """ test autofile.system.file_.geometry
+    """ test autofile.schema.data_files.geometry
     """
     ref_geo = (('C', (0.066541036329, -0.86543409422, -0.56994517889)),
                ('O', (0.066541036329, -0.86543409422, 2.13152981129)),
@@ -120,7 +121,7 @@ def test__file__geometry():
                ('H', (-1.61114836922, -0.17751142359, 2.6046492029)),
                ('H', (-1.61092727126, 2.32295906780, -1.19178601663)))
 
-    geo_dfile = autofile.system.file_.geometry('test')
+    geo_dfile = autofile.schema.data_files.geometry('test')
 
     assert not geo_dfile.exists(PREFIX)
     geo_dfile.write(ref_geo, PREFIX)
@@ -132,7 +133,7 @@ def test__file__geometry():
 
 
 def test__file__gradient():
-    """ test autofile.system.file_.gradient
+    """ test autofile.schema.data_files.gradient
     """
     ref_grad = ((0.00004103632, 0.00003409422, 0.00004517889),
                 (0.00004103632, 0.00003409422, 0.00002981129),
@@ -142,7 +143,7 @@ def test__file__gradient():
                 (0.00004836922, 0.00001142359, 0.00004920290),
                 (0.00002727126, 0.00005906780, 0.00008601663))
 
-    grad_dfile = autofile.system.file_.gradient('test')
+    grad_dfile = autofile.schema.data_files.gradient('test')
 
     assert not grad_dfile.exists(PREFIX)
     grad_dfile.write(ref_grad, PREFIX)
@@ -154,7 +155,7 @@ def test__file__gradient():
 
 
 def test__file__hessian():
-    """ test autofile.system.file_.hessian
+    """ test autofile.schema.data_files.hessian
     """
     ref_hess = (
         (-0.21406, 0., 0., -0.06169, 0., 0., 0.27574, 0., 0.),
@@ -171,7 +172,7 @@ def test__file__hessian():
         (0., -0.20421, 0.19654, 0., 0.12066, -0.05792, 0., 0.08354,
          -0.13862))
 
-    hess_dfile = autofile.system.file_.hessian('test')
+    hess_dfile = autofile.schema.data_files.hessian('test')
 
     assert not hess_dfile.exists(PREFIX)
     hess_dfile.write(ref_hess, PREFIX)
@@ -183,7 +184,7 @@ def test__file__hessian():
 
 
 def test__file__zmatrix():
-    """ test autofile.system.file_.zmatrix
+    """ test autofile.schema.data_files.zmatrix
     """
     ref_zma = (
         (('C', (None, None, None), (None, None, None)),
@@ -200,7 +201,7 @@ def test__file__zmatrix():
          'r5': 1.83126, 'a4': 1.86751, 'd3': 1.44253,
          'r6': 1.83126, 'a5': 1.86751, 'd4': 4.84065})
 
-    zma_dfile = autofile.system.file_.zmatrix('test')
+    zma_dfile = autofile.schema.data_files.zmatrix('test')
 
     assert not zma_dfile.exists(PREFIX)
     zma_dfile.write(ref_zma, PREFIX)
@@ -212,7 +213,7 @@ def test__file__zmatrix():
 
 
 def test__file__vmatrix():
-    """ test autofile.system.file_.vmatrix
+    """ test autofile.schema.data_files.vmatrix
     """
     ref_vma = (('C', (None, None, None), (None, None, None)),
                ('O', (0, None, None), ('r1', None, None)),
@@ -222,7 +223,7 @@ def test__file__vmatrix():
                ('H', (1, 0, 2), ('r5', 'a4', 'd3')),
                ('H', (2, 0, 1), ('r6', 'a5', 'd4')))
 
-    vma_dfile = autofile.system.file_.vmatrix('test')
+    vma_dfile = autofile.schema.data_files.vmatrix('test')
 
     assert not vma_dfile.exists(PREFIX)
     vma_dfile.write(ref_vma, PREFIX)
@@ -234,7 +235,7 @@ def test__file__vmatrix():
 
 
 def test__file__trajectory():
-    """ test autofile.system.file_.trajectory
+    """ test autofile.schema.data_files.trajectory
     """
     ref_geos = [
         (('C', (0.0, 0.0, 0.0)),
@@ -256,7 +257,7 @@ def test__file__trajectory():
 
     ref_traj = list(zip(ref_comments, ref_geos))
 
-    traj_dfile = autofile.system.file_.trajectory('test')
+    traj_dfile = autofile.schema.data_files.trajectory('test')
 
     assert not traj_dfile.exists(PREFIX)
     traj_dfile.write(ref_traj, PREFIX)
@@ -267,11 +268,11 @@ def test__file__trajectory():
 
 
 def test__file__lennard_jones_epsilon():
-    """ test autofile.system.file_.lennard_jones_epsilon
+    """ test autofile.schema.data_files.lennard_jones_epsilon
     """
     ref_eps = 247.880866746988
 
-    eps_dfile = autofile.system.file_.lennard_jones_epsilon('test')
+    eps_dfile = autofile.schema.data_files.lennard_jones_epsilon('test')
 
     assert not eps_dfile.exists(PREFIX)
     eps_dfile.write(ref_eps, PREFIX)
@@ -283,11 +284,11 @@ def test__file__lennard_jones_epsilon():
 
 
 def test__file__lennard_jones_sigma():
-    """ test autofile.system.file_.lennard_jones_sigma
+    """ test autofile.schema.data_files.lennard_jones_sigma
     """
     ref_sig = 3.55018590361446
 
-    sig_dfile = autofile.system.file_.lennard_jones_sigma('test')
+    sig_dfile = autofile.schema.data_files.lennard_jones_sigma('test')
 
     assert not sig_dfile.exists(PREFIX)
     sig_dfile.write(ref_sig, PREFIX)
@@ -299,13 +300,13 @@ def test__file__lennard_jones_sigma():
 
 
 def test__dir__run_trunk():
-    """ test dir_.run_trunk
+    """ test data_series.run_trunk
     """
     prefix = os.path.join(PREFIX, 'run_trunk')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.run_trunk(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.run_trunk(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -326,13 +327,13 @@ def test__dir__run_trunk():
 
 
 def test__dir__run_leaf():
-    """ test dir_.run_leaf
+    """ test data_series.run_leaf
     """
     prefix = os.path.join(PREFIX, 'run_leaf')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.run_leaf(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.run_leaf(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -365,13 +366,13 @@ def test__dir__run_leaf():
 
 
 def test__dir__subrun_leaf():
-    """ test dir_.subrun_leaf
+    """ test data_series.subrun_leaf
     """
     prefix = os.path.join(PREFIX, 'subrun_leaf')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.subrun_leaf(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.subrun_leaf(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -406,21 +407,21 @@ def test__dir__subrun_leaf():
 
 
 def test__dir__species_trunk():
-    """ test dir_.species_trunk
+    """ test data_series.species_trunk
     """
     prefix = os.path.join(PREFIX, 'species_trunk')
     os.mkdir(prefix)
 
     # without a root directory
-    ds_ = autofile.system.dir_.species_trunk(prefix)
+    ds_ = autofile.schema.data_series.species_trunk(prefix)
 
     assert not ds_.exists()
     ds_.create()
     assert ds_.exists()
 
     # with a root directory
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.species_trunk(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.species_trunk(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -441,13 +442,13 @@ def test__dir__species_trunk():
 
 
 def test__dir__species_leaf():
-    """ test dir_.species_leaf
+    """ test data_series.species_leaf
     """
     prefix = os.path.join(PREFIX, 'species_leaf')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.species_leaf(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.species_leaf(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -481,21 +482,21 @@ def test__dir__species_leaf():
 
 
 def test__dir__reaction_trunk():
-    """ test dir_.reaction_trunk
+    """ test data_series.reaction_trunk
     """
     prefix = os.path.join(PREFIX, 'reaction_trunk')
     os.mkdir(prefix)
 
     # without a root directory
-    ds_ = autofile.system.dir_.reaction_trunk(prefix)
+    ds_ = autofile.schema.data_series.reaction_trunk(prefix)
 
     assert not ds_.exists()
     ds_.create()
     assert ds_.exists()
 
     # with a root directory
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.reaction_trunk(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.reaction_trunk(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -516,13 +517,13 @@ def test__dir__reaction_trunk():
 
 
 def test__dir__reaction_leaf():
-    """ test dir_.reaction_leaf
+    """ test data_series.reaction_leaf
     """
     prefix = os.path.join(PREFIX, 'reaction_leaf')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.reaction_leaf(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.reaction_leaf(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -573,13 +574,13 @@ def test__dir__reaction_leaf():
 
 
 def test__dir__theory_leaf():
-    """ test dir_.theory_leaf
+    """ test data_series.theory_leaf
     """
     prefix = os.path.join(PREFIX, 'theory_leaf')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.theory_leaf(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.theory_leaf(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -612,21 +613,21 @@ def test__dir__theory_leaf():
 
 
 def test__dir__conformer_trunk():
-    """ test dir_.conformer_trunk
+    """ test data_series.conformer_trunk
     """
     prefix = os.path.join(PREFIX, 'conformer_trunk')
     os.mkdir(prefix)
 
     # without a root directory
-    ds_ = autofile.system.dir_.conformer_trunk(prefix)
+    ds_ = autofile.schema.data_series.conformer_trunk(prefix)
 
     assert not ds_.exists()
     ds_.create()
     assert ds_.exists()
 
     # with a root directory
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.conformer_trunk(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.conformer_trunk(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -647,13 +648,13 @@ def test__dir__conformer_trunk():
 
 
 def test__dir__conformer_leaf():
-    """ test dir_.conformer_leaf
+    """ test data_series.conformer_leaf
     """
     prefix = os.path.join(PREFIX, 'conformer_leaf')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.conformer_leaf(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.conformer_leaf(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -665,7 +666,7 @@ def test__dir__conformer_leaf():
 
     nconfs = 10
     branch_locs_lst = [
-        [autofile.system.generate_new_conformer_id()] for _ in range(nconfs)]
+        [autofile.schema.generate_new_conformer_id()] for _ in range(nconfs)]
 
     for root_locs in root_locs_lst:
         for branch_locs in branch_locs_lst:
@@ -684,13 +685,14 @@ def test__dir__conformer_leaf():
 
 
 def test__dir__single_point_trunk():
-    """ test dir_.single_point_trunk
+    """ test data_series.single_point_trunk
     """
     prefix = os.path.join(PREFIX, 'single_point_trunk')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.single_point_trunk(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.single_point_trunk(prefix,
+                                                         root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -711,21 +713,21 @@ def test__dir__single_point_trunk():
 
 
 def test__dir__scan_trunk():
-    """ test dir_.scan_trunk
+    """ test data_series.scan_trunk
     """
     prefix = os.path.join(PREFIX, 'scan_trunk')
     os.mkdir(prefix)
 
     # without a root directory
-    ds_ = autofile.system.dir_.scan_trunk(prefix)
+    ds_ = autofile.schema.data_series.scan_trunk(prefix)
 
     assert not ds_.exists()
     ds_.create()
     assert ds_.exists()
 
     # with a root directory
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.scan_trunk(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.scan_trunk(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -746,13 +748,13 @@ def test__dir__scan_trunk():
 
 
 def test__dir__scan_branch():
-    """ test dir_.scan_branch
+    """ test data_series.scan_branch
     """
     prefix = os.path.join(PREFIX, 'scan_branch')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.scan_branch(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.scan_branch(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -783,13 +785,13 @@ def test__dir__scan_branch():
 
 
 def test__dir__scan_leaf():
-    """ test dir_.scan_leaf
+    """ test data_series.scan_leaf
     """
     prefix = os.path.join(PREFIX, 'scan_leaf')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.scan_leaf(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.scan_leaf(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -833,21 +835,21 @@ def test__dir__scan_leaf():
 
 
 def test__dir__tau_trunk():
-    """ test dir_.tau_trunk
+    """ test data_series.tau_trunk
     """
     prefix = os.path.join(PREFIX, 'tau_trunk')
     os.mkdir(prefix)
 
     # without a root directory
-    ds_ = autofile.system.dir_.tau_trunk(prefix)
+    ds_ = autofile.schema.data_series.tau_trunk(prefix)
 
     assert not ds_.exists()
     ds_.create()
     assert ds_.exists()
 
     # with a root directory
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.tau_trunk(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.tau_trunk(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -868,13 +870,13 @@ def test__dir__tau_trunk():
 
 
 def test__dir__tau_leaf():
-    """ test dir_.tau_leaf
+    """ test data_series.tau_leaf
     """
     prefix = os.path.join(PREFIX, 'tau_leaf')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.tau_leaf(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.tau_leaf(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],
@@ -886,7 +888,7 @@ def test__dir__tau_leaf():
 
     nconfs = 10
     branch_locs_lst = [
-        [autofile.system.generate_new_tau_id()] for _ in range(nconfs)]
+        [autofile.schema.generate_new_tau_id()] for _ in range(nconfs)]
 
     for root_locs in root_locs_lst:
         for branch_locs in branch_locs_lst:
@@ -909,13 +911,13 @@ def test__dir__tau_leaf():
 
 
 def test__dir__build_trunk():
-    """ test dir_.build_trunk
+    """ test data_series.build_trunk
     """
     prefix = os.path.join(PREFIX, 'build_trunk')
     os.mkdir(prefix)
 
-    root_ds = root_data_series_directory(prefix)
-    ds_ = autofile.system.dir_.build_trunk(prefix, root_ds=root_ds)
+    root_ds = root_data_seriesdirectory(prefix)
+    ds_ = autofile.schema.data_series.build_trunk(prefix, root_ds=root_ds)
 
     root_alocs_lst = [
         [1, 'a'],

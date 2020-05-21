@@ -1,16 +1,16 @@
-""" directory naming functions
+""" specifier mappings for naming directories in a DataSeries
 """
 import os
 import string
 import numbers
 import elstruct
 import automol
-from autofile.system._util import (is_valid_inchi_multiplicity as
+from autofile.schema._util import (is_valid_inchi_multiplicity as
                                    _is_valid_inchi_multiplicity)
-from autofile.system._util import short_hash as _short_hash
-from autofile.system._util import (random_string_identifier as
+from autofile.schema._util import short_hash as _short_hash
+from autofile.schema._util import (random_string_identifier as
                                    _random_string_identifier)
-from autofile.system._util import (is_random_string_identifier as
+from autofile.schema._util import (is_random_string_identifier as
                                    _is_random_string_identifier)
 
 
