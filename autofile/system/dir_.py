@@ -5,9 +5,9 @@ try:
 except ImportError:
     from inspect import getargspec as function_argspec
 import automol
+from autofile import model
 from autofile.system import map_
 from autofile.system import file_
-from autofile.system import model
 
 
 SPEC_FILE_PREFIX = 'dir'

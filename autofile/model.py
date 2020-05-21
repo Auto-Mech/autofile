@@ -4,7 +4,7 @@ import os
 import glob
 import types
 import shutil
-import autofile.file
+import autofile.io_
 
 
 class DataFile():
@@ -40,14 +40,14 @@ class DataFile():
         assert os.path.exists(dir_pth)
         pth = self.path(dir_pth)
         val_str = self.writer_(val)
-        autofile.file.write_file(pth, val_str)
+        autofile.io_.write_file(pth, val_str)
 
     def read(self, dir_pth):
         """ read data from this file
         """
         assert self.exists(dir_pth)
         pth = self.path(dir_pth)
-        val_str = autofile.file.read_file(pth)
+        val_str = autofile.io_.read_file(pth)
         val = self.reader_(val_str)
         return val
 
@@ -177,26 +177,6 @@ class DataSeries():
         assert nlocs >= self.nlocs
         root_nlocs = nlocs - self.nlocs
         return locs[:root_nlocs]
-
-
-class FileSystem(types.SimpleNamespace):
-    """ a collection of DataSeries
-    """
-
-    def __init__(self, dseries_dct):
-        self.update(dseries_dct)
-
-    def __iter__(self):
-        for key, val in vars(self).items():
-            yield key, val
-
-    def update(self, dseries_dct):
-        """ update the filesystem dataseries
-        """
-        for name, obj in dict(dseries_dct).items():
-            assert isinstance(name, str)
-            assert isinstance(obj, DataSeries)
-            setattr(self, name, obj)
 
 
 # helpers:
