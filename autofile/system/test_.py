@@ -27,7 +27,7 @@ ROOT_SPEC_DFILE = autofile.system.file_.locator(
 def root_data_series_directory(prefix):
     """ root DataSeries
     """
-    return autofile.system.model.DataSeries(
+    return autofile.model.DataSeries(
         prefix,
         map_=lambda x: os.path.join(*map(str, x)),
         nlocs=2,

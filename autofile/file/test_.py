@@ -19,14 +19,14 @@ def test__information():
 
     inf_file_name = autofile.file.name.information('test')
     inf_file_path = os.path.join(TMP_DIR, inf_file_name)
-    inf_str = autofile.file.write.information(ref_inf_obj)
+    inf_str = autofile.file.swrite.information(ref_inf_obj)
 
     assert not os.path.isfile(inf_file_path)
-    autofile.file.write_file(inf_file_path, inf_str)
+    autofile.io_.write_file(inf_file_path, inf_str)
     assert os.path.isfile(inf_file_path)
 
-    inf_str = autofile.file.read_file(inf_file_path)
-    inf_obj = autofile.file.read.information(inf_str)
+    inf_str = autofile.io_.read_file(inf_file_path)
+    inf_obj = autofile.file.sread.information(inf_str)
     assert inf_obj == ref_inf_obj
 
 
@@ -48,9 +48,9 @@ def test__file():
     assert not os.path.isfile(inp_file_path)
     assert not os.path.isfile(out_file_path)
     assert not os.path.isfile(scr_file_path)
-    autofile.file.write_file(inp_file_path, inp_str)
-    autofile.file.write_file(out_file_path, out_str)
-    autofile.file.write_file(scr_file_path, scr_str)
+    autofile.io_.write_file(inp_file_path, inp_str)
+    autofile.io_.write_file(out_file_path, out_str)
+    autofile.io_.write_file(scr_file_path, scr_str)
 
 
 def test__energy():
@@ -60,14 +60,14 @@ def test__energy():
 
     ene_file_name = autofile.file.name.energy('test')
     ene_file_path = os.path.join(TMP_DIR, ene_file_name)
-    ene_str = autofile.file.write.energy(ref_ene)
+    ene_str = autofile.file.swrite.energy(ref_ene)
 
     assert not os.path.isfile(ene_file_path)
-    autofile.file.write_file(ene_file_path, ene_str)
+    autofile.io_.write_file(ene_file_path, ene_str)
     assert os.path.isfile(ene_file_path)
 
-    ene_str = autofile.file.read_file(ene_file_path)
-    ene = autofile.file.read.energy(ene_str)
+    ene_str = autofile.io_.read_file(ene_file_path)
+    ene = autofile.file.sread.energy(ene_str)
     assert numpy.isclose(ref_ene, ene)
 
 
@@ -83,14 +83,14 @@ def test__geometry():
 
     geo_file_name = autofile.file.name.geometry('test')
     geo_file_path = os.path.join(TMP_DIR, geo_file_name)
-    geo_str = autofile.file.write.geometry(ref_geo)
+    geo_str = autofile.file.swrite.geometry(ref_geo)
 
     assert not os.path.isfile(geo_file_path)
-    autofile.file.write_file(geo_file_path, geo_str)
+    autofile.io_.write_file(geo_file_path, geo_str)
     assert os.path.isfile(geo_file_path)
 
-    geo_str = autofile.file.read_file(geo_file_path)
-    geo = autofile.file.read.geometry(geo_str)
+    geo_str = autofile.io_.read_file(geo_file_path)
+    geo = autofile.file.sread.geometry(geo_str)
     assert automol.geom.almost_equal(ref_geo, geo)
 
 
@@ -119,10 +119,10 @@ def test__trajectory():
 
     traj_file_name = autofile.file.name.trajectory('test')
     traj_file_path = os.path.join(TMP_DIR, traj_file_name)
-    traj_str = autofile.file.write.trajectory(traj)
+    traj_str = autofile.file.swrite.trajectory(traj)
 
     assert not os.path.isfile(traj_file_path)
-    autofile.file.write_file(traj_file_path, traj_str)
+    autofile.io_.write_file(traj_file_path, traj_str)
     assert os.path.isfile(traj_file_path)
 
 
@@ -144,14 +144,14 @@ def test__zmatrix():
 
     zma_file_name = autofile.file.name.zmatrix('test')
     zma_file_path = os.path.join(TMP_DIR, zma_file_name)
-    zma_str = autofile.file.write.zmatrix(ref_zma)
+    zma_str = autofile.file.swrite.zmatrix(ref_zma)
 
     assert not os.path.isfile(zma_file_path)
-    autofile.file.write_file(zma_file_path, zma_str)
+    autofile.io_.write_file(zma_file_path, zma_str)
     assert os.path.isfile(zma_file_path)
 
-    zma_str = autofile.file.read_file(zma_file_path)
-    zma = autofile.file.read.zmatrix(zma_str)
+    zma_str = autofile.io_.read_file(zma_file_path)
+    zma = autofile.file.sread.zmatrix(zma_str)
     assert automol.zmatrix.almost_equal(ref_zma, zma)
 
 
@@ -167,14 +167,14 @@ def test__vmatrix():
 
     vma_file_name = autofile.file.name.vmatrix('test')
     vma_file_path = os.path.join(TMP_DIR, vma_file_name)
-    vma_str = autofile.file.write.vmatrix(ref_vma)
+    vma_str = autofile.file.swrite.vmatrix(ref_vma)
 
     assert not os.path.isfile(vma_file_path)
-    autofile.file.write_file(vma_file_path, vma_str)
+    autofile.io_.write_file(vma_file_path, vma_str)
     assert os.path.isfile(vma_file_path)
 
-    vma_str = autofile.file.read_file(vma_file_path)
-    vma = autofile.file.read.vmatrix(vma_str)
+    vma_str = autofile.io_.read_file(vma_file_path)
+    vma = autofile.file.sread.vmatrix(vma_str)
     assert vma == ref_vma
 
 
@@ -191,14 +191,14 @@ def test__gradient():
 
     grad_file_name = autofile.file.name.gradient('test')
     grad_file_path = os.path.join(TMP_DIR, grad_file_name)
-    grad_str = autofile.file.write.gradient(ref_grad)
+    grad_str = autofile.file.swrite.gradient(ref_grad)
 
     assert not os.path.isfile(grad_file_path)
-    autofile.file.write_file(grad_file_path, grad_str)
+    autofile.io_.write_file(grad_file_path, grad_str)
     assert os.path.isfile(grad_file_path)
 
-    grad_str = autofile.file.read_file(grad_file_path)
-    grad = autofile.file.read.gradient(grad_str)
+    grad_str = autofile.io_.read_file(grad_file_path)
+    grad = autofile.file.sread.gradient(grad_str)
     assert numpy.allclose(ref_grad, grad)
 
 
@@ -228,14 +228,14 @@ def test__hessian():
 
     hess_file_name = autofile.file.name.hessian('test')
     hess_file_path = os.path.join(TMP_DIR, hess_file_name)
-    hess_str = autofile.file.write.hessian(ref_hess)
+    hess_str = autofile.file.swrite.hessian(ref_hess)
 
     assert not os.path.isfile(hess_file_path)
-    autofile.file.write_file(hess_file_path, hess_str)
+    autofile.io_.write_file(hess_file_path, hess_str)
     assert os.path.isfile(hess_file_path)
 
-    hess_str = autofile.file.read_file(hess_file_path)
-    hess = autofile.file.read.hessian(hess_str)
+    hess_str = autofile.io_.read_file(hess_file_path)
+    hess = autofile.file.sread.hessian(hess_str)
     assert numpy.allclose(ref_hess, hess)
 
 
@@ -247,14 +247,14 @@ def test__anharmonic_frequencies():
 
     anh_freqs_file_name = autofile.file.name.anharmonic_frequencies('test')
     anh_freqs_file_path = os.path.join(TMP_DIR, anh_freqs_file_name)
-    anh_freqs_str = autofile.file.write.anharmonic_frequencies(ref_anh_freqs)
+    anh_freqs_str = autofile.file.swrite.anharmonic_frequencies(ref_anh_freqs)
 
     assert not os.path.isfile(anh_freqs_file_path)
-    autofile.file.write_file(anh_freqs_file_path, anh_freqs_str)
+    autofile.io_.write_file(anh_freqs_file_path, anh_freqs_str)
     assert os.path.isfile(anh_freqs_file_path)
 
-    anh_freqs_str = autofile.file.read_file(anh_freqs_file_path)
-    anh_freqs = autofile.file.read.anharmonic_frequencies(anh_freqs_str)
+    anh_freqs_str = autofile.io_.read_file(anh_freqs_file_path)
+    anh_freqs = autofile.file.sread.anharmonic_frequencies(anh_freqs_str)
     assert numpy.allclose(ref_anh_freqs, anh_freqs, atol=1e00)
 
 
@@ -265,14 +265,14 @@ def test__anharmonic_zpve():
 
     anh_zpve_file_name = autofile.file.name.anharmonic_zpve('test')
     anh_zpve_file_path = os.path.join(TMP_DIR, anh_zpve_file_name)
-    anh_zpve_str = autofile.file.write.anharmonic_zpve(ref_anh_zpve)
+    anh_zpve_str = autofile.file.swrite.anharmonic_zpve(ref_anh_zpve)
 
     assert not os.path.isfile(anh_zpve_file_path)
-    autofile.file.write_file(anh_zpve_file_path, anh_zpve_str)
+    autofile.io_.write_file(anh_zpve_file_path, anh_zpve_str)
     assert os.path.isfile(anh_zpve_file_path)
 
-    anh_zpve_str = autofile.file.read_file(anh_zpve_file_path)
-    anh_zpve = autofile.file.read.anharmonic_zpve(anh_zpve_str)
+    anh_zpve_str = autofile.io_.read_file(anh_zpve_file_path)
+    anh_zpve = autofile.file.sread.anharmonic_zpve(anh_zpve_str)
     assert numpy.isclose(ref_anh_zpve, anh_zpve)
 
 
@@ -286,14 +286,14 @@ def test__anharmonicity_matrix():
 
     xmat_file_name = autofile.file.name.anharmonicity_matrix('test')
     xmat_file_path = os.path.join(TMP_DIR, xmat_file_name)
-    xmat_str = autofile.file.write.anharmonicity_matrix(ref_xmat)
+    xmat_str = autofile.file.swrite.anharmonicity_matrix(ref_xmat)
 
     assert not os.path.isfile(xmat_file_path)
-    autofile.file.write_file(xmat_file_path, xmat_str)
+    autofile.io_.write_file(xmat_file_path, xmat_str)
     assert os.path.isfile(xmat_file_path)
 
-    xmat_str = autofile.file.read_file(xmat_file_path)
-    xmat = autofile.file.read.anharmonicity_matrix(xmat_str)
+    xmat_str = autofile.io_.read_file(xmat_file_path)
+    xmat = autofile.file.sread.anharmonicity_matrix(xmat_str)
     assert numpy.allclose(ref_xmat, xmat)
 
 
@@ -307,16 +307,16 @@ def test__vibro_rot_alpha_matrix():
 
     vibro_rot_mat_file_name = autofile.file.name.vibro_rot_alpha_matrix('test')
     vibro_rot_mat_file_path = os.path.join(TMP_DIR, vibro_rot_mat_file_name)
-    vibro_rot_mat_str = autofile.file.write.vibro_rot_alpha_matrix(
+    vibro_rot_mat_str = autofile.file.swrite.vibro_rot_alpha_matrix(
         ref_vibro_rot_mat)
 
     assert not os.path.isfile(vibro_rot_mat_file_path)
-    autofile.file.write_file(vibro_rot_mat_file_path, vibro_rot_mat_str)
+    autofile.io_.write_file(vibro_rot_mat_file_path, vibro_rot_mat_str)
     assert os.path.isfile(vibro_rot_mat_file_path)
 
-    vibro_rot_mat_str = autofile.file.read_file(
+    vibro_rot_mat_str = autofile.io_.read_file(
         vibro_rot_mat_file_path)
-    vibro_rot_mat = autofile.file.read.vibro_rot_alpha_matrix(
+    vibro_rot_mat = autofile.file.sread.vibro_rot_alpha_matrix(
         vibro_rot_mat_str)
     assert numpy.allclose(ref_vibro_rot_mat, vibro_rot_mat)
 
@@ -329,14 +329,14 @@ def test__quartic_centrifugal_distortion_constants():
 
     qcds_file_name = autofile.file.name.quartic_centrifugal_dist_consts('test')
     qcds_file_path = os.path.join(TMP_DIR, qcds_file_name)
-    qcds_str = autofile.file.write.quartic_centrifugal_dist_consts(ref_qcds)
+    qcds_str = autofile.file.swrite.quartic_centrifugal_dist_consts(ref_qcds)
 
     assert not os.path.isfile(qcds_file_path)
-    autofile.file.write_file(qcds_file_path, qcds_str)
+    autofile.io_.write_file(qcds_file_path, qcds_str)
     assert os.path.isfile(qcds_file_path)
 
-    qcds_str = autofile.file.read_file(qcds_file_path)
-    qcds = autofile.file.read.quartic_centrifugal_dist_consts(qcds_str)
+    qcds_str = autofile.io_.read_file(qcds_file_path)
+    qcds = autofile.file.sread.quartic_centrifugal_dist_consts(qcds_str)
     assert ref_qcds[0][0] == qcds[0][0]
     assert ref_qcds[1][0] == qcds[1][0]
     assert ref_qcds[2][0] == qcds[2][0]
@@ -352,14 +352,14 @@ def test__lennard_jones_epsilon():
 
     eps_file_name = autofile.file.name.lennard_jones_epsilon('test')
     eps_file_path = os.path.join(TMP_DIR, eps_file_name)
-    eps_str = autofile.file.write.lennard_jones_epsilon(ref_eps)
+    eps_str = autofile.file.swrite.lennard_jones_epsilon(ref_eps)
 
     assert not os.path.isfile(eps_file_path)
-    autofile.file.write_file(eps_file_path, eps_str)
+    autofile.io_.write_file(eps_file_path, eps_str)
     assert os.path.isfile(eps_file_path)
 
-    eps_str = autofile.file.read_file(eps_file_path)
-    eps = autofile.file.read.lennard_jones_epsilon(eps_str)
+    eps_str = autofile.io_.read_file(eps_file_path)
+    eps = autofile.file.sread.lennard_jones_epsilon(eps_str)
     assert numpy.isclose(ref_eps, eps)
 
 
@@ -370,14 +370,14 @@ def test__lennard_jones_sigma():
 
     sig_file_name = autofile.file.name.lennard_jones_sigma('test')
     sig_file_path = os.path.join(TMP_DIR, sig_file_name)
-    sig_str = autofile.file.write.lennard_jones_sigma(ref_sig)
+    sig_str = autofile.file.swrite.lennard_jones_sigma(ref_sig)
 
     assert not os.path.isfile(sig_file_path)
-    autofile.file.write_file(sig_file_path, sig_str)
+    autofile.io_.write_file(sig_file_path, sig_str)
     assert os.path.isfile(sig_file_path)
 
-    sig_str = autofile.file.read_file(sig_file_path)
-    sig = autofile.file.read.lennard_jones_sigma(sig_str)
+    sig_str = autofile.io_.read_file(sig_file_path)
+    sig = autofile.file.sread.lennard_jones_sigma(sig_str)
     assert numpy.isclose(ref_sig, sig)
 
 
