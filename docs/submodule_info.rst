@@ -1,5 +1,11 @@
-autofile.system
+autofile.io\_
 =============
 
-.. automodule:: autofile.system
+.. automodule:: autofile.io_
+    :members:
+
+autofile.info
+=============
+
+.. automodule:: autofile.info
     :members:

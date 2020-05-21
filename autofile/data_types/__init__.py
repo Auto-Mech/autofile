@@ -1,8 +1,8 @@
 """ read/write quantum chemistry data in standard formats
 """
-from autofile.file import name
-from autofile.file import swrite
-from autofile.file import sread
+from autofile.data_types import name
+from autofile.data_types import swrite
+from autofile.data_types import sread
 
 __all__ = [
     'name',

@@ -5,9 +5,9 @@ autofile.fs
 Each function in this module returns a tuple of autofile.model.DataSeries
 objects for interacting with successive layers in a file system.
 """
-from autofile.system import file_
-from autofile.system import info
-from autofile.system import dir_
+from autofile.schema import data_files
+from autofile.schema import data_series
+from autofile.schema import info_objects
 
 
 class _FilePrefix():
@@ -72,8 +72,8 @@ def species(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.species_trunk(prefix)
-    leaf_ds = dir_.species_leaf(prefix, root_ds=trunk_ds)
+    trunk_ds = data_series.species_trunk(prefix)
+    leaf_ds = data_series.species_leaf(prefix, root_ds=trunk_ds)
     return (trunk_ds, leaf_ds)
 
 
@@ -91,12 +91,12 @@ def theory(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    leaf_ds = dir_.theory_leaf(prefix)
+    leaf_ds = data_series.theory_leaf(prefix)
 
-    geom_dfile = file_.geometry(_FilePrefix.GEOM)
-    ene_dfile = file_.energy(_FilePrefix.GEOM)
-    zmat_dfile = file_.zmatrix(_FilePrefix.GEOM)
-    hess_dfile = file_.hessian(_FilePrefix.HESS)
+    geom_dfile = data_files.geometry(_FilePrefix.GEOM)
+    ene_dfile = data_files.energy(_FilePrefix.GEOM)
+    zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
+    hess_dfile = data_files.hessian(_FilePrefix.HESS)
     leaf_ds.add_data_files({
         _FileAttributeName.ENERGY: ene_dfile,
         _FileAttributeName.GEOM: geom_dfile,
@@ -141,40 +141,44 @@ def conformer(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.conformer_trunk(prefix)
-    leaf_ds = dir_.conformer_leaf(prefix, root_ds=trunk_ds)
+    trunk_ds = data_series.conformer_trunk(prefix)
+    leaf_ds = data_series.conformer_leaf(prefix, root_ds=trunk_ds)
 
-    min_ene_dfile = file_.energy(_FilePrefix.MIN)
-    vma_dfile = file_.vmatrix(_FilePrefix.CONF)
-    inf_dfile = file_.information(_FilePrefix.CONF,
-                                  function=info.conformer_trunk)
-    traj_dfile = file_.trajectory(_FilePrefix.CONF)
+    min_ene_dfile = data_files.energy(_FilePrefix.MIN)
+    vma_dfile = data_files.vmatrix(_FilePrefix.CONF)
+    inf_dfile = data_files.information(_FilePrefix.CONF,
+                                       function=info_objects.conformer_trunk)
+    traj_dfile = data_files.trajectory(_FilePrefix.CONF)
     trunk_ds.add_data_files({
         _FileAttributeName.VMATRIX: vma_dfile,
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.ENERGY: min_ene_dfile,
         _FileAttributeName.TRAJ: traj_dfile})
 
-    geom_inf_dfile = file_.information(_FilePrefix.GEOM, function=info.run)
-    grad_inf_dfile = file_.information(_FilePrefix.GRAD, function=info.run)
-    hess_inf_dfile = file_.information(_FilePrefix.HESS, function=info.run)
+    geom_inf_dfile = data_files.information(_FilePrefix.GEOM,
+                                            function=info_objects.run)
+    grad_inf_dfile = data_files.information(_FilePrefix.GRAD,
+                                            function=info_objects.run)
+    hess_inf_dfile = data_files.information(_FilePrefix.HESS,
+                                            function=info_objects.run)
     # need addl vpt2 info file, one for job status and other for fermi
-    vpt2_inf_dfile = file_.information(_FilePrefix.VPT2, function=info.vpt2)
-    geom_inp_dfile = file_.input_file(_FilePrefix.GEOM)
-    grad_inp_dfile = file_.input_file(_FilePrefix.GRAD)
-    hess_inp_dfile = file_.input_file(_FilePrefix.HESS)
-    vpt2_inp_dfile = file_.input_file(_FilePrefix.VPT2)
-    ene_dfile = file_.energy(_FilePrefix.GEOM)
-    geom_dfile = file_.geometry(_FilePrefix.GEOM)
-    zmat_dfile = file_.zmatrix(_FilePrefix.GEOM)
-    grad_dfile = file_.gradient(_FilePrefix.GRAD)
-    hess_dfile = file_.hessian(_FilePrefix.HESS)
-    hfreq_dfile = file_.harmonic_frequencies(_FilePrefix.HESS)
-    anhfreq_dfile = file_.anharmonic_frequencies(_FilePrefix.VPT2)
-    anhzpve_dfile = file_.anharmonic_zpve(_FilePrefix.VPT2)
-    xmat_dfile = file_.anharmonicity_matrix(_FilePrefix.VPT2)
-    vibrot_mat_dfile = file_.vibro_rot_alpha_matrix(_FilePrefix.VPT2)
-    centrif_dist_dfile = file_.quartic_centrifugal_dist_consts(
+    vpt2_inf_dfile = data_files.information(_FilePrefix.VPT2,
+                                            function=info_objects.vpt2)
+    geom_inp_dfile = data_files.input_file(_FilePrefix.GEOM)
+    grad_inp_dfile = data_files.input_file(_FilePrefix.GRAD)
+    hess_inp_dfile = data_files.input_file(_FilePrefix.HESS)
+    vpt2_inp_dfile = data_files.input_file(_FilePrefix.VPT2)
+    ene_dfile = data_files.energy(_FilePrefix.GEOM)
+    geom_dfile = data_files.geometry(_FilePrefix.GEOM)
+    zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
+    grad_dfile = data_files.gradient(_FilePrefix.GRAD)
+    hess_dfile = data_files.hessian(_FilePrefix.HESS)
+    hfreq_dfile = data_files.harmonic_frequencies(_FilePrefix.HESS)
+    anhfreq_dfile = data_files.anharmonic_frequencies(_FilePrefix.VPT2)
+    anhzpve_dfile = data_files.anharmonic_zpve(_FilePrefix.VPT2)
+    xmat_dfile = data_files.anharmonicity_matrix(_FilePrefix.VPT2)
+    vibrot_mat_dfile = data_files.vibro_rot_alpha_matrix(_FilePrefix.VPT2)
+    centrif_dist_dfile = data_files.quartic_centrifugal_dist_consts(
         _FilePrefix.VPT2)
 
     leaf_ds.add_data_files({
@@ -216,12 +220,13 @@ def single_point(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.single_point_trunk(prefix)
-    leaf_ds = dir_.single_point_leaf(prefix, root_ds=trunk_ds)
+    trunk_ds = data_series.single_point_trunk(prefix)
+    leaf_ds = data_series.single_point_leaf(prefix, root_ds=trunk_ds)
 
-    inp_dfile = file_.input_file(_FilePrefix.SP)
-    inf_dfile = file_.information(_FilePrefix.SP, function=info.run)
-    ene_dfile = file_.energy(_FilePrefix.SP)
+    inp_dfile = data_files.input_file(_FilePrefix.SP)
+    inf_dfile = data_files.information(_FilePrefix.SP,
+                                       function=info_objects.run)
+    ene_dfile = data_files.energy(_FilePrefix.SP)
     leaf_ds.add_data_files({
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.INPUT: inp_dfile,
@@ -245,12 +250,13 @@ def high_spin(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.high_spin_trunk(prefix)
-    leaf_ds = dir_.high_spin_leaf(prefix, root_ds=trunk_ds)
+    trunk_ds = data_series.high_spin_trunk(prefix)
+    leaf_ds = data_series.high_spin_leaf(prefix, root_ds=trunk_ds)
 
-    inp_dfile = file_.input_file(_FilePrefix.HS)
-    inf_dfile = file_.information(_FilePrefix.HS, function=info.run)
-    ene_dfile = file_.energy(_FilePrefix.HS)
+    inp_dfile = data_files.input_file(_FilePrefix.HS)
+    inf_dfile = data_files.information(_FilePrefix.HS,
+                                       function=info_objects.run)
+    ene_dfile = data_files.energy(_FilePrefix.HS)
     leaf_ds.add_data_files({
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.INPUT: inp_dfile,
@@ -290,16 +296,17 @@ def scan(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.scan_trunk(prefix)
-    branch_ds = dir_.scan_branch(prefix, root_ds=trunk_ds)
-    leaf_ds = dir_.scan_leaf(prefix, root_ds=branch_ds)
+    trunk_ds = data_series.scan_trunk(prefix)
+    branch_ds = data_series.scan_branch(prefix, root_ds=trunk_ds)
+    leaf_ds = data_series.scan_leaf(prefix, root_ds=branch_ds)
 
-    vma_dfile = file_.vmatrix(_FilePrefix.SCAN)
+    vma_dfile = data_files.vmatrix(_FilePrefix.SCAN)
     trunk_ds.add_data_files({
         _FileAttributeName.VMATRIX: vma_dfile})
 
-    inf_dfile = file_.information(_FilePrefix.SCAN, function=info.scan_branch)
-    traj_dfile = file_.trajectory(_FilePrefix.SCAN)
+    inf_dfile = data_files.information(_FilePrefix.SCAN,
+                                       function=info_objects.scan_branch)
+    traj_dfile = data_files.trajectory(_FilePrefix.SCAN)
     branch_ds.add_data_files({
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.TRAJ: traj_dfile})
@@ -307,20 +314,24 @@ def scan(prefix):
     # Need an irc file in the branch!
     # Need an run irc file in the forward and backward direction
 
-    geom_inf_dfile = file_.information(_FilePrefix.GEOM, function=info.run)
-    grad_inf_dfile = file_.information(_FilePrefix.GRAD, function=info.run)
-    hess_inf_dfile = file_.information(_FilePrefix.HESS, function=info.run)
-    irc_inf_dfile = file_.information(_FilePrefix.IRC, function=info.run)
-    geom_inp_dfile = file_.input_file(_FilePrefix.GEOM)
-    grad_inp_dfile = file_.input_file(_FilePrefix.GRAD)
-    hess_inp_dfile = file_.input_file(_FilePrefix.HESS)
-    irc_inp_dfile = file_.input_file(_FilePrefix.IRC)
-    ene_dfile = file_.energy(_FilePrefix.GEOM)
-    geom_dfile = file_.geometry(_FilePrefix.GEOM)
-    zmat_dfile = file_.zmatrix(_FilePrefix.GEOM)
-    grad_dfile = file_.gradient(_FilePrefix.GRAD)
-    hess_dfile = file_.hessian(_FilePrefix.HESS)
-    hfreq_dfile = file_.harmonic_frequencies(_FilePrefix.HESS)
+    geom_inf_dfile = data_files.information(_FilePrefix.GEOM,
+                                            function=info_objects.run)
+    grad_inf_dfile = data_files.information(_FilePrefix.GRAD,
+                                            function=info_objects.run)
+    hess_inf_dfile = data_files.information(_FilePrefix.HESS,
+                                            function=info_objects.run)
+    irc_inf_dfile = data_files.information(_FilePrefix.IRC,
+                                           function=info_objects.run)
+    geom_inp_dfile = data_files.input_file(_FilePrefix.GEOM)
+    grad_inp_dfile = data_files.input_file(_FilePrefix.GRAD)
+    hess_inp_dfile = data_files.input_file(_FilePrefix.HESS)
+    irc_inp_dfile = data_files.input_file(_FilePrefix.IRC)
+    ene_dfile = data_files.energy(_FilePrefix.GEOM)
+    geom_dfile = data_files.geometry(_FilePrefix.GEOM)
+    zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
+    grad_dfile = data_files.gradient(_FilePrefix.GRAD)
+    hess_dfile = data_files.hessian(_FilePrefix.HESS)
+    hfreq_dfile = data_files.harmonic_frequencies(_FilePrefix.HESS)
     leaf_ds.add_data_files({
         _FileAttributeName.GEOM_INFO: geom_inf_dfile,
         _FileAttributeName.GRAD_INFO: grad_inf_dfile,
@@ -370,33 +381,37 @@ def cscan(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.cscan_trunk(prefix)
-    branch1_ds = dir_.cscan_branch1(prefix, root_ds=trunk_ds)
-    branch2_ds = dir_.cscan_branch2(prefix, root_ds=branch1_ds)
-    leaf_ds = dir_.cscan_leaf(prefix, root_ds=branch2_ds)
+    trunk_ds = data_series.cscan_trunk(prefix)
+    branch1_ds = data_series.cscan_branch1(prefix, root_ds=trunk_ds)
+    branch2_ds = data_series.cscan_branch2(prefix, root_ds=branch1_ds)
+    leaf_ds = data_series.cscan_leaf(prefix, root_ds=branch2_ds)
 
-    vma_dfile = file_.vmatrix(_FilePrefix.SCAN)
+    vma_dfile = data_files.vmatrix(_FilePrefix.SCAN)
     trunk_ds.add_data_files({
         _FileAttributeName.VMATRIX: vma_dfile})
 
-    inf_dfile = file_.information(_FilePrefix.SCAN, function=info.scan_branch)
-    traj_dfile = file_.trajectory(_FilePrefix.SCAN)
+    inf_dfile = data_files.information(_FilePrefix.SCAN,
+                                       function=info_objects.scan_branch)
+    traj_dfile = data_files.trajectory(_FilePrefix.SCAN)
     branch1_ds.add_data_files({
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.TRAJ: traj_dfile})
 
-    geom_inf_dfile = file_.information(_FilePrefix.GEOM, function=info.run)
-    grad_inf_dfile = file_.information(_FilePrefix.GRAD, function=info.run)
-    hess_inf_dfile = file_.information(_FilePrefix.HESS, function=info.run)
-    geom_inp_dfile = file_.input_file(_FilePrefix.GEOM)
-    grad_inp_dfile = file_.input_file(_FilePrefix.GRAD)
-    hess_inp_dfile = file_.input_file(_FilePrefix.HESS)
-    ene_dfile = file_.energy(_FilePrefix.GEOM)
-    geom_dfile = file_.geometry(_FilePrefix.GEOM)
-    zmat_dfile = file_.zmatrix(_FilePrefix.GEOM)
-    grad_dfile = file_.gradient(_FilePrefix.GRAD)
-    hess_dfile = file_.hessian(_FilePrefix.HESS)
-    hfreq_dfile = file_.harmonic_frequencies(_FilePrefix.HESS)
+    geom_inf_dfile = data_files.information(_FilePrefix.GEOM,
+                                            function=info_objects.run)
+    grad_inf_dfile = data_files.information(_FilePrefix.GRAD,
+                                            function=info_objects.run)
+    hess_inf_dfile = data_files.information(_FilePrefix.HESS,
+                                            function=info_objects.run)
+    geom_inp_dfile = data_files.input_file(_FilePrefix.GEOM)
+    grad_inp_dfile = data_files.input_file(_FilePrefix.GRAD)
+    hess_inp_dfile = data_files.input_file(_FilePrefix.HESS)
+    ene_dfile = data_files.energy(_FilePrefix.GEOM)
+    geom_dfile = data_files.geometry(_FilePrefix.GEOM)
+    zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
+    grad_dfile = data_files.gradient(_FilePrefix.GRAD)
+    hess_dfile = data_files.hessian(_FilePrefix.HESS)
+    hfreq_dfile = data_files.harmonic_frequencies(_FilePrefix.HESS)
     leaf_ds.add_data_files({
         _FileAttributeName.GEOM_INFO: geom_inf_dfile,
         _FileAttributeName.GRAD_INFO: grad_inf_dfile,
@@ -441,30 +456,33 @@ def tau(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.tau_trunk(prefix)
-    leaf_ds = dir_.tau_leaf(prefix, root_ds=trunk_ds)
+    trunk_ds = data_series.tau_trunk(prefix)
+    leaf_ds = data_series.tau_leaf(prefix, root_ds=trunk_ds)
 
-    vma_dfile = file_.vmatrix(_FilePrefix.TAU)
-    inf_dfile = file_.information(_FilePrefix.TAU,
-                                  function=info.tau_trunk)
-    traj_dfile = file_.trajectory(_FilePrefix.TAU)
+    vma_dfile = data_files.vmatrix(_FilePrefix.TAU)
+    inf_dfile = data_files.information(_FilePrefix.TAU,
+                                       function=info_objects.tau_trunk)
+    traj_dfile = data_files.trajectory(_FilePrefix.TAU)
     trunk_ds.add_data_files({
         _FileAttributeName.VMATRIX: vma_dfile,
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.TRAJ: traj_dfile})
 
-    geom_inf_dfile = file_.information(_FilePrefix.GEOM, function=info.run)
-    grad_inf_dfile = file_.information(_FilePrefix.GRAD, function=info.run)
-    hess_inf_dfile = file_.information(_FilePrefix.HESS, function=info.run)
-    geom_inp_dfile = file_.input_file(_FilePrefix.GEOM)
-    grad_inp_dfile = file_.input_file(_FilePrefix.GRAD)
-    hess_inp_dfile = file_.input_file(_FilePrefix.HESS)
-    ene_dfile = file_.energy(_FilePrefix.GEOM)
-    geom_dfile = file_.geometry(_FilePrefix.GEOM)
-    zmat_dfile = file_.zmatrix(_FilePrefix.GEOM)
-    grad_dfile = file_.gradient(_FilePrefix.GRAD)
-    hess_dfile = file_.hessian(_FilePrefix.HESS)
-    hfreq_dfile = file_.harmonic_frequencies(_FilePrefix.HESS)
+    geom_inf_dfile = data_files.information(_FilePrefix.GEOM,
+                                            function=info_objects.run)
+    grad_inf_dfile = data_files.information(_FilePrefix.GRAD,
+                                            function=info_objects.run)
+    hess_inf_dfile = data_files.information(_FilePrefix.HESS,
+                                            function=info_objects.run)
+    geom_inp_dfile = data_files.input_file(_FilePrefix.GEOM)
+    grad_inp_dfile = data_files.input_file(_FilePrefix.GRAD)
+    hess_inp_dfile = data_files.input_file(_FilePrefix.HESS)
+    ene_dfile = data_files.energy(_FilePrefix.GEOM)
+    geom_dfile = data_files.geometry(_FilePrefix.GEOM)
+    zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
+    grad_dfile = data_files.gradient(_FilePrefix.GRAD)
+    hess_dfile = data_files.hessian(_FilePrefix.HESS)
+    hfreq_dfile = data_files.harmonic_frequencies(_FilePrefix.HESS)
     leaf_ds.add_data_files({
         _FileAttributeName.GEOM_INFO: geom_inf_dfile,
         _FileAttributeName.GRAD_INFO: grad_inf_dfile,
@@ -501,17 +519,17 @@ def energy_transfer(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.energy_transfer_trunk(prefix)
-    branch_ds = dir_.energy_transfer_branch(prefix, root_ds=trunk_ds)
-    leaf_ds = dir_.energy_transfer_leaf(prefix, root_ds=branch_ds)
+    trunk_ds = data_series.energy_transfer_trunk(prefix)
+    branch_ds = data_series.energy_transfer_branch(prefix, root_ds=trunk_ds)
+    leaf_ds = data_series.energy_transfer_leaf(prefix, root_ds=branch_ds)
 
-    # inp_dfile = file_.input_file(_FilePrefix.LJ)
-    inf_dfile = file_.information(
-        _FilePrefix.LJ, function=info.lennard_jones)
-    ene_dfile = file_.energy(_FilePrefix.LJ)
-    eps_dfile = file_.lennard_jones_epsilon(_FilePrefix.LJ)
-    sig_dfile = file_.lennard_jones_sigma(_FilePrefix.LJ)
-    traj_dfile = file_.trajectory(_FilePrefix.LJ)
+    # inp_dfile = data_files.input_file(_FilePrefix.LJ)
+    inf_dfile = data_files.information(
+        _FilePrefix.LJ, function=info_objects.lennard_jones)
+    ene_dfile = data_files.energy(_FilePrefix.LJ)
+    eps_dfile = data_files.lennard_jones_epsilon(_FilePrefix.LJ)
+    sig_dfile = data_files.lennard_jones_sigma(_FilePrefix.LJ)
+    traj_dfile = data_files.trajectory(_FilePrefix.LJ)
 
     trunk_ds.add_data_files({
         _FileAttributeName.INFO: inf_dfile})
@@ -537,8 +555,8 @@ def reaction(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.reaction_trunk(prefix)
-    leaf_ds = dir_.reaction_leaf(prefix, root_ds=trunk_ds)
+    trunk_ds = data_series.reaction_trunk(prefix)
+    leaf_ds = data_series.reaction_leaf(prefix, root_ds=trunk_ds)
 
     return (trunk_ds, leaf_ds)
 
@@ -556,11 +574,11 @@ def transition_state(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.transition_state_trunk(prefix)
+    trunk_ds = data_series.transition_state_trunk(prefix)
 
-    geom_dfile = file_.geometry(_FilePrefix.GEOM)
-    ene_dfile = file_.energy(_FilePrefix.GEOM)
-    zmat_dfile = file_.zmatrix(_FilePrefix.GEOM)
+    geom_dfile = data_files.geometry(_FilePrefix.GEOM)
+    ene_dfile = data_files.energy(_FilePrefix.GEOM)
+    zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
     trunk_ds.add_data_files({
         _FileAttributeName.ENERGY: ene_dfile,
         _FileAttributeName.GEOM: geom_dfile,
@@ -584,13 +602,14 @@ def direction(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    leaf_ds = dir_.direction_leaf(prefix)
+    leaf_ds = data_series.direction_leaf(prefix)
 
-    inf_dfile = file_.information(_FilePrefix.GEOM, function=info.run)
-    inp_dfile = file_.input_file(_FilePrefix.GEOM)
-    ene_dfile = file_.energy(_FilePrefix.GEOM)
-    geom_dfile = file_.geometry(_FilePrefix.GEOM)
-    zmat_dfile = file_.zmatrix(_FilePrefix.GEOM)
+    inf_dfile = data_files.information(_FilePrefix.GEOM,
+                                       function=info_objects.run)
+    inp_dfile = data_files.input_file(_FilePrefix.GEOM)
+    ene_dfile = data_files.energy(_FilePrefix.GEOM)
+    geom_dfile = data_files.geometry(_FilePrefix.GEOM)
+    zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
 
     leaf_ds.add_data_files({
         _FileAttributeName.GEOM_INFO: inf_dfile,
@@ -618,12 +637,13 @@ def run(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.run_trunk(prefix)
-    leaf_ds = dir_.run_leaf(prefix, root_ds=trunk_ds)
+    trunk_ds = data_series.run_trunk(prefix)
+    leaf_ds = data_series.run_leaf(prefix, root_ds=trunk_ds)
 
-    inf_dfile = file_.information(_FilePrefix.RUN, function=info.run)
-    inp_dfile = file_.input_file(_FilePrefix.RUN)
-    out_dfile = file_.output_file(_FilePrefix.RUN)
+    inf_dfile = data_files.information(_FilePrefix.RUN,
+                                       function=info_objects.run)
+    inp_dfile = data_files.input_file(_FilePrefix.RUN)
+    out_dfile = data_files.output_file(_FilePrefix.RUN)
     trunk_ds.add_data_files({
         _FileAttributeName.INFO: inf_dfile})
     leaf_ds.add_data_files({
@@ -647,11 +667,12 @@ def subrun(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    leaf_ds = dir_.subrun_leaf(prefix)
+    leaf_ds = data_series.subrun_leaf(prefix)
 
-    inf_dfile = file_.information(_FilePrefix.RUN, function=info.run)
-    inp_dfile = file_.input_file(_FilePrefix.RUN)
-    out_dfile = file_.output_file(_FilePrefix.RUN)
+    inf_dfile = data_files.information(_FilePrefix.RUN,
+                                       function=info_objects.run)
+    inp_dfile = data_files.input_file(_FilePrefix.RUN)
+    out_dfile = data_files.output_file(_FilePrefix.RUN)
     leaf_ds.add_data_files({
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.INPUT: inp_dfile,
@@ -674,11 +695,11 @@ def build(prefix):
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
-    trunk_ds = dir_.build_trunk(prefix)
-    leaf_ds = dir_.build_leaf(prefix, root_ds=trunk_ds)
+    trunk_ds = data_series.build_trunk(prefix)
+    leaf_ds = data_series.build_leaf(prefix, root_ds=trunk_ds)
 
-    inp_dfile = file_.input_file(_FilePrefix.BUILD)
-    out_dfile = file_.output_file(_FilePrefix.BUILD)
+    inp_dfile = data_files.input_file(_FilePrefix.BUILD)
+    out_dfile = data_files.output_file(_FilePrefix.BUILD)
     leaf_ds.add_data_files({
         _FileAttributeName.INPUT: inp_dfile,
         _FileAttributeName.OUTPUT: out_dfile})
