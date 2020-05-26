@@ -9,14 +9,14 @@ autofile.schema.data_series
 
 
 autofile.schema.data_files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: autofile.schema.data_files
     :members:
 
 
 autofile.schema.info_objects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: autofile.schema.info_objects
     :members:
