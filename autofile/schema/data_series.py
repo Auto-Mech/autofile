@@ -375,6 +375,8 @@ def _pack_arguments(function):
     """
     def _function(args=()):
         return function(*args)
+
+    _function.__name__ = function.__name__
     return _function
 
 

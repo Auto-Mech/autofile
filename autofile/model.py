@@ -51,6 +51,11 @@ class DataFile():
         val = self.reader_(val_str)
         return val
 
+    def __repr__(self):
+        """ represent this object as a string
+        """
+        return "DataFile('{}')".format(self.name)
+
 
 class DataSeries():
     """ directory manager mapping locator values to a directory series
@@ -82,7 +87,7 @@ class DataSeries():
         for name, dfile in dfile_dct.items():
             assert isinstance(name, str)
             assert isinstance(dfile, DataFile)
-            dsfile = _DataSeriesFile(ds=self, dfile=dfile)
+            dsfile = DataSeriesFile(ds=self, dfile=dfile)
             setattr(self.file, name, dsfile)
 
     def path(self, locs=()):
@@ -178,9 +183,13 @@ class DataSeries():
         root_nlocs = nlocs - self.nlocs
         return locs[:root_nlocs]
 
+    def __repr__(self):
+        """ represent this object as a string
+        """
+        return "DataSeries('{}', {})".format(self.prefix, self.map_.__name__)
 
-# helpers:
-class _DataSeriesFile():
+
+class DataSeriesFile():
     """ file manager mapping locator values to files in a directory series
     """
 
@@ -207,6 +216,13 @@ class _DataSeriesFile():
         """ read data from this file
         """
         return self.file.read(self.dir.path(locs))
+
+    def __repr__(self):
+        """ represent this object as a string
+        """
+        return ("DataSeriesFile('{}', {}, '{}')"
+                .format(self.dir.prefix, self.dir.map_.__name__,
+                        self.file.name))
 
 
 def _path_is_relative(pth):
