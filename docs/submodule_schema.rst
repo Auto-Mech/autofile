@@ -1,6 +1,12 @@
 autofile.schema
 ===============
 
+autofile.schema.spec_maps
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: autofile.schema.spec_maps
+    :members:
+
 autofile.schema.data_series
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
