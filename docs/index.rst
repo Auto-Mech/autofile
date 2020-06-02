@@ -40,6 +40,7 @@ accessed as either ``fs[1]`` or ``fs[-1]``.
 These ``DataSeries`` objects has several methods, which we will explore in
 turn: ``exists()``, ``create()``, ``path()``, and ``existing()``.
 Let us first check whether the trunk directory exists.
+
 .. code-block:: python
 
     >>> fs[0].exists([])
