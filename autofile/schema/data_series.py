@@ -13,6 +13,7 @@ from autofile.schema import data_files
 SPEC_FILE_PREFIX = 'dir'
 
 
+# DataSeries for species-specific layers
 def species_trunk(prefix, root_ds=None):
     """ species trunk DataSeries
     """
@@ -40,6 +41,62 @@ def species_leaf(prefix, root_ds=None):
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
 
+# DataSeries for reaction-specific layers
+def reaction_trunk(prefix, root_ds=None):
+    """ reaction trunk DataSeries
+    """
+    _map = _pack_arguments(spec_maps.reaction_trunk)
+    nlocs = _count_arguments(spec_maps.reaction_trunk)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            root_ds=root_ds)
+
+
+def reaction_leaf(prefix, root_ds=None):
+    """ reaction leaf DataSeries
+    """
+    loc_dfile = data_files.locator(
+        file_prefix=SPEC_FILE_PREFIX,
+        map_dct_={
+            'inchis': lambda locs: locs[0],
+            'charges': lambda locs: locs[1],
+            'multiplicities': lambda locs: locs[2],
+            'ts_multiplicity': lambda locs: locs[3],
+            'smiles': lambda locs: [
+                list(map(automol.inchi.smiles, locs[0][0])),
+                list(map(automol.inchi.smiles, locs[0][1]))],
+        },
+        loc_keys=['inchis', 'charges', 'multiplicities', 'ts_multiplicity'])
+
+    _map = _pack_arguments(spec_maps.reaction_leaf)
+    nlocs = _count_arguments(spec_maps.reaction_leaf)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=11,
+                            loc_dfile=loc_dfile, root_ds=root_ds)
+
+
+def direction_leaf(prefix, root_ds=None):
+    """ direction leaf  DataSeries
+    """
+    loc_dfile = data_files.locator(
+        file_prefix=SPEC_FILE_PREFIX,
+        map_dct_={'drct': lambda locs: locs[0]},
+        loc_keys=['drct'])
+
+    _map = _pack_arguments(spec_maps.direction_leaf)
+    nlocs = _count_arguments(spec_maps.direction_leaf)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            loc_dfile=loc_dfile, root_ds=root_ds)
+
+
+def transition_state_trunk(prefix, root_ds=None):
+    """ transition state trunk DataSeries
+    """
+    _map = _pack_arguments(spec_maps.transition_state_trunk)
+    nlocs = _count_arguments(spec_maps.transition_state_trunk)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            root_ds=root_ds)
+
+
+# DataSeries for layers used by both species and reaction file systems
 def theory_leaf(prefix, root_ds=None):
     """ theory leaf DataSeries
     """
@@ -109,6 +166,29 @@ def high_spin_leaf(prefix, root_ds=None):
     """ high-spin, single-point leaf DataSeries
     """
     return theory_leaf(prefix, root_ds=root_ds)
+
+
+def zmatrix_trunk(prefix, root_ds=None):
+    """ zmatrix trunk DataSeries
+    """
+    _map = _pack_arguments(spec_maps.zmatrix_trunk)
+    nlocs = _count_arguments(spec_maps.zmatrix_trunk)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            root_ds=root_ds)
+
+
+def zmatrix_leaf(prefix, root_ds=None):
+    """ zmatrix leaf DataSeries
+    """
+    loc_dfile = data_files.locator(
+        file_prefix=SPEC_FILE_PREFIX,
+        map_dct_={'num': lambda locs: locs[0]},
+        loc_keys=['num'])
+
+    _map = _pack_arguments(spec_maps.zmatrix_leaf)
+    nlocs = _count_arguments(spec_maps.zmatrix_leaf)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            loc_dfile=loc_dfile, root_ds=root_ds)
 
 
 def scan_trunk(prefix, root_ds=None):
@@ -216,6 +296,20 @@ def tau_trunk(prefix, root_ds=None):
                             root_ds=root_ds)
 
 
+def tau_leaf(prefix, root_ds=None):
+    """ tau leaf DataSeries
+    """
+    loc_dfile = data_files.locator(
+        file_prefix=SPEC_FILE_PREFIX,
+        map_dct_={'conformer_id': lambda locs: locs[0]},
+        loc_keys=['conformer_id'])
+
+    _map = _pack_arguments(spec_maps.tau_leaf)
+    nlocs = _count_arguments(spec_maps.tau_leaf)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            loc_dfile=loc_dfile, root_ds=root_ds)
+
+
 def energy_transfer_trunk(prefix, root_ds=None):
     """ energy transfer trunk DataSeries
     """
@@ -237,69 +331,7 @@ def energy_transfer_leaf(prefix, root_ds=None):
     return theory_leaf(prefix, root_ds=root_ds)
 
 
-def tau_leaf(prefix, root_ds=None):
-    """ tau leaf DataSeries
-    """
-    loc_dfile = data_files.locator(
-        file_prefix=SPEC_FILE_PREFIX,
-        map_dct_={'conformer_id': lambda locs: locs[0]},
-        loc_keys=['conformer_id'])
-
-    _map = _pack_arguments(spec_maps.tau_leaf)
-    nlocs = _count_arguments(spec_maps.tau_leaf)
-    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
-                            loc_dfile=loc_dfile, root_ds=root_ds)
-
-
-def reaction_trunk(prefix, root_ds=None):
-    """ reaction trunk DataSeries
-    """
-    _map = _pack_arguments(spec_maps.reaction_trunk)
-    nlocs = _count_arguments(spec_maps.reaction_trunk)
-    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
-                            root_ds=root_ds)
-
-
-def reaction_leaf(prefix, root_ds=None):
-    """ reaction leaf DataSeries
-    """
-    loc_dfile = data_files.locator(
-        file_prefix=SPEC_FILE_PREFIX,
-        map_dct_={
-            'inchis': lambda locs: locs[0],
-            'charges': lambda locs: locs[1],
-            'multiplicities': lambda locs: locs[2],
-            'ts_multiplicity': lambda locs: locs[3],
-            'smiles': lambda locs: [
-                list(map(automol.inchi.smiles, locs[0][0])),
-                list(map(automol.inchi.smiles, locs[0][1]))],
-        },
-        loc_keys=['inchis', 'charges', 'multiplicities', 'ts_multiplicity'])
-
-    _map = _pack_arguments(spec_maps.reaction_leaf)
-    nlocs = _count_arguments(spec_maps.reaction_leaf)
-    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=11,
-                            loc_dfile=loc_dfile, root_ds=root_ds)
-
-
-def transition_state_trunk(prefix, root_ds=None):
-    """ transition state trunk DataSeries
-    """
-    _map = _pack_arguments(spec_maps.transition_state_trunk)
-    nlocs = _count_arguments(spec_maps.transition_state_trunk)
-    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
-                            root_ds=root_ds)
-
-
-def direction_leaf(prefix, root_ds=None):
-    """ direction leaf  DataSeries
-    """
-    _map = _pack_arguments(spec_maps.direction_leaf)
-    nlocs = _count_arguments(spec_maps.direction_leaf)
-    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
-                            root_ds=root_ds)
-
-
+# DataSeries specific to the run file system
 def run_trunk(prefix, root_ds=None):
     """ run trunk DataSeries
     """

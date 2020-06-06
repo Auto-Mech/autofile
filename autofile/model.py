@@ -18,10 +18,13 @@ class DataFile():
         :type writer_: callable[object->str]
         :param reader_: reads data from a string
         :type reader_: callable[str->object]
+        :param removable: Is this file removable?
+        :type removable: bool
         """
         self.name = name
         self.writer_ = writer_
         self.reader_ = reader_
+        self.removable = False
 
     def path(self, dir_pth):
         """ file path
@@ -50,6 +53,15 @@ class DataFile():
         val_str = autofile.io_.read_file(pth)
         val = self.reader_(val_str)
         return val
+
+    def remove(self, dir_pth):
+        """ remove this file
+        """
+        if self.removable:
+            pth = self.path(dir_pth)
+            os.remove(pth)
+        else:
+            raise ValueError("This data series is not removable")
 
     def __repr__(self):
         """ represent this object as a string
@@ -196,6 +208,7 @@ class DataSeriesFile():
     def __init__(self, ds, dfile):
         self.dir = ds
         self.file = dfile
+        self.removable = False
 
     def path(self, locs=()):
         """ absolute file path
@@ -216,6 +229,15 @@ class DataSeriesFile():
         """ read data from this file
         """
         return self.file.read(self.dir.path(locs))
+
+    def remove(self, locs=()):
+        """ remove this file
+        """
+        if self.removable:
+            pth = self.path(locs)
+            os.remove(pth)
+        else:
+            raise ValueError("This data series is not removable")
 
     def __repr__(self):
         """ represent this object as a string
