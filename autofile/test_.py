@@ -3,25 +3,10 @@
 import os
 import tempfile
 import autofile.fs
+import automol
 
 PREFIX = tempfile.mkdtemp()
 print(PREFIX)
-
-
-def test__direction():
-    """ test autofile.fs.direction
-    """
-    prefix = os.path.join(PREFIX, 'direction')
-    os.mkdir(prefix)
-
-    dir_fs = autofile.fs.direction(prefix)
-    print(dir_fs[0].path([True]))
-
-    ref_inp_str = '<input string>'
-    print(dir_fs[0].file.geometry_input.path([True]))
-    dir_fs[0].create([True])
-    dir_fs[0].file.geometry_input.write(ref_inp_str, [True])
-    assert dir_fs[0].file.geometry_input.read([True]) == ref_inp_str
 
 
 def test__species():
@@ -60,7 +45,23 @@ def test__reaction():
     assert rxn_fs[-1].exists(locs)
 
 
-def test__ts():
+def test__direction():
+    """ test autofile.fs.direction
+    """
+    prefix = os.path.join(PREFIX, 'direction')
+    os.mkdir(prefix)
+
+    dir_fs = autofile.fs.direction(prefix)
+    print(dir_fs[0].path(['F']))
+
+    ref_inp_str = '<input string>'
+    print(dir_fs[0].file.geometry_input.path(['F']))
+    dir_fs[0].create(['F'])
+    dir_fs[0].file.geometry_input.write(ref_inp_str, ['F'])
+    assert dir_fs[0].file.geometry_input.read(['F']) == ref_inp_str
+
+
+def test__transition_state():
     """ test autofile.fs.transition_state
     """
     prefix = os.path.join(PREFIX, 'ts')
@@ -106,21 +107,6 @@ def test__conformer():
     assert cnf_fs[-1].exists(locs)
 
 
-def test__tau():
-    """ test autofile.fs.tau
-    """
-    prefix = os.path.join(PREFIX, 'tau')
-    os.mkdir(prefix)
-
-    locs = [autofile.schema.generate_new_tau_id()]
-    tau_fs = autofile.fs.tau(prefix)
-    print(tau_fs[-1].path(locs))
-
-    assert not tau_fs[-1].exists(locs)
-    tau_fs[-1].create(locs)
-    assert tau_fs[-1].exists(locs)
-
-
 def test__single_point():
     """ test autofile.fs.single_point
     """
@@ -136,6 +122,76 @@ def test__single_point():
     sp_fs[-1].create(locs)
     sp_fs[-1].file.energy.write(ref_ene, locs)
     assert sp_fs[-1].file.energy.read(locs) == ref_ene
+
+
+def test__zmatrix():
+    """ test autofile.fs.zmatrix
+    """
+    prefix = os.path.join(PREFIX, 'zmatrix')
+    os.mkdir(prefix)
+
+    zm_fs = autofile.fs.zmatrix(prefix)
+    locs = [0]
+    print(zm_fs[-1].path(locs))
+
+    ref_zma = ((('O', (None, None, None), (None, None, None)),
+                ('H', (0, None, None), ('R1', None, None))),
+               {'R1': 1.84779})
+    print(zm_fs[-1].file.zmatrix.path(locs))
+    zm_fs[-1].create(locs)
+    zm_fs[-1].file.zmatrix.write(ref_zma, locs)
+    assert automol.zmatrix.almost_equal(
+        zm_fs[-1].file.zmatrix.read(locs), ref_zma)
+
+
+def test__scan():
+    """ test autofile.fs.scan
+    """
+    prefix = os.path.join(PREFIX, 'scan')
+    os.mkdir(prefix)
+
+    scn_fs = autofile.fs.scan(prefix)
+    locs = [['d3', 'd4'], [2, 3]]
+    print(scn_fs[-1].path(locs))
+
+    ref_inp_str = '<input string>'
+    print(scn_fs[-1].file.geometry_input.path(locs))
+    scn_fs[-1].create(locs)
+    scn_fs[-1].file.geometry_input.write(ref_inp_str, locs)
+    assert scn_fs[-1].file.geometry_input.read(locs) == ref_inp_str
+
+
+def test__cscan():
+    """ test autofile.fs.cscan
+    """
+    prefix = os.path.join(PREFIX, 'cscan')
+    os.mkdir(prefix)
+
+    scn_fs = autofile.fs.cscan(prefix)
+    # the dictionary at the end specifies the constraint values
+    locs = [['d3', 'd4'], [1.2, 2.9], {'r1': 1., 'a2': 2.3}]
+    print(scn_fs[-1].path(locs))
+
+    ref_inp_str = '<input string>'
+    print(scn_fs[-1].file.geometry_input.path(locs))
+    scn_fs[-1].create(locs)
+    scn_fs[-1].file.geometry_input.write(ref_inp_str, locs)
+    assert scn_fs[-1].file.geometry_input.read(locs) == ref_inp_str
+
+
+def test__tau():
+    """ test autofile.fs.tau
+    """
+    prefix = os.path.join(PREFIX, 'tau')
+    os.mkdir(prefix)
+
+    locs = [autofile.schema.generate_new_tau_id()]
+    tau_fs = autofile.fs.tau(prefix)
+    print(tau_fs[-1].path(locs))
+
+    assert not tau_fs[-1].exists(locs)
+    tau_fs[-1].create(locs)
+    assert tau_fs[-1].exists(locs)
 
 
 # def test__energy_transfer():
@@ -177,41 +233,6 @@ def test__single_point():
 #     assert etrans_fs[-1].file.lennard_jones_sigma.read(locs) == ref_sig
 
 
-def test__scan():
-    """ test autofile.fs.scan
-    """
-    prefix = os.path.join(PREFIX, 'scan')
-    os.mkdir(prefix)
-
-    scn_fs = autofile.fs.scan(prefix)
-    locs = [['d3', 'd4'], [2, 3]]
-    print(scn_fs[-1].path(locs))
-
-    ref_inp_str = '<input string>'
-    print(scn_fs[-1].file.geometry_input.path(locs))
-    scn_fs[-1].create(locs)
-    scn_fs[-1].file.geometry_input.write(ref_inp_str, locs)
-    assert scn_fs[-1].file.geometry_input.read(locs) == ref_inp_str
-
-
-def test__cscan():
-    """ test autofile.fs.cscan
-    """
-    prefix = os.path.join(PREFIX, 'cscan')
-    os.mkdir(prefix)
-
-    scn_fs = autofile.fs.cscan(prefix)
-    # the dictionary at the end specifies the constraint values
-    locs = [['d3', 'd4'], [1.2, 2.9], {'r1': 1., 'a2': 2.3}]
-    print(scn_fs[-1].path(locs))
-
-    ref_inp_str = '<input string>'
-    print(scn_fs[-1].file.geometry_input.path(locs))
-    scn_fs[-1].create(locs)
-    scn_fs[-1].file.geometry_input.write(ref_inp_str, locs)
-    assert scn_fs[-1].file.geometry_input.read(locs) == ref_inp_str
-
-
 def test__run():
     """ test autofile.fs.run
     """
@@ -248,7 +269,7 @@ if __name__ == '__main__':
     # test__direction()
     # test__species()
     # test__reaction()
-    test__ts()
+    # test__transition_state()
     # test__theory()
     # test__conformer()
     # test__tau()
@@ -258,3 +279,4 @@ if __name__ == '__main__':
     # test__run()
     # test__build()
     # test__cscan()
+    test__zmatrix()

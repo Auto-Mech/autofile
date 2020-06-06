@@ -14,7 +14,7 @@ from autofile.schema._util import (is_random_string_identifier as
                                    _is_random_string_identifier)
 
 
-# species
+# Specifier mappings for species-specific layers
 def species_trunk():
     """ species trunk directory name
     """
@@ -42,147 +42,7 @@ def species_leaf(ich, chg, mul):
     return os.path.join(*dir_names)
 
 
-# theory
-def theory_leaf(method, basis, orb_type):
-    """ theory leaf directory name
-
-    This need not be tied to elstruct -- just take out the name checks.
-
-    :param method: the name of the electronic structure method
-    :type method: str
-    :param basis: the atomic orbital basis set
-    :type basis: str
-    :param orb_type: 'R' indicates restricted orbitals, 'U' indicates
-        unrestricted orbitals
-    :type orb_type: str
-    """
-    assert elstruct.Method.contains(method)
-    assert elstruct.Basis.contains(basis)
-
-    assert orb_type in ('R', 'U')
-
-    dir_name = ''.join([_short_hash(method.lower()),
-                        _short_hash(basis.lower()),
-                        orb_type])
-    return dir_name
-
-
-# conformer
-def conformer_trunk():
-    """ conformer trunk directory name
-    """
-    return 'CONFS'
-
-
-def conformer_leaf(cid):
-    """ conformer leaf directory name
-    """
-    assert cid[0] == 'c'
-    assert _is_random_string_identifier(cid[1:])
-    return cid
-
-
-def generate_new_conformer_id():
-    """ generate a new conformer identifier
-    """
-    return 'c'+_random_string_identifier()
-
-
-# single point
-def single_point_trunk():
-    """ single point trunk directory name
-    """
-    return 'SP'
-
-
-# high spin
-def high_spin_trunk():
-    """ high spin, single point trunk directory name
-    """
-    return 'HS'
-
-
-# scan
-def scan_trunk():
-    """ scan trunk directory name
-    """
-    return 'SCANS'
-
-
-def scan_branch(coo_names):
-    """ scan branch directory name
-    """
-    return '_'.join(sorted(coo_names))
-
-
-def scan_leaf(coo_vals):
-    """ scan leaf directory name
-    """
-    return '_'.join(map('{:.2f}'.format, coo_vals))
-
-
-# constrained scan
-def cscan_trunk():
-    """ constrained scan trunk directory name
-    """
-    return 'CSCANS'
-
-
-def cscan_branch1(coo_names):
-    """ scan branch 1 directory name
-    """
-    return '_'.join(sorted(coo_names))
-
-
-def cscan_branch2(coo_vals):
-    """ scan branch 2 directory name
-    """
-    return '_'.join(map('{:.2f}'.format, coo_vals))
-
-
-def cscan_leaf(cons_coo_val_dct):
-    """ constrained scan leaf directory name
-
-    :param cons_coo_val_dct: a dictionary of the constraint values, keyed by
-        coordinate name
-    :type cons_coo_val_dct: dict
-    """
-    cons_coo_names = list(cons_coo_val_dct.keys())
-    cons_coo_names.sort(key=lambda x: int(x[1:]))  # Sort by int after R,A,D
-    cons_coo_vals = [float(round(val, 2)) for val in cons_coo_val_dct.values()]
-    cons_coo_val_dct = dict(zip(cons_coo_names, cons_coo_vals))
-    return _short_hash(cons_coo_val_dct)
-
-
-# tau
-def tau_trunk():
-    """ tau trunk directory name
-    """
-    return 'TAU'
-
-
-def tau_leaf(tid):
-    """ tau leaf directory name
-    """
-    assert tid[0] == 't'
-    assert _is_random_string_identifier(tid[1:])
-    return tid
-
-
-def generate_new_tau_id():
-    """ generate a new conformer identifier
-    """
-    return 't'+_random_string_identifier()
-
-
-# energy transfer
-def energy_transfer_trunk():
-    """ energy_transfer trunk directory name
-    """
-    return 'ETRANS'
-
-
-# reactions
+# Specifier mappings for reaction-specific layers
 def reaction_trunk():
     """ reaction trunk directory name
     """
@@ -282,20 +142,168 @@ def _reactant_leaf(ichs, chgs, muls):
     return os.path.join(*dir_names)
 
 
-# ts
+def direction_leaf(drct):
+    """ direction leaf directory name
+
+    :param drct: Reaction direction; either 'F' (forward) or 'B' (backward)
+    """
+    assert drct in ('F', 'B')
+    return drct
+
+
 def transition_state_trunk():
     """ transition state trunk directory name
     """
     return 'TS'
 
 
-def direction_leaf(forw):
-    """ direction leaf directory name
+# Specifier mappings for layers used by both species and reaction file systems
+def theory_leaf(method, basis, orb_type):
+    """ theory leaf directory name
+
+    This need not be tied to elstruct -- just take out the name checks.
+
+    :param method: the name of the electronic structure method
+    :type method: str
+    :param basis: the atomic orbital basis set
+    :type basis: str
+    :param orb_type: 'R' indicates restricted orbitals, 'U' indicates
+        unrestricted orbitals
+    :type orb_type: str
     """
-    return 'F' if forw else 'B'
+    assert elstruct.Method.contains(method)
+    assert elstruct.Basis.contains(basis)
+
+    assert orb_type in ('R', 'U')
+
+    dir_name = ''.join([_short_hash(method.lower()),
+                        _short_hash(basis.lower()),
+                        orb_type])
+    return dir_name
 
 
-# run
+def conformer_trunk():
+    """ conformer trunk directory name
+    """
+    return 'CONFS'
+
+
+def conformer_leaf(cid):
+    """ conformer leaf directory name
+    """
+    assert cid[0] == 'c'
+    assert _is_random_string_identifier(cid[1:])
+    return cid
+
+
+def generate_new_conformer_id():
+    """ generate a new conformer identifier
+    """
+    return 'c'+_random_string_identifier()
+
+
+def single_point_trunk():
+    """ single point trunk directory name
+    """
+    return 'SP'
+
+
+def high_spin_trunk():
+    """ high spin, single point trunk directory name
+    """
+    return 'HS'
+
+
+def zmatrix_trunk():
+    """ zmatrix trunk directory name
+    """
+    return 'Z'
+
+
+def zmatrix_leaf(num):
+    """ zmatrix leaf directory name
+    """
+    assert isinstance(num, numbers.Integral) and 0 <= num <= 99
+    return '{:02d}'.format(int(num))
+
+
+def scan_trunk():
+    """ scan trunk directory name
+    """
+    return 'SCANS'
+
+
+def scan_branch(coo_names):
+    """ scan branch directory name
+    """
+    return '_'.join(sorted(coo_names))
+
+
+def scan_leaf(coo_vals):
+    """ scan leaf directory name
+    """
+    return '_'.join(map('{:.2f}'.format, coo_vals))
+
+
+def cscan_trunk():
+    """ constrained scan trunk directory name
+    """
+    return 'CSCANS'
+
+
+def cscan_branch1(coo_names):
+    """ scan branch 1 directory name
+    """
+    return '_'.join(sorted(coo_names))
+
+
+def cscan_branch2(coo_vals):
+    """ scan branch 2 directory name
+    """
+    return '_'.join(map('{:.2f}'.format, coo_vals))
+
+
+def cscan_leaf(cons_coo_val_dct):
+    """ constrained scan leaf directory name
+
+    :param cons_coo_val_dct: a dictionary of the constraint values, keyed by
+        coordinate name
+    :type cons_coo_val_dct: dict
+    """
+    cons_coo_names = list(cons_coo_val_dct.keys())
+    cons_coo_names.sort(key=lambda x: int(x[1:]))  # Sort by int after R,A,D
+    cons_coo_vals = [float(round(val, 2)) for val in cons_coo_val_dct.values()]
+    cons_coo_val_dct = dict(zip(cons_coo_names, cons_coo_vals))
+    return _short_hash(cons_coo_val_dct)
+
+
+def tau_trunk():
+    """ tau trunk directory name
+    """
+    return 'TAU'
+
+
+def tau_leaf(tid):
+    """ tau leaf directory name
+    """
+    assert tid[0] == 't'
+    assert _is_random_string_identifier(tid[1:])
+    return tid
+
+
+def generate_new_tau_id():
+    """ generate a new conformer identifier
+    """
+    return 't'+_random_string_identifier()
+
+
+def energy_transfer_trunk():
+    """ energy_transfer trunk directory name
+    """
+    return 'ETRANS'
+
+
+# Specifier mappings specific to the run file system
 def run_trunk():
     """ run trunk directory name
     """
@@ -321,7 +329,6 @@ def subrun_leaf(macro_idx, micro_idx):
     return ''.join([macro_str, micro_str])
 
 
-# builds (MESS, NASA Poly, etc.)
 def build_trunk(head):
     """ build trunk directory name
     """
