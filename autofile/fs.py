@@ -12,8 +12,9 @@ The overall file system layout is as follows::
                 ZMATRIX/
                     SCAN*/ [SINGLE POINT*/ or HIGH SPIN*/]
                     CSCAN*/ [SINGLE POINT*/ or HIGH SPIN*/]
-        REACTION/DIRECTION/THEORY/
-            SCAN*/
+        REACTION/THEORY/
+            ZMATRIX/
+                SCAN*/
             TRANSITION STATE*/
                 CONFORMER*/ [SINGLE POINT*/ or HIGH SPIN*/]
                     ZMATRIX/
@@ -34,9 +35,10 @@ Managers for layers used by both species and reaction file systems:
     - ``THEORY``: :meth:`autofile.fs.theory`
     - ``CONFORMER``: :meth:`autofile.fs.conformer`
     - ``SINGLE POINT``: :meth:`autofile.fs.single_point`
+    - ``HIGH SPIN``: :meth:`autofile.fs.high_spin`
     - ``ZMATRIX``: :meth:`autofile.fs.zmatrix`
     - ``SCAN``: :meth:`autofile.fs.scan`
-    - ``CSCAN``: :meth: `autofile.fs.cscan`
+    - ``CSCAN``: :meth:`autofile.fs.cscan`
 
 Each function in this module returns a tuple of autofile.model.DataSeries
 objects for interacting with successive layers in a file system.
@@ -850,45 +852,72 @@ def path(pfx, key_specs_lst):
     return pth
 
 
+def manager(pfx, key):
+    """ Get the manager for a specific part of the file system
+    """
+    fs_ = FILE_SYSTEM_MANAGER_DCT[key](pfx)
+    return fs_
+
+
+def iterate_specifiers(pfx, keys):
+    """ Iterate over specifiers for all existing paths
+    """
+    depth = len(keys)
+    specs_lst = [None] * depth
+
+    def _iterate_specifiers(pfx_, keys_):
+        if len(keys_) == 1:
+            key_, = keys_
+
+            fs_ = manager(pfx_, key_)
+            for specs in fs_[-1].existing():
+                specs_lst[-1] = specs
+                yield tuple(specs_lst)
+        else:
+            idx = depth - len(keys_)
+            key_, keys_ = keys_[0], keys_[1:]
+
+            fs_ = manager(pfx_, key_)
+            for specs in fs_[-1].existing():
+                pfx_ = fs_[-1].path(specs)
+                specs_lst[idx] = specs
+                yield from _iterate_specifiers(pfx_, keys_)
+
+    yield from _iterate_specifiers(pfx, keys)
+
+
 def iterate_paths(pfx, keys):
     """ Iterate over all existing paths
     """
     if len(keys) == 1:
         key, = keys
 
-        fs_ = manager(key, pfx)
+        fs_ = manager(pfx, key)
         for specs in fs_[-1].existing():
             yield fs_[-1].path(specs)
     else:
         key, keys = keys[0], keys[1:]
 
-        fs_ = manager(key, pfx)
+        fs_ = manager(pfx, key)
         for specs in fs_[-1].existing():
-            yield from iterate_paths(fs_[-1].path(specs), keys)
+            pfx = fs_[-1].path(specs)
+            yield from iterate_paths(pfx, keys)
 
 
-def manager(key, pfx, key_specs_lst=()):
-    """ Get the manager for a specific part of a file system hierarchy
-    """
-    pth = path(pfx, key_specs_lst)
-
-    fs_ = FILE_SYSTEM_MANAGER_DCT[key](pth)
-
-    return fs_
-
-
-def iterate_managers(key, pfx, keys=()):
+def iterate_managers(pfx, keys, key):
     """ Iterate over managers at a specific level in the file system hierarchy
     """
     for pth in iterate_paths(pfx, keys):
-        yield manager(key, pth)
+        yield manager(pth, key)
 
 
 if __name__ == '__main__':
     PFX = '/lcrc/project/PACC/AutoMech/data/run/'
-    print(PFX)
 
-    for CNF_FS in iterate_managers('CONFORMER', PFX,
-                                   keys=['SPECIES', 'THEORY']):
-        print(CNF_FS[0].path())
-        print(CNF_FS[-1].existing())
+    for PTH in iterate_paths(PFX, keys=['SPECIES', 'THEORY', 'CONFORMER']):
+        print(PTH)
+
+    # for CNF_FS in iterate_managers('CONFORMER', PFX,
+    #                                keys=['SPECIES', 'THEORY']):
+    #     print(CNF_FS[0].path())
+    #     print(CNF_FS[-1].existing())
