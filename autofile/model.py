@@ -56,6 +56,8 @@ class DataFile():
 
     def remove(self, dir_pth):
         """ remove this file
+
+        (only possible if `removable` attribute is set to `True`)
         """
         if self.removable:
             pth = self.path(dir_pth)
@@ -125,7 +127,9 @@ class DataSeries():
         return os.path.isdir(pth)
 
     def remove(self, locs=()):
-        """ does this directory exist?
+        """ remove this directory
+
+        (only possible if `removable` attribute is set to `True`)
         """
         if self.removable:
             pth = self.path(locs)
@@ -232,6 +236,8 @@ class DataSeriesFile():
 
     def remove(self, locs=()):
         """ remove this file
+
+        (only possible if `removable` attribute is set to `True`)
         """
         if self.removable:
             pth = self.path(locs)
