@@ -6,7 +6,7 @@ except ImportError:
     from inspect import getargspec as function_argspec
 import automol
 from autofile import model
-from autofile.schema import spec_maps
+from autofile.schema import loc_maps
 from autofile.schema import data_files
 
 
@@ -17,8 +17,8 @@ SPEC_FILE_PREFIX = 'dir'
 def species_trunk(prefix, root_ds=None):
     """ species trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.species_trunk)
-    nlocs = _count_arguments(spec_maps.species_trunk)
+    _map = _pack_arguments(loc_maps.species_trunk)
+    nlocs = _count_arguments(loc_maps.species_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -35,8 +35,8 @@ def species_leaf(prefix, root_ds=None):
             'smiles': lambda locs: automol.inchi.smiles(locs[0])},
         loc_keys=['inchi', 'charge', 'multiplicity'])
 
-    _map = _pack_arguments(spec_maps.species_leaf)
-    nlocs = _count_arguments(spec_maps.species_leaf)
+    _map = _pack_arguments(loc_maps.species_leaf)
+    nlocs = _count_arguments(loc_maps.species_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=5,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -45,8 +45,8 @@ def species_leaf(prefix, root_ds=None):
 def reaction_trunk(prefix, root_ds=None):
     """ reaction trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.reaction_trunk)
-    nlocs = _count_arguments(spec_maps.reaction_trunk)
+    _map = _pack_arguments(loc_maps.reaction_trunk)
+    nlocs = _count_arguments(loc_maps.reaction_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -67,8 +67,8 @@ def reaction_leaf(prefix, root_ds=None):
         },
         loc_keys=['inchis', 'charges', 'multiplicities', 'ts_multiplicity'])
 
-    _map = _pack_arguments(spec_maps.reaction_leaf)
-    nlocs = _count_arguments(spec_maps.reaction_leaf)
+    _map = _pack_arguments(loc_maps.reaction_leaf)
+    nlocs = _count_arguments(loc_maps.reaction_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=11,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -81,8 +81,8 @@ def direction_leaf(prefix, root_ds=None):
         map_dct_={'drct': lambda locs: locs[0]},
         loc_keys=['drct'])
 
-    _map = _pack_arguments(spec_maps.direction_leaf)
-    nlocs = _count_arguments(spec_maps.direction_leaf)
+    _map = _pack_arguments(loc_maps.direction_leaf)
+    nlocs = _count_arguments(loc_maps.direction_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -90,8 +90,8 @@ def direction_leaf(prefix, root_ds=None):
 def transition_state_trunk(prefix, root_ds=None):
     """ transition state trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.transition_state_trunk)
-    nlocs = _count_arguments(spec_maps.transition_state_trunk)
+    _map = _pack_arguments(loc_maps.transition_state_trunk)
+    nlocs = _count_arguments(loc_maps.transition_state_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -109,8 +109,8 @@ def theory_leaf(prefix, root_ds=None):
             'orb_type': lambda locs: locs[2]},
         loc_keys=['method', 'basis', 'orb_type'])
 
-    _map = _pack_arguments(spec_maps.theory_leaf)
-    nlocs = _count_arguments(spec_maps.theory_leaf)
+    _map = _pack_arguments(loc_maps.theory_leaf)
+    nlocs = _count_arguments(loc_maps.theory_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -118,8 +118,8 @@ def theory_leaf(prefix, root_ds=None):
 def conformer_trunk(prefix, root_ds=None):
     """ conformer trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.conformer_trunk)
-    nlocs = _count_arguments(spec_maps.conformer_trunk)
+    _map = _pack_arguments(loc_maps.conformer_trunk)
+    nlocs = _count_arguments(loc_maps.conformer_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -132,8 +132,8 @@ def conformer_leaf(prefix, root_ds=None):
         map_dct_={'conformer_id': lambda locs: locs[0]},
         loc_keys=['conformer_id'])
 
-    _map = _pack_arguments(spec_maps.conformer_leaf)
-    nlocs = _count_arguments(spec_maps.conformer_leaf)
+    _map = _pack_arguments(loc_maps.conformer_leaf)
+    nlocs = _count_arguments(loc_maps.conformer_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -141,8 +141,8 @@ def conformer_leaf(prefix, root_ds=None):
 def single_point_trunk(prefix, root_ds=None):
     """ single point trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.single_point_trunk)
-    nlocs = _count_arguments(spec_maps.single_point_trunk)
+    _map = _pack_arguments(loc_maps.single_point_trunk)
+    nlocs = _count_arguments(loc_maps.single_point_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -156,8 +156,8 @@ def single_point_leaf(prefix, root_ds=None):
 def high_spin_trunk(prefix, root_ds=None):
     """ high spin, single point trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.high_spin_trunk)
-    nlocs = _count_arguments(spec_maps.high_spin_trunk)
+    _map = _pack_arguments(loc_maps.high_spin_trunk)
+    nlocs = _count_arguments(loc_maps.high_spin_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -171,8 +171,8 @@ def high_spin_leaf(prefix, root_ds=None):
 def zmatrix_trunk(prefix, root_ds=None):
     """ zmatrix trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.zmatrix_trunk)
-    nlocs = _count_arguments(spec_maps.zmatrix_trunk)
+    _map = _pack_arguments(loc_maps.zmatrix_trunk)
+    nlocs = _count_arguments(loc_maps.zmatrix_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -185,8 +185,8 @@ def zmatrix_leaf(prefix, root_ds=None):
         map_dct_={'num': lambda locs: locs[0]},
         loc_keys=['num'])
 
-    _map = _pack_arguments(spec_maps.zmatrix_leaf)
-    nlocs = _count_arguments(spec_maps.zmatrix_leaf)
+    _map = _pack_arguments(loc_maps.zmatrix_leaf)
+    nlocs = _count_arguments(loc_maps.zmatrix_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -194,8 +194,8 @@ def zmatrix_leaf(prefix, root_ds=None):
 def scan_trunk(prefix, root_ds=None):
     """ scan trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.scan_trunk)
-    nlocs = _count_arguments(spec_maps.scan_trunk)
+    _map = _pack_arguments(loc_maps.scan_trunk)
+    nlocs = _count_arguments(loc_maps.scan_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -208,8 +208,8 @@ def scan_branch(prefix, root_ds=None):
         map_dct_={'coo_names': lambda locs: locs[0]},
         loc_keys=['coo_names'])
 
-    _map = _pack_arguments(spec_maps.scan_branch)
-    nlocs = _count_arguments(spec_maps.scan_branch)
+    _map = _pack_arguments(loc_maps.scan_branch)
+    nlocs = _count_arguments(loc_maps.scan_branch)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -223,8 +223,8 @@ def scan_leaf(prefix, root_ds=None):
         map_dct_={'grid_idxs': lambda locs: locs[0]},
         loc_keys=['grid_idxs'])
 
-    _map = _pack_arguments(spec_maps.scan_leaf)
-    nlocs = _count_arguments(spec_maps.scan_leaf)
+    _map = _pack_arguments(loc_maps.scan_leaf)
+    nlocs = _count_arguments(loc_maps.scan_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -232,8 +232,8 @@ def scan_leaf(prefix, root_ds=None):
 def cscan_trunk(prefix, root_ds=None):
     """ constrained scan trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.cscan_trunk)
-    nlocs = _count_arguments(spec_maps.cscan_trunk)
+    _map = _pack_arguments(loc_maps.cscan_trunk)
+    nlocs = _count_arguments(loc_maps.cscan_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -246,8 +246,8 @@ def cscan_branch1(prefix, root_ds=None):
         map_dct_={'coo_names': lambda locs: locs[0]},
         loc_keys=['coo_names'])
 
-    _map = _pack_arguments(spec_maps.cscan_branch1)
-    nlocs = _count_arguments(spec_maps.cscan_branch1)
+    _map = _pack_arguments(loc_maps.cscan_branch1)
+    nlocs = _count_arguments(loc_maps.cscan_branch1)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -260,8 +260,8 @@ def cscan_branch2(prefix, root_ds=None):
         map_dct_={'coo_vals': lambda locs: locs[0]},
         loc_keys=['coo_vals'])
 
-    _map = _pack_arguments(spec_maps.cscan_branch2)
-    nlocs = _count_arguments(spec_maps.cscan_branch2)
+    _map = _pack_arguments(loc_maps.cscan_branch2)
+    nlocs = _count_arguments(loc_maps.cscan_branch2)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -281,8 +281,8 @@ def cscan_leaf(prefix, root_ds=None):
         map_dct_={'cons_coo_vals': lambda locs: _round_values(locs[0])},
         loc_keys=['cons_coo_vals'])
 
-    _map = _pack_arguments(spec_maps.cscan_leaf)
-    nlocs = _count_arguments(spec_maps.cscan_leaf)
+    _map = _pack_arguments(loc_maps.cscan_leaf)
+    nlocs = _count_arguments(loc_maps.cscan_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -290,8 +290,8 @@ def cscan_leaf(prefix, root_ds=None):
 def tau_trunk(prefix, root_ds=None):
     """ tau trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.tau_trunk)
-    nlocs = _count_arguments(spec_maps.tau_trunk)
+    _map = _pack_arguments(loc_maps.tau_trunk)
+    nlocs = _count_arguments(loc_maps.tau_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -304,8 +304,8 @@ def tau_leaf(prefix, root_ds=None):
         map_dct_={'conformer_id': lambda locs: locs[0]},
         loc_keys=['conformer_id'])
 
-    _map = _pack_arguments(spec_maps.tau_leaf)
-    nlocs = _count_arguments(spec_maps.tau_leaf)
+    _map = _pack_arguments(loc_maps.tau_leaf)
+    nlocs = _count_arguments(loc_maps.tau_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -313,8 +313,8 @@ def tau_leaf(prefix, root_ds=None):
 def energy_transfer_trunk(prefix, root_ds=None):
     """ energy transfer trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.energy_transfer_trunk)
-    nlocs = _count_arguments(spec_maps.energy_transfer_trunk)
+    _map = _pack_arguments(loc_maps.energy_transfer_trunk)
+    nlocs = _count_arguments(loc_maps.energy_transfer_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -335,8 +335,8 @@ def energy_transfer_leaf(prefix, root_ds=None):
 def run_trunk(prefix, root_ds=None):
     """ run trunk DataSeries
     """
-    _map = _pack_arguments(spec_maps.run_trunk)
-    nlocs = _count_arguments(spec_maps.run_trunk)
+    _map = _pack_arguments(loc_maps.run_trunk)
+    nlocs = _count_arguments(loc_maps.run_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
@@ -349,8 +349,8 @@ def run_leaf(prefix, root_ds=None):
         map_dct_={'job': lambda locs: locs[0]},
         loc_keys=['job'])
 
-    _map = _pack_arguments(spec_maps.run_leaf)
-    nlocs = _count_arguments(spec_maps.run_leaf)
+    _map = _pack_arguments(loc_maps.run_leaf)
+    nlocs = _count_arguments(loc_maps.run_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds,
                             removable=True)
@@ -365,8 +365,8 @@ def subrun_leaf(prefix, root_ds=None):
                   'micro_idx': lambda locs: locs[1]},
         loc_keys=['macro_idx', 'micro_idx'])
 
-    _map = _pack_arguments(spec_maps.subrun_leaf)
-    nlocs = _count_arguments(spec_maps.subrun_leaf)
+    _map = _pack_arguments(loc_maps.subrun_leaf)
+    nlocs = _count_arguments(loc_maps.subrun_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -379,8 +379,8 @@ def build_trunk(prefix, root_ds=None):
         map_dct_={'head': lambda locs: locs[0]},
         loc_keys=['head'])
 
-    _map = _pack_arguments(spec_maps.build_trunk)
-    nlocs = _count_arguments(spec_maps.build_trunk)
+    _map = _pack_arguments(loc_maps.build_trunk)
+    nlocs = _count_arguments(loc_maps.build_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -393,8 +393,8 @@ def build_leaf(prefix, root_ds=None):
         map_dct_={'num': lambda locs: locs[0]},
         loc_keys=['num'])
 
-    _map = _pack_arguments(spec_maps.build_leaf)
-    nlocs = _count_arguments(spec_maps.build_leaf)
+    _map = _pack_arguments(loc_maps.build_leaf)
+    nlocs = _count_arguments(loc_maps.build_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds,
                             removable=True)

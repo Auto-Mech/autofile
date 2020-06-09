@@ -158,14 +158,27 @@ class DataSeries():
     def existing(self, root_locs=(), relative=False):
         """ return the list of locators for existing paths
         """
-        if self.loc_dfile is None:
-            raise ValueError("This function does not work "
-                             "without a locator DataFile")
+        if self.nlocs == 0:
+            # If there are no locators, this DataSeries only produces one
+            # directory and we can just check if it exists or not
+            if self.exists():
+                locs_lst = ([],)
+            else:
+                locs_lst = ()
+        else:
+            # If there are one or more locators, we need to read in from the
+            # locator data files
+            assert self.nlocs > 0
 
-        pths = self.existing_paths(root_locs)
-        locs_lst = tuple(self.loc_dfile.read(pth) for pth in pths)
-        if not relative:
-            locs_lst = tuple(map(list(root_locs).__add__, locs_lst))
+            if self.loc_dfile is None:
+                raise ValueError("This function does not work "
+                                 "without a locator DataFile")
+
+            pths = self.existing_paths(root_locs)
+            locs_lst = tuple(self.loc_dfile.read(pth) for pth in pths
+                             if self.loc_dfile.exists(pth))
+            if not relative:
+                locs_lst = tuple(map(list(root_locs).__add__, locs_lst))
 
         return locs_lst
 

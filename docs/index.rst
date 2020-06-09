@@ -171,7 +171,7 @@ First, we'll check that the file doesn't exist yet.
     >>> tfs[-1].file.energy.exists(['b3lyp', '6-31g*', 'U'])
     False
 
-Notice that we need the same three specifiers! The argument doesn't change.
+Notice that we need the same three locators! The argument doesn't change.
 
 Let's write a made-up energy value to the file.
 

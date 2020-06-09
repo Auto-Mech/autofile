@@ -1,10 +1,10 @@
 autofile.schema
 ===============
 
-autofile.schema.spec_maps
+autofile.schema.loc_maps
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: autofile.schema.spec_maps
+.. automodule:: autofile.schema.loc_maps
     :members:
 
 autofile.schema.data_series
