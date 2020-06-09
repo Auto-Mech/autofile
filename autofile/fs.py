@@ -136,7 +136,7 @@ def species(prefix):
 def reaction(prefix):
     """ construct the reaction filesystem (2 layers)
 
-    specifiers:
+    locators:
         0 - []
                 (no files)
         1 - [rxn_ichs, rxn_chgs, rxn_muls, ts_mul]
@@ -154,7 +154,7 @@ def reaction(prefix):
 def direction(prefix):
     """ filesystem object for reaction direction (1 layer)
 
-    specifiers:
+    locators:
         0 - [forw]
                 files:
                 - geometry_info
@@ -188,7 +188,7 @@ def direction(prefix):
 def transition_state(prefix):
     """ construct the ts filesystem (1 layer)
 
-    specifiers:
+    locators:
         0 - []
                 files:
                 - energy
@@ -215,7 +215,7 @@ def transition_state(prefix):
 def theory(prefix):
     """ construct the theory filesystem (1 layer)
 
-    specifiers:
+    locators:
         0 - [method, basis, orb_type]
                 files:
                 - energy
@@ -244,7 +244,7 @@ def theory(prefix):
 def conformer(prefix):
     """ construct the conformer filesystem (2 layers)
 
-    specifiers:
+    locators:
         0 - []
                 files:
                 - vmatrix
@@ -343,7 +343,7 @@ def conformer(prefix):
 def single_point(prefix):
     """ construct the single-point filesystem (2 layers)
 
-    specifiers:
+    locators:
         0 - []
                 (no files)
         1 - [method, basis, orb_type]
@@ -373,7 +373,7 @@ def single_point(prefix):
 def high_spin(prefix):
     """ construct the high-spin, single-point filesystem (2 layers)
 
-    specifiers:
+    locators:
         0 - []
                 (no files)
         1 - [method, basis, orb_type]
@@ -441,7 +441,7 @@ def zmatrix(prefix):
 def scan(prefix):
     """ construct the scan filesystem (3 layers)
 
-    three layers with the following specifiers:
+    three layers with the following locators:
         0 - []
                 files:
                 - vmatrix
@@ -527,7 +527,7 @@ def scan(prefix):
 def cscan(prefix):
     """ construct the constrained scan filesystem (4 layers)
 
-..    specifiers:
+..    locators:
 ..        0 - []
 ..                files:
 ..                - vmatrix
@@ -605,7 +605,7 @@ def cscan(prefix):
 def tau(prefix):
     """ construct the tau filesystem (2 layers)
 
-    specifiers:
+    locators:
         0 - []
                 files:
                 - vmatrix
@@ -676,7 +676,7 @@ def tau(prefix):
 def energy_transfer(prefix):
     """ construct the energy transfer filesystem (3 layers)
 
-    specifiers:
+    locators:
         0 - []
                 files:
                 - info
@@ -720,7 +720,7 @@ def energy_transfer(prefix):
 def run(prefix):
     """ construct the run filesystem (2 layers)
 
-    specifiers:
+    locators:
         0 - []
                 files:
                 - info
@@ -753,7 +753,7 @@ def run(prefix):
 def subrun(prefix):
     """ construct the subrun filesystem (1 layer)
 
-    specifiers:
+    locators:
         0 - [macro_idx, micro_idx]
                 files:
                 - info
@@ -780,7 +780,7 @@ def subrun(prefix):
 def build(prefix):
     """ construct the build filesystem (2 layers)
 
-    specifiers:
+    locators:
         0 - [head]
                 (no files)
         1 - [head, num]
@@ -834,20 +834,20 @@ FILE_SYSTEM_MANAGER_DCT = {
 }
 
 
-def path(pfx, key_specs_lst):
+def path(pfx, key_locs_lst):
     """ Get the path through a file system hierarchy
     """
     pth = pfx
 
-    for key_specs in key_specs_lst:
-        assert len(key_specs) == 2
-        key, specs = key_specs
+    for key_locs in key_locs_lst:
+        assert len(key_locs) == 2
+        key, locs = key_locs
 
         assert key in FILE_SYSTEM_MANAGER_DCT
 
         fs_ = FILE_SYSTEM_MANAGER_DCT[key](pth)
 
-        pth = os.path.join(pth, fs_[-1].path(specs))
+        pth = os.path.join(pth, fs_[-1].path(locs))
 
     return pth
 
@@ -859,31 +859,31 @@ def manager(pfx, key):
     return fs_
 
 
-def iterate_specifiers(pfx, keys):
-    """ Iterate over specifiers for all existing paths
+def iterate_locators(pfx, keys):
+    """ Iterate over locators for all existing paths
     """
     depth = len(keys)
-    specs_lst = [None] * depth
+    locs_lst = [None] * depth
 
-    def _iterate_specifiers(pfx_, keys_):
+    def _iterate_locators(pfx_, keys_):
         if len(keys_) == 1:
             key_, = keys_
 
             fs_ = manager(pfx_, key_)
-            for specs in fs_[-1].existing():
-                specs_lst[-1] = specs
-                yield tuple(specs_lst)
+            for locs in fs_[-1].existing():
+                locs_lst[-1] = locs
+                yield tuple(locs_lst)
         else:
             idx = depth - len(keys_)
             key_, keys_ = keys_[0], keys_[1:]
 
             fs_ = manager(pfx_, key_)
-            for specs in fs_[-1].existing():
-                pfx_ = fs_[-1].path(specs)
-                specs_lst[idx] = specs
-                yield from _iterate_specifiers(pfx_, keys_)
+            for locs in fs_[-1].existing():
+                pfx_ = fs_[-1].path(locs)
+                locs_lst[idx] = locs
+                yield from _iterate_locators(pfx_, keys_)
 
-    yield from _iterate_specifiers(pfx, keys)
+    yield from _iterate_locators(pfx, keys)
 
 
 def iterate_paths(pfx, keys):
@@ -893,14 +893,14 @@ def iterate_paths(pfx, keys):
         key, = keys
 
         fs_ = manager(pfx, key)
-        for specs in fs_[-1].existing():
-            yield fs_[-1].path(specs)
+        for locs in fs_[-1].existing():
+            yield fs_[-1].path(locs)
     else:
         key, keys = keys[0], keys[1:]
 
         fs_ = manager(pfx, key)
-        for specs in fs_[-1].existing():
-            pfx = fs_[-1].path(specs)
+        for locs in fs_[-1].existing():
+            pfx = fs_[-1].path(locs)
             yield from iterate_paths(pfx, keys)
 
 

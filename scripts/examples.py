@@ -3,8 +3,7 @@
 import automol
 from autofile import fs
 
-# Let's test things on the RUN file system, in case something goes wrong
-PFX = '/lcrc/project/PACC/AutoMech/data/save/'
+PFX = '/lcrc/project/PACC/AutoMech/data/run/'
 
 
 def example1():
@@ -41,19 +40,20 @@ def example3():
 
     """
 
-    for path in fs.iterate_paths(PFX, ['SPECIES', 'THEORY', 'CONFORMER']):
+    for path in fs.iterate_paths(PFX, ['REACTION', 'THEORY', 'TRANSITION STATE',
+                                       'CONFORMER']):
         print(path)
 
 
 def example4():
     """
-    Example 4: Iterate over specs for all SPECIES/THEORY/CONFORMER paths
+    Example 4: Iterate over locs for all SPECIES/THEORY/CONFORMER paths
 
     """
 
-    for specs_lst in fs.iterate_specifiers(
+    for locs_lst in fs.iterate_locators(
             PFX, ['SPECIES', 'THEORY', 'CONFORMER']):
-        print(specs_lst)
+        print(locs_lst)
 
 
 def example5():
@@ -66,13 +66,10 @@ def example5():
 
         print(cnf_fs[0].path())
 
-        # Loop over all conformer specifiers for this SPECIES/THEORY combo
-        if cnf_fs[0].exists():
-
-            # If it has an energy file, print the value
-            for specs in cnf_fs[-1].existing():
-                ene = cnf_fs[-1].file.energy.read(specs)
-                print(ene)
+        # If it has an energy file, print the value
+        for locs in cnf_fs[-1].existing():
+            ene = cnf_fs[-1].file.energy.read(locs)
+            print(ene)
 
         print()
 
