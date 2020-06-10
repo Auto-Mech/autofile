@@ -142,15 +142,6 @@ def _reactant_leaf(ichs, chgs, muls):
     return os.path.join(*dir_names)
 
 
-def direction_leaf(drct):
-    """ direction leaf directory name
-
-    :param drct: Reaction direction; either 'F' (forward) or 'B' (backward)
-    """
-    assert drct in ('F', 'B')
-    return drct
-
-
 def transition_state_trunk():
     """ transition state trunk directory name
     """
@@ -212,6 +203,12 @@ def high_spin_trunk():
     """ high spin, single point trunk directory name
     """
     return 'HS'
+
+
+def symmetric_trunk():
+    """ symmetric-conformer trunk directory name
+    """
+    return 'SYM'
 
 
 def zmatrix_trunk():

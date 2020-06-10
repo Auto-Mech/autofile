@@ -73,20 +73,6 @@ def reaction_leaf(prefix, root_ds=None):
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
 
-def direction_leaf(prefix, root_ds=None):
-    """ direction leaf  DataSeries
-    """
-    loc_dfile = data_files.locator(
-        file_prefix=SPEC_FILE_PREFIX,
-        map_dct_={'drct': lambda locs: locs[0]},
-        loc_keys=['drct'])
-
-    _map = _pack_arguments(loc_maps.direction_leaf)
-    nlocs = _count_arguments(loc_maps.direction_leaf)
-    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
-                            loc_dfile=loc_dfile, root_ds=root_ds)
-
-
 def transition_state_trunk(prefix, root_ds=None):
     """ transition state trunk DataSeries
     """
@@ -166,6 +152,15 @@ def high_spin_leaf(prefix, root_ds=None):
     """ high-spin, single-point leaf DataSeries
     """
     return theory_leaf(prefix, root_ds=root_ds)
+
+
+def symmetric_trunk(prefix, root_ds=None):
+    """ symmetric-conformer trunk DataSeries
+    """
+    _map = _pack_arguments(loc_maps.symmetric_trunk)
+    nlocs = _count_arguments(loc_maps.symmetric_trunk)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            root_ds=root_ds)
 
 
 def zmatrix_trunk(prefix, root_ds=None):

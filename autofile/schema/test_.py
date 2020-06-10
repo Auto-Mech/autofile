@@ -466,43 +466,6 @@ def test__data_series__reaction_leaf():
                 sorted(branch_locs_lst))
 
 
-def test__data_series__direction_leaf():
-    """ test data_series.direction_leaf
-    """
-    prefix = os.path.join(PREFIX, 'direction_leaf')
-    os.mkdir(prefix)
-
-    root_ds = root_data_series(prefix)
-    ds_ = autofile.schema.data_series.direction_leaf(prefix, root_ds=root_ds)
-
-    root_locs_lst = [
-        [1, 'a'],
-        [1, 'b'],
-        [2, 'a'],
-        [2, 'b'],
-        [2, 'c'],
-    ]
-    branch_locs_lst = [
-        ['F'],
-        ['B'],
-    ]
-
-    for root_locs in root_locs_lst:
-        for branch_locs in branch_locs_lst:
-            locs = root_locs + branch_locs
-
-            assert not ds_.exists(locs)
-            ds_.create(locs)
-            assert ds_.exists(locs)
-
-    assert sorted(root_ds.existing()) == sorted(root_locs_lst)
-
-    print(ds_.existing(root_locs_lst[-1]))
-    for root_locs in root_locs_lst:
-        assert (sorted(ds_.existing(root_locs, relative=True)) ==
-                sorted(branch_locs_lst))
-
-
 def test__data_series__transition_state_trunk():
     """ test data_series.transition_state_trunk
     """
@@ -633,6 +596,114 @@ def test__data_series__conformer_leaf():
     nconfs = 10
     branch_locs_lst = [
         [autofile.schema.generate_new_conformer_id()] for _ in range(nconfs)]
+
+    for root_locs in root_locs_lst:
+        for branch_locs in branch_locs_lst:
+            locs = root_locs + branch_locs
+
+            assert not ds_.exists(locs)
+            ds_.create(locs)
+            assert ds_.exists(locs)
+
+    assert sorted(root_ds.existing()) == sorted(root_locs_lst)
+
+    print(ds_.existing(root_locs_lst[-1]))
+    for root_locs in root_locs_lst:
+        assert (sorted(ds_.existing(root_locs, relative=True)) ==
+                sorted(branch_locs_lst))
+
+
+def test__data_series__symmetric_trunk():
+    """ test data_series.symmetric_trunk
+    """
+    prefix = os.path.join(PREFIX, 'symmetric_trunk')
+    os.mkdir(prefix)
+
+    # without a root directory
+    ds_ = autofile.schema.data_series.symmetric_trunk(prefix)
+
+    assert not ds_.exists()
+    ds_.create()
+    assert ds_.exists()
+
+    # with a root directory
+    root_ds = root_data_series(prefix)
+    ds_ = autofile.schema.data_series.symmetric_trunk(prefix, root_ds=root_ds)
+
+    root_locs_lst = [
+        [1, 'a'],
+        [1, 'b'],
+        [2, 'a'],
+        [2, 'b'],
+        [2, 'c'],
+    ]
+
+    for root_locs in root_locs_lst:
+        locs = root_locs
+
+        assert not ds_.exists(locs)
+        ds_.create(locs)
+        assert ds_.exists(locs)
+
+    assert sorted(root_ds.existing()) == sorted(root_locs_lst)
+
+
+def test__data_series__zmatrix_trunk():
+    """ test data_series.zmatrix_trunk
+    """
+    prefix = os.path.join(PREFIX, 'zmatrix_trunk')
+    os.mkdir(prefix)
+
+    # without a root directory
+    ds_ = autofile.schema.data_series.zmatrix_trunk(prefix)
+
+    assert not ds_.exists()
+    ds_.create()
+    assert ds_.exists()
+
+    # with a root directory
+    root_ds = root_data_series(prefix)
+    ds_ = autofile.schema.data_series.zmatrix_trunk(prefix, root_ds=root_ds)
+
+    root_locs_lst = [
+        [1, 'a'],
+        [1, 'b'],
+        [2, 'a'],
+        [2, 'b'],
+        [2, 'c'],
+    ]
+
+    for root_locs in root_locs_lst:
+        locs = root_locs
+
+        assert not ds_.exists(locs)
+        ds_.create(locs)
+        assert ds_.exists(locs)
+
+    assert sorted(root_ds.existing()) == sorted(root_locs_lst)
+
+
+def test__data_series__zmatrix_leaf():
+    """ test data_series.zmatrix_leaf
+    """
+    prefix = os.path.join(PREFIX, 'zmatrix_leaf')
+    os.mkdir(prefix)
+
+    root_ds = root_data_series(prefix)
+    ds_ = autofile.schema.data_series.zmatrix_leaf(prefix, root_ds=root_ds)
+
+    root_locs_lst = [
+        [1, 'a'],
+        [1, 'b'],
+        [2, 'a'],
+        [2, 'b'],
+        [2, 'c'],
+    ]
+    branch_locs_lst = [
+        [0],
+        [1],
+        [2],
+    ]
 
     for root_locs in root_locs_lst:
         for branch_locs in branch_locs_lst:
@@ -1035,10 +1106,11 @@ if __name__ == '__main__':
     # test__data_series__species_leaf()
     # test__data_series__reaction_trunk()
     # test__data_series__reaction_leaf()
-    test__data_series__direction_leaf()
     # test__data_series__theory_leaf()
     # test__data_series__conformer_trunk()
     # test__data_series__conformer_leaf()
+    test__data_series__zmatrix_trunk()
+    test__data_series__zmatrix_leaf()
     # test__data_series__single_point_trunk()
     # test__data_series__scan_trunk()
     # test__data_series__scan_branch()
