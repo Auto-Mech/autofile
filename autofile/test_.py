@@ -45,22 +45,6 @@ def test__reaction():
     assert rxn_fs[-1].exists(locs)
 
 
-def test__direction():
-    """ test autofile.fs.direction
-    """
-    prefix = os.path.join(PREFIX, 'direction')
-    os.mkdir(prefix)
-
-    dir_fs = autofile.fs.direction(prefix)
-    print(dir_fs[0].path(['F']))
-
-    ref_inp_str = '<input string>'
-    print(dir_fs[0].file.geometry_input.path(['F']))
-    dir_fs[0].create(['F'])
-    dir_fs[0].file.geometry_input.write(ref_inp_str, ['F'])
-    assert dir_fs[0].file.geometry_input.read(['F']) == ref_inp_str
-
-
 def test__transition_state():
     """ test autofile.fs.transition_state
     """
@@ -266,7 +250,6 @@ def test__build():
 
 
 if __name__ == '__main__':
-    # test__direction()
     # test__species()
     # test__reaction()
     # test__transition_state()
