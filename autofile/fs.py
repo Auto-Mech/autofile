@@ -433,9 +433,15 @@ def zmatrix(prefix):
     trunk_ds = data_series.zmatrix_trunk(prefix)
     leaf_ds = data_series.zmatrix_leaf(prefix, root_ds=trunk_ds)
 
+    zmat_inf_dfile = data_files.information(_FilePrefix.ZMAT,
+                                            function=info_objects.run)
+    zmat_inp_dfile = data_files.input_file(_FilePrefix.ZMAT)
+
     zmat_dfile = data_files.zmatrix(_FilePrefix.ZMAT)
 
     leaf_ds.add_data_files({
+        _FileAttributeName.GEOM_INFO:  zmat_inf_dfile,
+        _FileAttributeName.GEOM_INPUT: zmat_inp_dfile,
         _FileAttributeName.ZMAT: zmat_dfile})
 
     return (trunk_ds, leaf_ds)
