@@ -613,14 +613,14 @@ def test__data_series__conformer_leaf():
                 sorted(branch_locs_lst))
 
 
-def test__data_series__symmetric_trunk():
-    """ test data_series.symmetric_trunk
+def test__data_series__symmetry_trunk():
+    """ test data_series.symmetry_trunk
     """
-    prefix = os.path.join(PREFIX, 'symmetric_trunk')
+    prefix = os.path.join(PREFIX, 'symmetry_trunk')
     os.mkdir(prefix)
 
     # without a root directory
-    ds_ = autofile.schema.data_series.symmetric_trunk(prefix)
+    ds_ = autofile.schema.data_series.symmetry_trunk(prefix)
 
     assert not ds_.exists()
     ds_.create()
@@ -628,7 +628,7 @@ def test__data_series__symmetric_trunk():
 
     # with a root directory
     root_ds = root_data_series(prefix)
-    ds_ = autofile.schema.data_series.symmetric_trunk(prefix, root_ds=root_ds)
+    ds_ = autofile.schema.data_series.symmetry_trunk(prefix, root_ds=root_ds)
 
     root_locs_lst = [
         [1, 'a'],

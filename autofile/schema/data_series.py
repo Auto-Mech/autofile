@@ -154,11 +154,11 @@ def high_spin_leaf(prefix, root_ds=None):
     return theory_leaf(prefix, root_ds=root_ds)
 
 
-def symmetric_trunk(prefix, root_ds=None):
+def symmetry_trunk(prefix, root_ds=None):
     """ symmetric-conformer trunk DataSeries
     """
-    _map = _pack_arguments(loc_maps.symmetric_trunk)
-    nlocs = _count_arguments(loc_maps.symmetric_trunk)
+    _map = _pack_arguments(loc_maps.symmetry_trunk)
+    nlocs = _count_arguments(loc_maps.symmetry_trunk)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             root_ds=root_ds)
 
