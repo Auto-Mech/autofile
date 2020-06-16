@@ -205,7 +205,7 @@ def high_spin_trunk():
     return 'HS'
 
 
-def symmetric_trunk():
+def symmetry_trunk():
     """ symmetric-conformer trunk directory name
     """
     return 'SYM'
