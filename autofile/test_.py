@@ -114,18 +114,28 @@ def test__zmatrix():
     prefix = os.path.join(PREFIX, 'zmatrix')
     os.mkdir(prefix)
 
-    zm_fs = autofile.fs.zmatrix(prefix)
+    zma_fs = autofile.fs.zmatrix(prefix)
     locs = [0]
-    print(zm_fs[-1].path(locs))
+    print(zma_fs[-1].path(locs))
 
     ref_zma = ((('O', (None, None, None), (None, None, None)),
                 ('H', (0, None, None), ('R1', None, None))),
                {'R1': 1.84779})
-    print(zm_fs[-1].file.zmatrix.path(locs))
-    zm_fs[-1].create(locs)
-    zm_fs[-1].file.zmatrix.write(ref_zma, locs)
+
+    print(zma_fs[-1].file.zmatrix.path(locs))
+    zma_fs[-1].create(locs)
+    zma_fs[-1].file.zmatrix.write(ref_zma, locs)
     assert automol.zmatrix.almost_equal(
-        zm_fs[-1].file.zmatrix.read(locs), ref_zma)
+        zma_fs[-1].file.zmatrix.read(locs), ref_zma)
+
+    ref_tra = (frozenset({frozenset({3, 6})}),
+               frozenset({frozenset({1, 3}), frozenset({0, 6})}))
+
+    zma_fs[-1].file.transformation.write(ref_tra, locs)
+    tra = zma_fs[-1].file.transformation.read(locs)
+
+    print(tra)
+    assert tra == ref_tra
 
 
 def test__scan():

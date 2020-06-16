@@ -50,7 +50,7 @@ def string(inf_obj):
     """ write an information object to a YAML string
     """
     inf_dct = dict(inf_obj)
-    inf_str = yaml.dump(inf_dct, default_flow_style=False, sort_keys=False)
+    inf_str = yaml.dump(inf_dct, default_flow_style=None, sort_keys=False)
     return inf_str
 
 

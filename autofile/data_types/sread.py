@@ -147,6 +147,17 @@ def external_symmetry_factor(esf_str):
     return esf
 
 
+def transformation(tra_inf_str):
+    """ read a chemical transformation from a string
+    """
+    tra_inf_obj = information(tra_inf_str)
+    frm_bnd_keys = tra_inf_obj.bonds_formed
+    brk_bnd_keys = tra_inf_obj.bonds_broken
+    tra = automol.graph.trans.from_data(frm_bnd_keys=frm_bnd_keys,
+                                        brk_bnd_keys=brk_bnd_keys)
+    return tra
+
+
 def _float(val_str):
     assert apf.is_number(val_str)
     val = float(val_str)
