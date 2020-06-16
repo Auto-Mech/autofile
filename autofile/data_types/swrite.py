@@ -169,10 +169,21 @@ def lennard_jones_sigma(sig):
 
 
 def external_symmetry_factor(esf):
-    """ read an external symmetry factor from a string
+    """ write an external symmetry factor to a string
     """
     esf_str = _float(esf)
     return esf_str
+
+
+def transformation(tra):
+    """ write a chemical transformation to a string
+    """
+    frm_bnd_keys = list(map(list, automol.graph.trans.formed_bond_keys(tra)))
+    brk_bnd_keys = list(map(list, automol.graph.trans.broken_bond_keys(tra)))
+    tra_inf_obj = autofile.info.Info(bonds_formed=frm_bnd_keys,
+                                     bonds_broken=brk_bnd_keys)
+    tra_inf_str = information(tra_inf_obj)
+    return tra_inf_str
 
 
 def _float(val):

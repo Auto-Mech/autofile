@@ -384,20 +384,40 @@ def test__lennard_jones_sigma():
     assert numpy.isclose(ref_sig, sig)
 
 
+def test__transformation():
+    """ test the transformation read/write functions
+    """
+    ref_tra = (frozenset({frozenset({3, 6})}),
+               frozenset({frozenset({1, 3}), frozenset({0, 6})}))
+
+    tra_file_name = autofile.data_types.name.transformation('test')
+    tra_file_path = os.path.join(TMP_DIR, tra_file_name)
+    tra_str = autofile.data_types.swrite.transformation(ref_tra)
+
+    assert not os.path.isfile(tra_file_path)
+    autofile.io_.write_file(tra_file_path, tra_str)
+    assert os.path.isfile(tra_file_path)
+
+    tra_str = autofile.io_.read_file(tra_file_path)
+    tra = autofile.data_types.sread.transformation(tra_str)
+    assert tra == ref_tra
+
+
 if __name__ == '__main__':
-    test__energy()
-    test__geometry()
-    test__zmatrix()
-    test__file()
-    test__information()
-    test__gradient()
-    test__hessian()
-    test__trajectory()
-    test__vmatrix()
-    test__anharmonic_frequencies()
-    test__anharmonic_zpve()
-    test__anharmonicity_matrix()
-    test__vibro_rot_alpha_matrix()
-    test__quartic_centrifugal_distortion_constants()
-    test__lennard_jones_epsilon()
-    test__lennard_jones_sigma()
+    # test__energy()
+    # test__geometry()
+    # test__zmatrix()
+    # test__file()
+    # test__information()
+    # test__gradient()
+    # test__hessian()
+    # test__trajectory()
+    # test__vmatrix()
+    # test__anharmonic_frequencies()
+    # test__anharmonic_zpve()
+    # test__anharmonicity_matrix()
+    # test__vibro_rot_alpha_matrix()
+    # test__quartic_centrifugal_distortion_constants()
+    # test__lennard_jones_epsilon()
+    # test__lennard_jones_sigma()
+    test__transformation()

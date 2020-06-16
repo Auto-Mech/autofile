@@ -188,6 +188,15 @@ def trajectory(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
+def transformation(file_prefix):
+    """ generate transformation DataFile
+    """
+    name = autofile.data_types.name.transformation(file_prefix)
+    writer_ = autofile.data_types.swrite.transformation
+    reader_ = autofile.data_types.sread.transformation
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
 def lennard_jones_epsilon(file_prefix):
     """ generate lennard_jones_epsilon DataFile
     """

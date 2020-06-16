@@ -27,6 +27,7 @@ class Extension():
     LJ_EPSILON = '.eps'
     LJ_SIGMA = '.sig'
     EXTERNAL_SYMMETRY_FACTOR = '.esym'
+    TRANSFORMATION = '.t.yaml'
 
 
 def information(file_name):
@@ -165,6 +166,12 @@ def external_symmetry_factor(file_name):
     """ adds external symmetry number extension, if missing
     """
     return _add_extension(file_name, Extension.EXTERNAL_SYMMETRY_FACTOR)
+
+
+def transformation(file_name):
+    """ adds transformation extension, if missing
+    """
+    return _add_extension(file_name, Extension.TRANSFORMATION)
 
 
 def _add_extension(file_name, ext):
