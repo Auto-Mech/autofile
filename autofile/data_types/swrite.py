@@ -175,6 +175,13 @@ def external_symmetry_factor(esf):
     return esf_str
 
 
+def graph(gra):
+    """ write a molecular graph to a string
+    """
+    gra_str = automol.graph.string(gra)
+    return gra_str
+
+
 def transformation(tra):
     """ write a chemical transformation to a string
     """

@@ -147,6 +147,13 @@ def external_symmetry_factor(esf_str):
     return esf
 
 
+def graph(gra_str):
+    """ read a molecular graph from a string
+    """
+    gra = automol.graph.from_string(gra_str)
+    return gra
+
+
 def transformation(tra_inf_str):
     """ read a chemical transformation from a string
     """

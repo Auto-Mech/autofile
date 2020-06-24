@@ -93,6 +93,7 @@ class _FileAttributeName():
     HESS = 'hessian'
     HFREQ = 'harmonic_frequencies'
     TRAJ = 'trajectory'
+    REACTANT_GRAPH = 'reactant_graph'
     TRANS = 'transformation'
     ANHFREQ = 'anharmonic_frequencies'
     ANHZPVE = 'anharmonic_zpve'
@@ -455,12 +456,14 @@ def zmatrix(prefix):
     zmat_inp_dfile = data_files.input_file(_FilePrefix.ZMAT)
 
     zmat_dfile = data_files.zmatrix(_FilePrefix.ZMAT)
+    graph_dfile = data_files.graph(_FilePrefix.ZMAT)
     trans_dfile = data_files.transformation(_FilePrefix.ZMAT)
 
     leaf_ds.add_data_files({
         _FileAttributeName.GEOM_INFO:  zmat_inf_dfile,
         _FileAttributeName.GEOM_INPUT: zmat_inp_dfile,
         _FileAttributeName.ZMAT: zmat_dfile,
+        _FileAttributeName.REACTANT_GRAPH: graph_dfile,
         _FileAttributeName.TRANS: trans_dfile})
 
     return (trunk_ds, leaf_ds)
