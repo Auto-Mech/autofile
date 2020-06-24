@@ -68,14 +68,16 @@ def example5():
 
         # If it has an energy file, print the value
         for locs in cnf_fs[-1].existing():
-            ene = cnf_fs[-1].file.energy.read(locs)
-            print(ene)
+            path = cnf_fs[-1].path(locs)
+            print(path)
+            # ene = cnf_fs[-1].file.energy.read(locs)
+            # print(ene)
 
         print()
 
 
-# example1()
-# example2()
+example1()
+example2()
 example3()
-# example4()
-# example5()
+example4()
+example5()
