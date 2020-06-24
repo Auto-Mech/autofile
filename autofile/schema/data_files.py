@@ -188,6 +188,15 @@ def trajectory(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
+def graph(file_prefix):
+    """ generate graph DataFile
+    """
+    name = autofile.data_types.name.graph(file_prefix)
+    writer_ = autofile.data_types.swrite.graph
+    reader_ = autofile.data_types.sread.graph
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
 def transformation(file_prefix):
     """ generate transformation DataFile
     """

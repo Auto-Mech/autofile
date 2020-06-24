@@ -128,14 +128,47 @@ def test__zmatrix():
     assert automol.zmatrix.almost_equal(
         zma_fs[-1].file.zmatrix.read(locs), ref_zma)
 
-    ref_tra = (frozenset({frozenset({3, 6})}),
-               frozenset({frozenset({1, 3}), frozenset({0, 6})}))
+    ref_tra = (frozenset({frozenset({10, 7})}),
+               frozenset({frozenset({0, 10})}))
 
     zma_fs[-1].file.transformation.write(ref_tra, locs)
     tra = zma_fs[-1].file.transformation.read(locs)
 
     print(tra)
     assert tra == ref_tra
+
+    ref_gra = ({0: ('C', 0, None), 1: ('C', 0, None), 2: ('C', 0, None),
+                3: ('C', 0, None), 4: ('C', 0, None), 5: ('C', 0, None),
+                6: ('C', 0, None), 8: ('H', 0, None), 9: ('H', 0, None),
+                10: ('H', 0, None), 11: ('H', 0, None), 12: ('H', 0, None),
+                13: ('H', 0, None), 14: ('H', 0, None), 15: ('H', 0, None),
+                16: ('H', 0, None), 17: ('H', 0, None), 18: ('H', 0, None),
+                19: ('H', 0, None), 20: ('H', 0, None), 21: ('H', 0, None),
+                22: ('H', 0, None), 7: ('O', 0, None)},
+               {frozenset({4, 6}): (1, None), frozenset({21, 6}): (1, None),
+                frozenset({0, 2}): (1, None), frozenset({2, 4}): (1, None),
+                frozenset({5, 6}): (1, None), frozenset({17, 4}): (1, None),
+                frozenset({3, 5}): (1, None), frozenset({1, 3}): (1, None),
+                frozenset({20, 6}): (1, None), frozenset({0, 10}): (1, None),
+                frozenset({1, 12}): (1, None), frozenset({2, 14}): (1, None),
+                frozenset({18, 5}): (1, None), frozenset({1, 13}): (1, None),
+                frozenset({0, 8}): (1, None), frozenset({0, 9}): (1, None),
+                frozenset({3, 15}): (1, None), frozenset({1, 11}): (1, None),
+                frozenset({19, 5}): (1, None), frozenset({16, 3}): (1, None),
+                frozenset({22, 7}): (1, None)})
+
+    zma_fs[-1].file.reactant_graph.write(ref_gra, locs)
+    rct_gra = zma_fs[-1].file.reactant_graph.read(locs)
+
+    rct_atm_keys_lst = automol.graph.connected_components_atom_keys(rct_gra)
+    print(rct_atm_keys_lst)
+
+    # this is how we can get the product graph
+    prd_gra = automol.graph.trans.apply(tra, rct_gra)
+    prd_atm_keys_lst = automol.graph.connected_components_atom_keys(prd_gra)
+    print(prd_atm_keys_lst)
+
+    assert rct_gra == ref_gra
 
 
 def test__scan():

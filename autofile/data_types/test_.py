@@ -384,6 +384,30 @@ def test__lennard_jones_sigma():
     assert numpy.isclose(ref_sig, sig)
 
 
+def test__graph():
+    """ test the graph read/write functions
+    """
+    ref_gra = ({0: ('C', 3, None), 1: ('C', 2, None), 2: ('C', 3, None),
+                3: ('C', 1, None), 4: ('C', 1, None), 5: ('C', 1, None),
+                6: ('C', 1, False), 7: ('C', 1, False), 8: ('O', 0, None)},
+               {frozenset({1, 4}): (1, None), frozenset({4, 6}): (1, None),
+                frozenset({0, 3}): (1, None), frozenset({2, 6}): (1, None),
+                frozenset({6, 7}): (1, None), frozenset({8, 7}): (1, None),
+                frozenset({3, 5}): (1, True), frozenset({5, 7}): (1, None)})
+
+    gra_file_name = autofile.data_types.name.graph('test')
+    gra_file_path = os.path.join(TMP_DIR, gra_file_name)
+    gra_str = autofile.data_types.swrite.graph(ref_gra)
+
+    assert not os.path.isfile(gra_file_path)
+    autofile.io_.write_file(gra_file_path, gra_str)
+    assert os.path.isfile(gra_file_path)
+
+    gra_str = autofile.io_.read_file(gra_file_path)
+    gra = autofile.data_types.sread.graph(gra_str)
+    assert gra == ref_gra
+
+
 def test__transformation():
     """ test the transformation read/write functions
     """
@@ -420,4 +444,5 @@ if __name__ == '__main__':
     # test__quartic_centrifugal_distortion_constants()
     # test__lennard_jones_epsilon()
     # test__lennard_jones_sigma()
-    test__transformation()
+    test__graph()
+    # test__transformation()
