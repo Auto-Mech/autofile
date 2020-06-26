@@ -1,0 +1,13 @@
+inchis:
+- ['InChI=1S/C4H10O/c1-3-5-4-2/h3-4H2,1-2H3', InChI=1S/HO2/c1-2/h1H]
+- ['InChI=1S/C4H9O/c1-3-5-4-2/h1,3-4H2,2H3', InChI=1S/H2O2/c1-2/h1-2H]
+charges:
+- [0, 0]
+- [0, 0]
+multiplicities:
+- [1, 2]
+- [2, 1]
+ts_multiplicity: 2
+smiles:
+- [CCOCC, '[O]O']
+- ['[CH2]COCC', OO]

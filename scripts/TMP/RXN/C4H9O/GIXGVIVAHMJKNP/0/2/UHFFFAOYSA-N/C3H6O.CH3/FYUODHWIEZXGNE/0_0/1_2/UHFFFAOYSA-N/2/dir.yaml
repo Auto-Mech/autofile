@@ -1,0 +1,13 @@
+inchis:
+- ['InChI=1S/C4H9O/c1-2-3-4-5/h3,5H,2,4H2,1H3']
+- ['InChI=1S/C3H6O/c1-2-3-4/h2,4H,1,3H2', InChI=1S/CH3/h1H3]
+charges:
+- [0]
+- [0, 0]
+multiplicities:
+- [2]
+- [1, 2]
+ts_multiplicity: 2
+smiles:
+- ['CC[CH]CO']
+- [C=CCO, '[CH3]']
