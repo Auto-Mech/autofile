@@ -81,21 +81,27 @@ SAVE_PFX = '/lcrc/project/PACC/AutoMech/data/save/'
 # Lastly, write the zmatrix files for the z-matrix guess
 for zma_fs in itertools.chain(
         fs.iterate_managers(SAVE_PFX, ['REACTION', 'THEORY'], 'ZMATRIX')):
-    path = zma_fs[-1].path([0])
-    print(path)
 
-    scan_fs = fs.manager(path, 'SCAN')
+    if zma_fs[-1].exists([0]):
+        path = zma_fs[-1].path([0])
+        print(path)
 
-    scan_locs_lst = sorted(scan_fs[-1].existing())
+        scan_fs = fs.manager(path, 'SCAN')
 
-    if scan_locs_lst:
-        scan_locs = scan_locs_lst[0]
-        scan_path = scan_fs[-1].path(scan_locs)
-        print(scan_locs)
+        scan_locs_lst = sorted(scan_fs[-1].existing())
 
-        zma = scan_fs[-1].file.zmatrix.read(scan_locs)
+        if scan_locs_lst:
+            scan_locs = scan_locs_lst[0]
+            scan_path = scan_fs[-1].path(scan_locs)
+            print(scan_locs)
 
-        zma_fs[-1].file.zmatrix.write(zma, [0])
-        print('zmatrix written!')
+            zma = scan_fs[-1].file.zmatrix.read(scan_locs)
 
-    print()
+            zma_fs[-1].file.zmatrix.write(zma, [0])
+            print('zmatrix written!')
+        else:
+            zma_fs[0].removable = True
+            zma_fs[0].remove()
+            print('removing empty directory')
+
+        print()
