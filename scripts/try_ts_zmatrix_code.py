@@ -25,7 +25,7 @@ for rxn_locs, in fs.iterate_locators(TMP_PFX, ['REACTION']):
     rct_gras, _ = automol.graph.standard_keys_for_sequence(rct_gras)
     prd_gras, _ = automol.graph.standard_keys_for_sequence(prd_gras)
 
-    tras, rct_idxs, _, rxn_type = (
+    tras, rct_idxs, prd_idxs, rxn_type = (
         automol.graph.reac.classify(rct_gras, prd_gras))
 
     # Now, re-sort the reactants according to what the classifier tells us

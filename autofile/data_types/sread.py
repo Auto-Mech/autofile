@@ -154,14 +154,10 @@ def graph(gra_str):
     return gra
 
 
-def transformation(tra_inf_str):
+def transformation(tra_str):
     """ read a chemical transformation from a string
     """
-    tra_inf_obj = information(tra_inf_str)
-    frm_bnd_keys = tra_inf_obj.bonds_formed
-    brk_bnd_keys = tra_inf_obj.bonds_broken
-    tra = automol.graph.trans.from_data(frm_bnd_keys=frm_bnd_keys,
-                                        brk_bnd_keys=brk_bnd_keys)
+    tra = automol.graph.trans.from_string(tra_str)
     return tra
 
 
