@@ -4,13 +4,10 @@ them
 import automol
 from autofile import fs
 
-TMP_PFX = './TMP/'
+# PFX = './TMP/'
+PFX = '/lcrc/project/PACC/AutoMech/data/save/'
 
-
-# for rct_ichs, prd_ichs in [[['InChI=1S/C2H3O/c1-2-3/h1-3H'],
-#                             ['InChI=1S/C2H2O/c1-2-3/h1,3H', 'InChI=1S/H']]]:
-
-for rxn_locs, in fs.iterate_locators(TMP_PFX, ['REACTION']):
+for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
     (rct_ichs, prd_ichs), _, _, _ = rxn_locs
 
     rct_geos = list(map(automol.inchi.geometry, rct_ichs))

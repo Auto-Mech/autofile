@@ -76,8 +76,8 @@ def example5():
         print()
 
 
-example1()
-example2()
-example3()
+# example1()
+# example2()
+# example3()
 example4()
-example5()
+# example5()
