@@ -4,6 +4,7 @@ import os
 import glob
 import types
 import shutil
+import itertools
 import autofile.io_
 
 
@@ -174,15 +175,24 @@ class DataSeries():
                 raise ValueError("This function does not work "
                                  "without a locator DataFile")
 
-            pths = self.existing_paths(root_locs)
-            locs_lst = tuple(self.loc_dfile.read(pth) for pth in pths
-                             if self.loc_dfile.exists(pth))
-            if not relative:
-                locs_lst = tuple(map(list(root_locs).__add__, locs_lst))
+            root_nlocs = 0 if self.root is None else self.root.nlocs
+
+            # Recursion for when we have a root DataSeries
+            if len(root_locs) < root_nlocs:
+                locs_lst = tuple(itertools.chain(*(
+                    self.existing(root_locs_)
+                    for root_locs_ in self.root.existing(root_locs))))
+            else:
+                assert root_nlocs == len(root_locs)
+                pths = self._existing_paths(root_locs)
+                locs_lst = tuple(self.loc_dfile.read(pth) for pth in pths
+                                 if self.loc_dfile.exists(pth))
+                if not relative:
+                    locs_lst = tuple(map(list(root_locs).__add__, locs_lst))
 
         return locs_lst
 
-    def existing_paths(self, root_locs=()):
+    def _existing_paths(self, root_locs=()):
         """ existing paths at this prefix/root directory
         """
         if self.root is None:
