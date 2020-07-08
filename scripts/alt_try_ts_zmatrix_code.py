@@ -7,7 +7,12 @@ from autofile import fs
 # PFX = './TMP/'
 PFX = '/lcrc/project/PACC/AutoMech/data/save/'
 
-rxn_fs = fs.manager(PFX, 'REACTION')
+RXN_FS = fs.manager(PFX, 'REACTION')
+
+FORWARD_COUNT = 0
+BACKWARD_COUNT = 0
+OVERLAP_COUNT = 0
+FAIL_COUNT = 0
 
 for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
     (rct_ichs, prd_ichs), _, _, _ = rxn_locs
@@ -15,53 +20,84 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
     rct_gras = list(map(automol.inchi.graph, rct_ichs))
     prd_gras = list(map(automol.inchi.graph, prd_ichs))
 
+    rct_gras = list(map(automol.graph.without_stereo_parities, rct_gras))
+    prd_gras = list(map(automol.graph.without_stereo_parities, prd_gras))
+
     rct_gras = list(map(automol.graph.explicit, rct_gras))
     prd_gras = list(map(automol.graph.explicit, prd_gras))
 
     # Get one z-matrix for this reaction, if there is one
-    rxn_path = rxn_fs[-1].path(rxn_locs)
+    rxn_path = RXN_FS[-1].path(rxn_locs)
     zma_fs = next(fs.iterate_managers(rxn_path, ['THEORY', 'TRANSITION STATE',
                                                  'CONFORMER'], 'ZMATRIX'), None)
     if zma_fs is not None:
         zma_path = zma_fs[-1].path([0])
+        print([rct_ichs, prd_ichs])
         print(zma_path)
 
         if zma_fs[-1].file.zmatrix.exists([0]):
-            zma = zma_fs[-1].file.zmatrix.read([0])
-            ts_gra = automol.zmatrix.graph(zma, remove_stereo=True)
+            # Read out the z-matrix
+            ts_zma = zma_fs[-1].file.zmatrix.read([0])
 
-            # Here is where we can build the reactant graph and determine the
-            # direction.
-            # See if the reactant/product graphs are isomoprhic to a subgraph
-            # of the TS, then extract that subgraph.
+            # Note that the keys in rct_gras and prd_gras at this point are
+            # arbitrary. The following work determines the transformation and
+            # the reactant graph *in terms of the z-matrix keys*.
 
-            # First, just see if there is a 
-            rct1_iso_dct = automol.graph.full_subgraph_isomorphism(
-                ts_gra, rct_gras[0])
+            # Attempt to determine the transformation in the forward direction
+            forw_tra, forw_rct_gra = automol.zmatrix.ts.zmatrix_reaction_info(
+                ts_zma, rct_gras, prd_gras)
 
-            prd1_iso_dct = automol.graph.full_subgraph_isomorphism(
-                ts_gra, prd_gras[0])
+            # Attempt to determine the transformation in the backward direction
+            back_tra, back_rct_gra = automol.zmatrix.ts.zmatrix_reaction_info(
+                ts_zma, rct_gras=prd_gras, prd_gras=rct_gras)
 
-            if rct1_iso_dct is not None and prd1_iso_dct is None:
-                print('forward reaction')
-                rct1_atm_keys = rct1_iso_dct.keys()
-                rct1_gra = automol.graph.subgraph(ts_gra, rct1_iso_dct.keys())
-                print(automol.graph.string(rct1_gra))
-            elif rct1_iso_dct is None and prd1_iso_dct is not None:
-                print('backward reaction')
-                prd1_atm_keys = prd1_iso_dct.keys()
-                prd1_gra = automol.graph.subgraph(ts_gra, prd1_iso_dct.keys())
-                print(automol.graph.string(prd1_gra))
-            elif rct1_iso_dct is not None and prd1_iso_dct is not None:
-                print('direction is undecided')
-            else:
-                print('no subgraph isomorphism was found')
+            # The transformations (formed/broken keys) returned by the above
+            # function are aligned to the z-matrix and *should* correspond to
+            # the correct atoms in the z-matrix. Since there are many
+            # transformations possible between rct_gras and prd_gras, I have
+            # chosen the one in which the bonds formed and broken are
+            # *shortest* in the TS z-matrix, which should correspond to the
+            # ones that were actually used to generate it.
 
-            # TODO: If there is a second reactant, we can determine its graph
-            # by taking the keys in ts_gra not in rct1_gra (or prd1_gra) and
-            # getting that subgraph. Then we can form a union of these two
-            # graphs to get the reactant graph. Furthermore, if we run the
-            # classifier on these graphs (in the forward direction), we can get
-            # the formed and broken keys.
+            # If we have found a correctly-aligned transformation, we can now
+            # use it to determine the correctly-aligned reactant graph, with
+            # keys corresponding to those in the TS z-matrix.
 
-            print()
+            if forw_tra is not None:
+                print("Found transformation in the forward direction")
+
+                print("Reactant graph, with keys aligned to zmatrix:")
+                print(automol.graph.string(forw_rct_gra))
+
+                print("Reaction transformation, with keys aligned to zmatrix:")
+                print(automol.graph.trans.string(forw_tra))
+
+                FORWARD_COUNT += 1
+
+            if back_tra is not None:
+                BACKWARD_COUNT += 1
+                print("Found transformation in the backward direction")
+
+                print("Reactant graph, with keys aligned to zmatrix:")
+                print(automol.graph.string(back_rct_gra))
+
+                print("Reaction transformation, with keys aligned to zmatrix:")
+                print(automol.graph.trans.string(back_tra))
+
+            # If the formed and broken bonds are both too long in the TS to be
+            # considered connected, we may not dect a transformation in either
+            # direction. I could imagine a hacky fix for this, in which we add
+            # connections between the next closest atoms.
+            if forw_tra is None and back_tra is None:
+                print("No TS subgraph match")
+                print(automol.zmatrix.string(ts_zma))
+
+                FAIL_COUNT += 1
+
+            if forw_tra is not None and back_tra is not None:
+                OVERLAP_COUNT += 1
+
+print('forward count:', FORWARD_COUNT)
+print('backward count:', BACKWARD_COUNT)
+print('overlap count:', OVERLAP_COUNT)
+print('fail count:', FAIL_COUNT)
