@@ -26,6 +26,9 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
     rct_gras = list(map(automol.graph.explicit, rct_gras))
     prd_gras = list(map(automol.graph.explicit, prd_gras))
 
+    print(rct_ichs)
+    print(prd_ichs)
+
     # Get one z-matrix for this reaction, if there is one
     rxn_path = RXN_FS[-1].path(rxn_locs)
     zma_fs = next(fs.iterate_managers(rxn_path, ['THEORY', 'TRANSITION STATE',
