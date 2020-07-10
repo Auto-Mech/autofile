@@ -65,7 +65,8 @@ def from_string(inf_str):
 def matches_function_signature(inf_obj, function):
     """ does the information object match this function signature?
     """
-    assert isinstance(inf_obj, Info)
+    assert isinstance(inf_obj, Info), (
+            'No! {} != {}'.format(type(inf_obj), 'Info') )
     return inf_obj.keys_() == _function_keys(function)
 
 
