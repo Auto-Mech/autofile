@@ -14,7 +14,9 @@ BACKWARD_COUNT = 0
 OVERLAP_COUNT = 0
 FAIL_COUNT = 0
 
+fails = []
 for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
+    # print('HERE')
     (rct_ichs, prd_ichs), _, _, _ = rxn_locs
 
     rct_gras = list(map(automol.inchi.graph, rct_ichs))
@@ -26,8 +28,12 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
     rct_gras = list(map(automol.graph.explicit, rct_gras))
     prd_gras = list(map(automol.graph.explicit, prd_gras))
 
-    print(rct_ichs)
-    print(prd_ichs)
+    # print('ichs')
+    # print(rct_ichs)
+    # print(prd_ichs)
+    # print('smi')
+    # print(list((automol.inchi.smiles(ich) for ich in rct_ichs)))
+    # print(list((automol.inchi.smiles(ich) for ich in prd_ichs)))
 
     # Get one z-matrix for this reaction, if there is one
     rxn_path = RXN_FS[-1].path(rxn_locs)
@@ -35,7 +41,7 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
                                                  'CONFORMER'], 'ZMATRIX'), None)
     if zma_fs is not None:
         zma_path = zma_fs[-1].path([0])
-        print([rct_ichs, prd_ichs])
+        # print([rct_ichs, prd_ichs])
         print(zma_path)
 
         if zma_fs[-1].file.zmatrix.exists([0]):
@@ -67,25 +73,25 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
             # keys corresponding to those in the TS z-matrix.
 
             if forw_tra is not None:
-                print("Found transformation in the forward direction")
+                # print("Found transformation in the forward direction")
 
-                print("Reactant graph, with keys aligned to zmatrix:")
-                print(automol.graph.string(forw_rct_gra))
+                # print("Reactant graph, with keys aligned to zmatrix:")
+                # print(automol.graph.string(forw_rct_gra))
 
-                print("Reaction transformation, with keys aligned to zmatrix:")
-                print(automol.graph.trans.string(forw_tra))
+                # print("Reaction transformation, with keys aligned to zmatrix:")
+                # print(automol.graph.trans.string(forw_tra))
 
                 FORWARD_COUNT += 1
 
             if back_tra is not None:
                 BACKWARD_COUNT += 1
-                print("Found transformation in the backward direction")
+                # print("Found transformation in the backward direction")
 
-                print("Reactant graph, with keys aligned to zmatrix:")
-                print(automol.graph.string(back_rct_gra))
+                # print("Reactant graph, with keys aligned to zmatrix:")
+                # print(automol.graph.string(back_rct_gra))
 
-                print("Reaction transformation, with keys aligned to zmatrix:")
-                print(automol.graph.trans.string(back_tra))
+                # print("Reaction transformation, with keys aligned to zmatrix:")
+                # print(automol.graph.trans.string(back_tra))
 
             # If the formed and broken bonds are both too long in the TS to be
             # considered connected, we may not dect a transformation in either
@@ -93,14 +99,42 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
             # connections between the next closest atoms.
             if forw_tra is None and back_tra is None:
                 print("No TS subgraph match")
-                print(automol.zmatrix.string(ts_zma))
+                # print(automol.zmatrix.string(ts_zma))
+                # print(automol.geom.string(automol.zmatrix.geometry(ts_zma)))
+                print('ichs')
+                print(rct_ichs)
+                print(prd_ichs)
+                print('smi')
+                print(list((automol.inchi.smiles(ich) for ich in rct_ichs)))
+                print(list((automol.inchi.smiles(ich) for ich in prd_ichs)))
+                print(zma_path)
 
                 FAIL_COUNT += 1
 
             if forw_tra is not None and back_tra is not None:
+                print("Overlap match")
+                # print(automol.zmatrix.string(ts_zma))
+                print('ichs')
+                print(rct_ichs)
+                print(prd_ichs)
+                print('smi')
+                print(list((automol.inchi.smiles(ich) for ich in rct_ichs)))
+                print(list((automol.inchi.smiles(ich) for ich in prd_ichs)))
+                print(zma_path)
+                # print(automol.geom.string(automol.zmatrix.geometry(ts_zma)))
                 OVERLAP_COUNT += 1
+                fails.append(
+                    [rct_ichs, prd_ichs, 'rxn', zma_path]
+                )
 
 print('forward count:', FORWARD_COUNT)
 print('backward count:', BACKWARD_COUNT)
 print('overlap count:', OVERLAP_COUNT)
 print('fail count:', FAIL_COUNT)
+
+print('\n\nfailures to fix by hand:')
+for fail in fails:
+    print('[')
+    for x in fail:
+        print('    ', x, ',')
+    print(']')
