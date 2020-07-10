@@ -28,6 +28,9 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
     rct_gras = list(map(automol.graph.explicit, rct_gras))
     prd_gras = list(map(automol.graph.explicit, prd_gras))
 
+    rct_smis = list((automol.inchi.smiles(ich) for ich in rct_ichs))
+    prd_smis = list((automol.inchi.smiles(ich) for ich in prd_ichs))
+
     # print('ichs')
     # print(rct_ichs)
     # print(prd_ichs)
@@ -80,6 +83,9 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
 
                 # print("Reaction transformation, with keys aligned to zmatrix:")
                 # print(automol.graph.trans.string(forw_tra))
+                fails.append(
+                    [rct_smis, prd_smis, rct_ichs, prd_ichs, 'rxn', zma_path]
+                )
 
                 FORWARD_COUNT += 1
 
@@ -92,49 +98,59 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
 
                 # print("Reaction transformation, with keys aligned to zmatrix:")
                 # print(automol.graph.trans.string(back_tra))
+                fails.append(
+                    [rct_smis, prd_smis, rct_ichs, prd_ichs, 'rxn', zma_path]
+                )
 
             # If the formed and broken bonds are both too long in the TS to be
             # considered connected, we may not dect a transformation in either
             # direction. I could imagine a hacky fix for this, in which we add
             # connections between the next closest atoms.
             if forw_tra is None and back_tra is None:
-                print("No TS subgraph match")
+                # print("No TS subgraph match")
                 # print(automol.zmatrix.string(ts_zma))
                 # print(automol.geom.string(automol.zmatrix.geometry(ts_zma)))
-                print('ichs')
-                print(rct_ichs)
-                print(prd_ichs)
-                print('smi')
-                print(list((automol.inchi.smiles(ich) for ich in rct_ichs)))
-                print(list((automol.inchi.smiles(ich) for ich in prd_ichs)))
-                print(zma_path)
+                # print('ichs')
+                # print(rct_ichs)
+                # print(prd_ichs)
+                # print('smi')
+                # print(list((automol.inchi.smiles(ich) for ich in rct_ichs)))
+                # print(list((automol.inchi.smiles(ich) for ich in prd_ichs)))
+                # print(zma_path)
+                fails.append(
+                    [rct_smis, prd_smis, rct_ichs, prd_ichs, 'rxn', zma_path]
+                )
 
                 FAIL_COUNT += 1
 
             if forw_tra is not None and back_tra is not None:
-                print("Overlap match")
+                # print("Overlap match")
                 # print(automol.zmatrix.string(ts_zma))
-                print('ichs')
-                print(rct_ichs)
-                print(prd_ichs)
-                print('smi')
-                print(list((automol.inchi.smiles(ich) for ich in rct_ichs)))
-                print(list((automol.inchi.smiles(ich) for ich in prd_ichs)))
-                print(zma_path)
+                # print('ichs')
+                # print(rct_ichs)
+                # print(prd_ichs)
+                # print('smi')
+                # print(list((automol.inchi.smiles(ich) for ich in rct_ichs)))
+                # print(list((automol.inchi.smiles(ich) for ich in prd_ichs)))
+                # print(zma_path)
                 # print(automol.geom.string(automol.zmatrix.geometry(ts_zma)))
                 OVERLAP_COUNT += 1
-                fails.append(
-                    [rct_ichs, prd_ichs, 'rxn', zma_path]
-                )
 
-print('forward count:', FORWARD_COUNT)
-print('backward count:', BACKWARD_COUNT)
-print('overlap count:', OVERLAP_COUNT)
-print('fail count:', FAIL_COUNT)
+# print('forward count:', FORWARD_COUNT)
+# print('backward count:', BACKWARD_COUNT)
+# print('overlap count:', OVERLAP_COUNT)
+# print('fail count:', FAIL_COUNT)
 
-print('\n\nfailures to fix by hand:')
+print('fails = ')
 for fail in fails:
     print('[')
-    for x in fail:
-        print('    ', x, ',')
+    for i, x in enumerate(fail):
+        if i in (0, 1):
+            print('     #', x, ',')
+        elif i in (2, 3):
+            z = [elm for elm in x]
+            print('    ', z, ',')
+        else:
+            print('    ', "'"+x+"'", ',')
     print(']')
+print(']')
