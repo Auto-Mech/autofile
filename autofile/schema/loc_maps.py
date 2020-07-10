@@ -220,7 +220,9 @@ def zmatrix_trunk():
 def zmatrix_leaf(num):
     """ zmatrix leaf directory name
     """
-    assert isinstance(num, numbers.Integral) and 0 <= num <= 99
+    assert isinstance(num, numbers.Integral) and 0 <= num <= 99, (
+            'Num {} must be integer between 0 and 99'.format(num)
+    )
     return '{:02d}'.format(int(num))
 
 

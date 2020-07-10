@@ -42,7 +42,7 @@ def tau_trunk(nsamp, tors_ranges):
     tors_range_dct = dict(tors_ranges)
     for key, rng in tors_range_dct.items():
         tors_range_dct[key] = (rng[0]*180./numpy.pi, rng[1]*180./numpy.pi)
-
+   
     assert all(isinstance(key, str) and len(rng) == 2
                and all(isinstance(x, numbers.Real) for x in rng)
                for key, rng in tors_range_dct.items())
