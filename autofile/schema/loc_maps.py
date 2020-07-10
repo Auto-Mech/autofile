@@ -163,8 +163,7 @@ def theory_leaf(method, basis, orb_type):
     :type orb_type: str
     """
     assert elstruct.Method.contains(method)
-    assert elstruct.Basis.contains(basis)
-
+    assert elstruct.Basis.contains(basis) 
     assert orb_type in ('R', 'U')
 
     dir_name = ''.join([_short_hash(method.lower()),
