@@ -2,6 +2,8 @@
 """
 
 import os
+import subprocess
+import shutil
 import tempfile
 import automol
 import projrot_io
@@ -11,39 +13,90 @@ from autofile import fs
 PFX = '/lcrc/project/PACC/AutoMech/data/save/'
 
 
-def remove_empty_thy_dirs():
+def remove_empty_thy_spc_dirs():
     """ Get rid of the empty theory directories
     """
+    paths = fs.iterate_paths(
+        PFX, ['SPECIES', 'THEORY']
+    )
+
+    for path in paths:
+        print(path)
+        thy_dirs = os.listdir(path)
+        print(thy_dirs)
+        if 'hess.hess' in thy_dirs:
+            hess_path = os.path.join(path, 'hess.hess')
+            os.remove(hess_path)
+        if 'geom.zmat' in thy_dirs:
+            zma_path = os.path.join(path, 'geom.zmat')
+            os.remove(zma_path)
+        print()
+
+
+def remove_empty_thy_ts_dirs():
+    """ Get rid of the empty theory directories
+    """
+    # paths = fs.iterate_paths(
+    #     PFX, ['SPECIES', 'THEORY']
+    # )
     paths = fs.iterate_paths(
         PFX, ['REACTION', 'THEORY']
     )
 
     for path in paths:
+        # Get all paths
+        print(path)
         thy_dirs = os.listdir(path)
-        if 'CONFS' not in thy_dirs:
-            print(path)
-            print(thy_dirs)
-            # put in a remove command for the path
+        print(thy_dirs)
+        if thy_dirs == ['dir.yaml']
+        # for dir1 in thy_dirs:
+        #     if dir1 == 'TS':
+        #         thy_dir = os.path.join(path, dir1)
+        #         dirs = os.listdir(thy_dir)
+        #         if 'CONFS' not in dirs:
+        #             print('\n\nNO CONFS, DELETE')
+        #             print(thy_dir)
+        #             print(dirs)
+        #             # shutil.rmtree(thy_dir)
+        #         else:
+        #             print('\n\nWITH CONFS, KEEP')
+        #             print(thy_dir)
+        #             print(dirs)
+        #             # bad_proj = os.path.join(thy_dir, 'PF')
+        #             # bad_pf = os.path.join(thy_dir, 'PROJ')
+        #             # if os.path.exists(bad_proj):
+        #             #     print('bad proj')
+        #             #     print(bad_proj)
+        #             #     shutil.rmtree(bad_proj)
+        #             # if os.path.exists(bad_pf):
+        #             #     print('bad pf')
+        #             #     print(bad_pf)
+        #             #     shutil.rmtree(bad_pf)
+        #             # print(thy_dir)
+        #             # print(dirs)
+        #             # put in a remove command for the path
 
 
 def remove_pf_dirs_from_save():
     """ Get rid of the empty theory directories
     """
     spc_paths = fs.iterate_paths(
-        PFX, ['SPECIES', 'THEORY']
+        PFX, ['SPECIES', 'THEORY', 'CONFORMER']
     )
-    ts_paths = fs.iterate_paths(
-        PFX, ['REACTION', 'THEORY', 'TRANSITION STATE']
-    )
-    paths = list(spc_paths) + list(ts_paths)
+    # ts_paths = fs.iterate_paths(
+    #     PFX, ['REACTION', 'THEORY', 'TRANSITION STATE', 'CONFORMER']
+    # )
+    # paths = list(spc_paths) + list(ts_paths)
 
-    bad_dirs = ['PF', 'PROJ']
+    bad_dirs = ['PF', 'PROJ', 'NASA']
 
-    for path in paths:
+    for path in spc_paths:
+        # print(path)
         for bad_dir in bad_dirs:
             bad_path = os.path.join(path, bad_dir)
             if os.path.exists(bad_path):
                 print(bad_path)
+                # shutil.rmtree(bad_path)
                 # put in a remove command for the path
 
 
@@ -54,9 +107,10 @@ def write_freqs():
     # Build tmp dir to run ProjRot
     prefix = tempfile.mkdtemp()
     print(prefix)
+    start_path = os.getcwd()
 
-    ini = ['REACTION', 'THEORY', 'TRANSITION STATE']
-    # ini = ['SPECIES', 'THEORY']
+    # ini = ['REACTION', 'THEORY', 'TRANSITION STATE']
+    ini = ['SPECIES', 'THEORY']
 
     saddle = bool('REACTION' in ini)
 
@@ -66,14 +120,17 @@ def write_freqs():
 
     bad_path = []
     for cnf_fs in managers:
+        # print(cnf_fs[-1].existing())
         for locs in cnf_fs[-1].existing():
+            cnf_path = cnf_fs[-1].path(locs)
+            print(cnf_path)
             if cnf_fs[-1].file.hessian.exists(locs):
-                cnf_path = cnf_fs[-1].path(locs)
-                print(cnf_path)
+                print('RUNNING HESS')
 
                 # Read the info
                 geom = cnf_fs[-1].file.geometry.read(locs)
-                grad = cnf_fs[-1].file.gradient.read(locs)
+                # grad = cnf_fs[-1].file.gradient.read(locs)
+                grad = []
                 hess = cnf_fs[-1].file.hessian.read(locs)
 
                 # Write the ProjRot input file
@@ -82,6 +139,10 @@ def write_freqs():
                 in_path = os.path.join(prefix, 'RPHt_input_data.dat')
                 with open(in_path, 'w') as proj_file:
                     proj_file.write(inp_str)
+
+                os.chdir(prefix)
+                subprocess.check_call(['RPHt.exe'])
+                os.chdir(start_path)
 
                 # Read the harmonic frequencies
                 out_path = os.path.join(prefix, 'RTproj_freq.dat')
@@ -93,24 +154,129 @@ def write_freqs():
                 # Combine freqs
                 if saddle:
                     if len(imag) == 1:
-                        wfreqs = freqs + imag
+                        wfreqs = freqs + [-1.0*x for x in imag]
                     else:
                         wfreqs = []
                         bad_path.append(cnf_path)
+                        print('bad_freqs')
+                        print(freqs)
+                        print(imag)
                 else:
                     if len(imag) == 0:
                         wfreqs = freqs
                     else:
                         wfreqs = []
                         bad_path.append(cnf_path)
+                        print('bad_freqs')
+                        print(freqs)
+                        print(imag)
 
                 # Write the freqs
                 if wfreqs:
-                    cnf_fs[-1].file.harmonic_frequencies.write(wfreqs, locs)
+                    print('FREQS GOOD')
+                    print(wfreqs)
+                    cnf_fs[-1].file.harmonic_frequencies.write(sorted(wfreqs), locs)
+
+
+def add_zma_trans():
+    """ Add the zma input files using geo inputs
+    """
+    cnf_managers = fs.iterate_managers(PFX, ['REACTION', 'THEORY', 'TRANSITION STATE'],
+                                             'CONFORMER')
+    for cnf_fs in cnf_managers:
+        if cnf_fs is not None:
+            print()
+            gra = None
+            for locs in cnf_fs[-1].existing():
+                cnf_path = cnf_fs[-1].path(locs)
+                zma_fs = fs.manager(cnf_path, 'ZMATRIX')
+                zma_path = zma_fs[-1].path([0])
+                # if zma_fs[-1].file.transformation.exists([0]):
+                #     tra = zma_fs[-1].file.transformation.read([0])
+                #     print('FOUND TRA')
+                #     print(zma_path)
+                #     break
+                if zma_fs[-1].file.reactant_graph.exists([0]):
+                    gra = zma_fs[-1].file.reactant_graph.read([0])
+                    print('FOUND GRAPH')
+                    print(zma_fs[-1].path([0]))
+                    break
+            print('---')
+            print()
+            for locs in cnf_fs[-1].existing():
+                cnf_path = cnf_fs[-1].path(locs)
+                zma_fs = fs.manager(cnf_path, 'ZMATRIX')
+                zma_path = zma_fs[-1].path([0])
+                # if not zma_fs[-1].file.transformation.exists([0]):
+                if not zma_fs[-1].file.reactant_graph.exists([0]):
+                    print('WRITING GRA AT CONF')
+                    print(zma_path)
+                    zma_fs = fs.manager(cnf_path, 'ZMATRIX')
+                    # zma_fs[-1].file.transformation.write(tra, [0])
+                    zma_fs[-1].file.reactant_graph.write(gra, [0])
+                else:
+                    print('GRA GOOD')
+                    print(zma_path)
+
+
+def add_zma_inp():
+    """ Add the zma input files using geo inputs
+    """
+    cnf_managers = fs.iterate_managers(PFX, ['REACTION', 'THEORY', 'TRANSITION STATE'],
+                                             'CONFORMER')
+    for cnf_fs in cnf_managers:
+        if cnf_fs is not None:
+            print()
+            for locs in cnf_fs[-1].existing():
+                cnf_path = cnf_fs[-1].path(locs)
+                # zma_fs = fs.manager(cnf_path, 'ZMATRIX')
+                if cnf_fs[-1].file.geometry_input.exists(locs):
+                    inp_str = cnf_fs[-1].file.geometry_input.read(locs)
+                    print('FOUND INPUT')
+                    print(cnf_fs[-1].path(locs))
+                    break
+            for locs in cnf_fs[-1].existing():
+                cnf_path = cnf_fs[-1].path(locs)
+                zma_fs = fs.manager(cnf_path, 'ZMATRIX')
+                zma_path = zma_fs[-1].path([0])
+                if not zma_fs[-1].file.geometry_input.exists([0]):
+                    print('WRITING INPUT')
+                    print(zma_path)
+                    # zma_fs = fs.manager(cnf_path, 'ZMATRIX')
+                    zma_fs[-1].file.geometry_input.write(inp_str, [0])
+                else:
+                    print('INPUT GOOD')
+                    print(zma_path)
+
+
+def check_zma_for_trans():
+    """  Check zma for trans files
+    """
+    zma_managers = fs.iterate_managers(PFX, ['REACTION', 'THEORY', 'TRANSITION STATE',
+                                             'CONFORMER'], 'ZMATRIX')
+    BAD = 0
+    for zma_fs in zma_managers:
+        zma_path = zma_fs[-1].path([0])
+        print(zma_path)
+        if zma_fs is not None:
+            if zma_fs[-1].file.transformation.exists([0]):
+                print('GOOD')
+            else:
+                print('NO TRANS')
+                BAD += 1
+        else:
+            print('zma none')
+        print()
+
+    print('\nBAD CNT', BAD)
 
 
 if __name__ == '__main__':
-    # remove_empty_thy_dirs()
+    # add_zma_trans()
+    # add_zma_inp()
+    # check_zma_for_trans()
+    # remove_empty_thy_spc_dirs()
+    remove_empty_thy_ts_dirs()
     # remove_pf_dirs_from_save()
     # ts_keys()
-    write_freqs()
+    # write_freqs()

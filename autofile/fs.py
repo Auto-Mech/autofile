@@ -761,6 +761,8 @@ def run(prefix):
                 - info
                 - input
                 - output
+                - geometry
+                - zmatrix
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -772,12 +774,15 @@ def run(prefix):
                                        function=info_objects.run)
     inp_dfile = data_files.input_file(_FilePrefix.RUN)
     out_dfile = data_files.output_file(_FilePrefix.RUN)
+    geom_dfile = data_files.geometry(_FilePrefix.GEOM)
+
     trunk_ds.add_data_files({
         _FileAttributeName.INFO: inf_dfile})
     leaf_ds.add_data_files({
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.INPUT: inp_dfile,
-        _FileAttributeName.OUTPUT: out_dfile})
+        _FileAttributeName.OUTPUT: out_dfile,
+        _FileAttributeName.GEOM: geom_dfile})
 
     return (trunk_ds, leaf_ds)
 

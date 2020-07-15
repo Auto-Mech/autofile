@@ -196,13 +196,23 @@ def test__cscan():
 
     scn_fs = autofile.fs.cscan(prefix)
     # the dictionary at the end specifies the constraint values
-    locs = [['d3', 'd4'], [1.2, 2.9], {'r1': 1., 'a2': 2.3}]
-    print(scn_fs[-1].path(locs))
+    locs1 = [['d3', 'd4']]
+    print(locs1)
+    locs2 = [['d3', 'd4'], [1.2, 2.9]]
+    print(locs2)
+    locs3 = [['d3', 'd4'], [1.2, 2.9], {'r1': 1., 'a2': 2.3}]
+    print(locs3)
+    print('1', scn_fs[1].path(locs1))
+    print('2', scn_fs[2].path(locs2))
+    print('3', scn_fs[3].path(locs3))
 
     ref_inp_str = '<input string>'
-    print(scn_fs[-1].file.geometry_input.path(locs))
-    scn_fs[-1].create(locs)
-    scn_fs[-1].file.geometry_input.write(ref_inp_str, locs)
+    print(scn_fs[-1].file.geometry_input.path(locs3))
+    scn_fs[-1].create(locs3)
+    scn_fs[-1].file.geometry_input.write(ref_inp_str, locs3)
+    # print('1', scn_fs[1].existing(locs1))
+    print('2', scn_fs[2].existing(locs1))
+    print('3', scn_fs[3].existing([locs2]))
     assert scn_fs[-1].file.geometry_input.read(locs) == ref_inp_str
 
 
@@ -304,5 +314,5 @@ if __name__ == '__main__':
     # test__scan()
     # test__run()
     # test__build()
-    # test__cscan()
-    test__zmatrix()
+    test__cscan()
+    # test__zmatrix()
