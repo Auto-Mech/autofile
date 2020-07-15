@@ -175,7 +175,7 @@ class DataSeries():
                 raise ValueError("This function does not work "
                                  "without a locator DataFile")
 
-            root_nlocs = 0 if self.root is None else self.root.nlocs
+            root_nlocs = self.root_locator_count()
 
             # Recursion for when we have a root DataSeries
             if len(root_locs) < root_nlocs:
@@ -183,7 +183,9 @@ class DataSeries():
                     self.existing(root_locs_)
                     for root_locs_ in self.root.existing(root_locs))))
             else:
-                assert root_nlocs == len(root_locs)
+                assert root_nlocs == len(root_locs), (
+                    '{} != {}'.format(root_nlocs, len(root_locs)))
+
                 pths = self._existing_paths(root_locs)
                 locs_lst = tuple(self.loc_dfile.read(pth) for pth in pths
                                  if self.loc_dfile.exists(pth))
@@ -204,6 +206,15 @@ class DataSeries():
         pths = filter(os.path.isdir, glob.glob(pth_pattern))
         pths = tuple(sorted(os.path.join(prefix, pth) for pth in pths))
         return pths
+
+    def root_locator_count(self):
+        """ count the number of root locator values recursively
+        """
+        if self.root is None:
+            root_nlocs = 0
+        else:
+            root_nlocs = self.root.nlocs + self.root.root_locator_count()
+        return root_nlocs
 
     # helpers
     def _self_locators(self, locs):

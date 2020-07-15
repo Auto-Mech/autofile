@@ -3,7 +3,7 @@
 import automol
 from autofile import fs
 
-PFX = '/lcrc/project/PACC/AutoMech/data/run/'
+PFX = '/lcrc/project/PACC/AutoMech/data/save/'
 
 
 def example1():
@@ -76,8 +76,56 @@ def example5():
         print()
 
 
+def example6():
+    """
+    Example 6: Iterate over CSCANS managers
+    """
+
+    for scn_fs in fs.iterate_managers(
+            PFX,
+            ['REACTION', 'THEORY', 'TRANSITION STATE', 'CONFORMER', 'ZMATRIX'],
+            'CSCAN'):
+        if scn_fs[0].exists():
+            print(scn_fs[0].path())
+
+            # Note that the following loops all do the same thing
+
+            # Combined loop over scan coordinates, coordinate values, and
+            # constraints
+            for locs in scn_fs[-1].existing():
+                print(locs)
+
+            print()
+
+            # Loop over all directories for a given set of scan coordinates
+            for root_locs in scn_fs[1].existing():
+                print('root: {}'.format(root_locs))
+                for locs in scn_fs[3].existing(root_locs):
+                    print(locs)
+
+            print()
+
+            # Loop over all directories for a given set of scan coordinates and
+            # values
+            for root_locs in scn_fs[2].existing():
+                print('root: {}'.format(root_locs))
+                for locs in scn_fs[3].existing(root_locs):
+                    print(locs)
+
+            print()
+
+            # Completely split out the loop
+            for root_locs1 in scn_fs[1].existing():
+                print('root1: {}'.format(root_locs1))
+                for root_locs2 in scn_fs[2].existing(root_locs1):
+                    print('root2: {}'.format(root_locs2))
+                    for locs in scn_fs[3].existing(root_locs2):
+                        print(locs)
+            print()
+
 # example1()
 # example2()
 # example3()
-example4()
+# example4()
 # example5()
+example6()
