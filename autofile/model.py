@@ -184,8 +184,8 @@ class DataSeries():
                     for root_locs_ in self.root.existing(root_locs))))
             else:
                 assert root_nlocs == len(root_locs), (
-                    '{} != {}'.format(root_nlocs, len(root_locs)))
-
+                    '{} != {}'.format(root_nlocs, len(root_locs))
+                )
                 pths = self._existing_paths(root_locs)
                 locs_lst = tuple(self.loc_dfile.read(pth) for pth in pths
                                  if self.loc_dfile.exists(pth))

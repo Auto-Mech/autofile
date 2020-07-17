@@ -200,9 +200,9 @@ def test__cscan():
     print(scn_fs[-1].path(locs))
 
     ref_inp_str = '<input string>'
-    print(scn_fs[-1].file.geometry_input.path(locs))
-    scn_fs[-1].create(locs)
-    scn_fs[-1].file.geometry_input.write(ref_inp_str, locs)
+    print(scn_fs[-1].file.geometry_input.path(locs3))
+    scn_fs[-1].create(locs3)
+    scn_fs[-1].file.geometry_input.write(ref_inp_str, locs3)
     assert scn_fs[-1].file.geometry_input.read(locs) == ref_inp_str
 
 
@@ -304,5 +304,5 @@ if __name__ == '__main__':
     # test__scan()
     # test__run()
     # test__build()
-    # test__cscan()
-    test__zmatrix()
+    test__cscan()
+    # test__zmatrix()

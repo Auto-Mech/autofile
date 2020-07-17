@@ -65,12 +65,16 @@ def scan_branch(grids):
     # note:renormalization of angle ranges needs to be updated for 2D grids.
     for key, rng in grid_dct.items():
         if 'R' not in key:
+            print(rng)
             grid_dct[key] = rng*180./numpy.pi
 
-    assert all(isinstance(key, str) and numpy.ndim(vals) == 1
-               and all(isinstance(x, numbers.Real) for x in vals)
-               for key, vals in grid_dct.items())
-
+    for key, vals in grid_dct.items():
+        assert isinstance(key, str), '{} is not a string'.format(key)
+        assert numpy.ndim(vals) == 1, '{} is not 1D'.format(vals)
+        assert all(isinstance(x, numbers.Real) for x in vals), (
+            '{} contains non-Real numbers'.format(vals)
+        )
+    
     grids = autofile.info.Info(**grid_dct)
     inf_obj = autofile.info.Info(grids=grids)
     assert autofile.info.matches_function_signature(inf_obj, scan_branch)
