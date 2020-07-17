@@ -202,11 +202,16 @@ def theory(prefix):
     ene_dfile = data_files.energy(_FilePrefix.GEOM)
     zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
     hess_dfile = data_files.hessian(_FilePrefix.HESS)
+    graph_dfile = data_files.graph(_FilePrefix.ZMAT)
+    trans_dfile = data_files.transformation(_FilePrefix.ZMAT)
+
     leaf_ds.add_data_files({
         _FileAttributeName.ENERGY: ene_dfile,
         _FileAttributeName.GEOM: geom_dfile,
         _FileAttributeName.HESS: hess_dfile,
-        _FileAttributeName.ZMAT: zmat_dfile})
+        _FileAttributeName.ZMAT: zmat_dfile,
+        _FileAttributeName.REACTANT_GRAPH: graph_dfile,
+        _FileAttributeName.TRANS: trans_dfile})
 
     return (leaf_ds,)
 
@@ -775,6 +780,7 @@ def run(prefix):
     inp_dfile = data_files.input_file(_FilePrefix.RUN)
     out_dfile = data_files.output_file(_FilePrefix.RUN)
     geom_dfile = data_files.geometry(_FilePrefix.GEOM)
+    zmat_dfile = data_files.zmatrix(_FilePrefix.ZMAT)
 
     trunk_ds.add_data_files({
         _FileAttributeName.INFO: inf_dfile})
@@ -782,7 +788,8 @@ def run(prefix):
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.INPUT: inp_dfile,
         _FileAttributeName.OUTPUT: out_dfile,
-        _FileAttributeName.GEOM: geom_dfile})
+        _FileAttributeName.GEOM: geom_dfile,
+        _FileAttributeName.ZMAT: zmat_dfile})
 
     return (trunk_ds, leaf_ds)
 
