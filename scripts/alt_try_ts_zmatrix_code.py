@@ -135,6 +135,9 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
                 # print(zma_path)
                 # print(automol.geom.string(automol.zmatrix.geometry(ts_zma)))
                 OVERLAP_COUNT += 1
+                # fails.append(
+                    # [rct_ichs, prd_ichs, 'rxn', zma_path]
+                # )
 
 # print('forward count:', FORWARD_COUNT)
 # print('backward count:', BACKWARD_COUNT)
