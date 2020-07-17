@@ -68,6 +68,7 @@ class _FilePrefix():
     LJ = 'lj'
     IRC = 'irc'
     ZMAT = 'zmat'
+    INSTAB = 'instab'
 
 
 class _FileAttributeName():
@@ -192,6 +193,8 @@ def theory(prefix):
                 - geometry
                 - hessian
                 - zmatrix
+                - instability trajectory
+                - instability reactant_graph
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
@@ -202,8 +205,8 @@ def theory(prefix):
     ene_dfile = data_files.energy(_FilePrefix.GEOM)
     zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
     hess_dfile = data_files.hessian(_FilePrefix.HESS)
-    graph_dfile = data_files.graph(_FilePrefix.ZMAT)
-    trans_dfile = data_files.transformation(_FilePrefix.ZMAT)
+    graph_dfile = data_files.graph(_FilePrefix.INSTAB)
+    trans_dfile = data_files.transformation(_FilePrefix.INSTAB)
 
     leaf_ds.add_data_files({
         _FileAttributeName.ENERGY: ene_dfile,
