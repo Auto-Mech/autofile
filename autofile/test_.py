@@ -196,13 +196,13 @@ def test__cscan():
 
     scn_fs = autofile.fs.cscan(prefix)
     # the dictionary at the end specifies the constraint values
-    locs = [['d3', 'd4'], [1.2, 2.9], {'r1': 1., 'a2': 2.3}]
+    locs = [{'r1': 1., 'a2': 2.3}, ['d3', 'd4'], [1.2, 2.9]]
     print(scn_fs[-1].path(locs))
 
     ref_inp_str = '<input string>'
-    print(scn_fs[-1].file.geometry_input.path(locs3))
-    scn_fs[-1].create(locs3)
-    scn_fs[-1].file.geometry_input.write(ref_inp_str, locs3)
+    print(scn_fs[-1].file.geometry_input.path(locs))
+    scn_fs[-1].create(locs)
+    scn_fs[-1].file.geometry_input.write(ref_inp_str, locs)
     assert scn_fs[-1].file.geometry_input.read(locs) == ref_inp_str
 
 
