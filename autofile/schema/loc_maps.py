@@ -163,7 +163,7 @@ def theory_leaf(method, basis, orb_type):
     :type orb_type: str
     """
     assert elstruct.Method.contains(method)
-    assert elstruct.Basis.contains(basis) 
+    assert elstruct.Basis.contains(basis)
     assert orb_type in ('R', 'U')
 
     dir_name = ''.join([_short_hash(method.lower()),
@@ -220,7 +220,7 @@ def zmatrix_leaf(num):
     """ zmatrix leaf directory name
     """
     assert isinstance(num, numbers.Integral) and 0 <= num <= 99, (
-            'Num {} must be integer between 0 and 99'.format(num)
+        'Num {} must be integer between 0 and 99'.format(num)
     )
     return '{:02d}'.format(int(num))
 
@@ -249,30 +249,45 @@ def cscan_trunk():
     return 'CSCANS'
 
 
-def cscan_branch1(coo_names):
-    """ scan branch 1 directory name
-    """
-    return '_'.join(sorted(coo_names))
-
-
-def cscan_branch2(coo_vals):
-    """ scan branch 2 directory name
-    """
-    return '_'.join(map('{:.2f}'.format, coo_vals))
-
-
-def cscan_leaf(cons_coo_val_dct):
-    """ constrained scan leaf directory name
+def cscan_branch1(cons_coo_val_dct):
+    """ constrained scan branch 1 directory name
 
     :param cons_coo_val_dct: a dictionary of the constraint values, keyed by
         coordinate name
     :type cons_coo_val_dct: dict
     """
-    cons_coo_names = list(cons_coo_val_dct.keys())
-    cons_coo_names.sort(key=lambda x: int(x[1:]))  # Sort by int after R,A,D
-    cons_coo_vals = [float(round(val, 2)) for val in cons_coo_val_dct.values()]
+    coo_typ_sort_dct = {'R': 0, 'A': 1, 'D': 2}
+
+    def _sort_key(coo_name):
+        typ = coo_name[0]
+        num = int(coo_name[1:])
+        return coo_typ_sort_dct[typ], num
+
+    # Sort the coordinate names by type and number
+    cons_coo_names = sorted(cons_coo_val_dct.keys(), key=_sort_key)
+
+    # Get the coordinate values in sorted order and round them
+    cons_coo_vals = [cons_coo_val_dct[name] for name in cons_coo_names]
+    cons_coo_vals = [float(round(val, 2)) for val in cons_coo_vals]
+
+    # AVC note: Replaced old code (which I don't think I wrote), which
+    # incorrectly failed to keep the ordering of names and values consistent
+    # before zipping them back together.
+
     cons_coo_val_dct = dict(zip(cons_coo_names, cons_coo_vals))
     return _short_hash(cons_coo_val_dct)
+
+
+def cscan_branch2(coo_names):
+    """ constrained scan branch 2 directory name
+    """
+    return '_'.join(sorted(coo_names))
+
+
+def cscan_leaf(coo_vals):
+    """ constrained scan leaf directory name
+    """
+    return '_'.join(map('{:.2f}'.format, coo_vals))
 
 
 def tau_trunk():

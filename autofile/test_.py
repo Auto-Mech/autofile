@@ -196,7 +196,7 @@ def test__cscan():
 
     scn_fs = autofile.fs.cscan(prefix)
     # the dictionary at the end specifies the constraint values
-    locs = [{'r1': 1., 'a2': 2.3}, ['d3', 'd4'], [1.2, 2.9]]
+    locs = [{'R1': 1., 'A2': 2.3}, ['D3', 'D4'], [1.2, 2.9]]
     print(scn_fs[-1].path(locs))
 
     ref_inp_str = '<input string>'

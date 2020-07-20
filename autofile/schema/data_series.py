@@ -248,8 +248,8 @@ def cscan_branch1(prefix, root_ds=None):
         map_dct_={'cons_coo_vals': lambda locs: _round_values(locs[0])},
         loc_keys=['cons_coo_vals'])
 
-    _map = _pack_arguments(loc_maps.cscan_leaf)
-    nlocs = _count_arguments(loc_maps.cscan_leaf)
+    _map = _pack_arguments(loc_maps.cscan_branch1)
+    nlocs = _count_arguments(loc_maps.cscan_branch1)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -262,8 +262,8 @@ def cscan_branch2(prefix, root_ds=None):
         map_dct_={'coo_names': lambda locs: locs[0]},
         loc_keys=['coo_names'])
 
-    _map = _pack_arguments(loc_maps.cscan_branch1)
-    nlocs = _count_arguments(loc_maps.cscan_branch1)
+    _map = _pack_arguments(loc_maps.cscan_branch2)
+    nlocs = _count_arguments(loc_maps.cscan_branch2)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
@@ -276,8 +276,8 @@ def cscan_leaf(prefix, root_ds=None):
         map_dct_={'coo_vals': lambda locs: locs[0]},
         loc_keys=['coo_vals'])
 
-    _map = _pack_arguments(loc_maps.cscan_branch2)
-    nlocs = _count_arguments(loc_maps.cscan_branch2)
+    _map = _pack_arguments(loc_maps.cscan_leaf)
+    nlocs = _count_arguments(loc_maps.cscan_leaf)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
