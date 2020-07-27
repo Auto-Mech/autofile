@@ -50,6 +50,7 @@ import os
 from autofile.schema import data_files
 from autofile.schema import data_series
 from autofile.schema import info_objects
+from autofile.schema import json_objects
 
 
 class _FilePrefix():
@@ -112,6 +113,48 @@ class _FileAttributeName():
     VRC_STRUCT = 'vrctst_struct'
     VRC_POT = 'vrctst_pot'
     VRC_FLUX = 'vrctst_flux'
+
+class _JSONAttributeName():
+    """ JSON attribute names """
+    INFO = 'info'
+    INPUT = 'input'
+    OUTPUT = 'output'
+    VMATRIX = 'vmatrix'
+    GEOM_INFO = 'geometry_info'
+    GRAD_INFO = 'gradient_info'
+    HESS_INFO = 'hessian_info'
+    VPT2_INFO = 'vpt2_info'
+    IRC_INFO = 'irc_info'
+    GEOM_INPUT = 'geometry_input'
+    GRAD_INPUT = 'gradient_input'
+    HESS_INPUT = 'hessian_input'
+    VPT2_INPUT = 'vpt2_input'
+    IRC_INPUT = 'irc_input'
+    ENERGY = 'energy'
+    GEOM = 'geometry'
+    ZMAT = 'zmatrix'
+    GRAD = 'gradient'
+    HESS = 'hessian'
+    HFREQ = 'harmonic_frequencies'
+    TRAJ = 'trajectory'
+    REACTANT_GRAPH = 'reactant_graph'
+    TRANS = 'transformation'
+    ANHFREQ = 'anharmonic_frequencies'
+    ANHZPVE = 'anharmonic_zpve'
+    XMAT = 'anharmonicity_matrix'
+    VIBROT_MAX = 'vibro_rot_alpha_matrix'
+    CENTIF_DIST = 'quartic_centrifugal_dist_consts'
+    LJ_EPS = 'lennard_jones_epsilon'
+    LJ_SIG = 'lennard_jones_sigma'
+
+
+class _LayerPrefix():
+    """ file prefixes """
+    RUN = 'RUN'
+    SPC = 'SPC'
+    CONF = 'CONF'
+    TAU = 'TAU'
+    SP = 'SP'
 
 
 # Managers for species-specific layers
@@ -337,7 +380,7 @@ def conformer(prefix):
     return (trunk_ds, leaf_ds)
 
 
-def single_point(prefix):
+def single_point(prefix, json_layer=None):
     """ construct the single-point filesystem (2 layers)
 
     locators:
@@ -363,9 +406,22 @@ def single_point(prefix):
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.INPUT: inp_dfile,
         _FileAttributeName.ENERGY: ene_dfile})
+    inp_jobj = json_objects.input_file(_FilePrefix.SP, 
+                                        json_prefix=(json_layer,
+                                                    _LayerPrefix.SP))
+    inf_jobj = json_objects.information(_FilePrefix.SP,
+                                        json_prefix=(json_layer,
+                                                    _LayerPrefix.SP),
+                                        function=info_objects.run)
+    ene_jobj = json_objects.energy(_FilePrefix.SP,
+                                   json_prefix=(json_layer,
+                                               _LayerPrefix.SP))
+    leaf_ds.add_json_entries({
+        _JSONAttributeName.INFO: inf_jobj,
+        _JSONAttributeName.INPUT: inp_jobj,
+        _JSONAttributeName.ENERGY: ene_jobj})
 
     return (trunk_ds, leaf_ds)
-
 
 def high_spin(prefix):
     """ construct the high-spin, single-point filesystem (2 layers)
@@ -743,6 +799,36 @@ def tau(prefix):
         _FileAttributeName.GRAD: grad_dfile,
         _FileAttributeName.HESS: hess_dfile,
         _FileAttributeName.HFREQ: hfreq_dfile})
+
+    geom_inf_jobj = json_objects.information(_FilePrefix.GEOM,
+                                            function=info_objects.run)
+    grad_inf_jobj = json_objects.information(_FilePrefix.GRAD,
+                                            function=info_objects.run)
+    hess_inf_jobj = json_objects.information(_FilePrefix.HESS,
+                                            function=info_objects.run)
+    geom_inp_jobj = json_objects.input_file(_FilePrefix.GEOM)
+    grad_inp_jobj = json_objects.input_file(_FilePrefix.GRAD)
+    hess_inp_jobj = json_objects.input_file(_FilePrefix.HESS)
+    ene_jobj = json_objects.energy(_FilePrefix.GEOM)
+    geom_jobj = json_objects.geometry(_FilePrefix.GEOM)
+    zmat_jobj = json_objects.zmatrix(_FilePrefix.GEOM)
+    grad_jobj = json_objects.gradient(_FilePrefix.GRAD)
+    hess_jobj = json_objects.hessian(_FilePrefix.HESS)
+    hfreq_jobj = json_objects.harmonic_frequencies(_FilePrefix.HESS)
+
+    leaf_ds.add_json_entries({
+        _JSONAttributeName.GEOM_INFO: geom_inf_jobj,
+        _JSONAttributeName.GRAD_INFO: grad_inf_jobj,
+        _JSONAttributeName.HESS_INFO: hess_inf_jobj,
+        _JSONAttributeName.GEOM_INPUT: geom_inp_jobj,
+        _JSONAttributeName.GRAD_INPUT: grad_inp_jobj,
+        _JSONAttributeName.HESS_INPUT: hess_inp_jobj,
+        _JSONAttributeName.ENERGY: ene_jobj,
+        _JSONAttributeName.GEOM: geom_jobj,
+        _JSONAttributeName.ZMAT: zmat_jobj,
+        _JSONAttributeName.GRAD: grad_jobj,
+        _JSONAttributeName.HESS: hess_jobj,
+        _JSONAttributeName.HFREQ: hfreq_jobj})
 
     return (trunk_ds, leaf_ds)
 

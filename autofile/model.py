@@ -100,6 +100,8 @@ class DataSeries():
         self.root = root_ds
         self.removable = removable
         self.file = types.SimpleNamespace()
+        self.JSON = 'db.json'
+        self.json = types.SimpleNamespace()
 
     def add_data_files(self, dfile_dct):
         """ add DataFiles to the DataSeries
@@ -213,6 +215,76 @@ class DataSeries():
         pths = filter(os.path.isdir, glob.glob(pth_pattern))
         pths = tuple(sorted(os.path.join(prefix, pth) for pth in pths))
         return pths
+        
+    def json_path(self, json_layer=None):
+        """ json file path
+        """
+        if self.root is None:
+            prefix = self.prefix
+        else:
+            prefix = self.root.path()
+        if json_layer:
+            prefix = self._remove_layer_from_path(prefix, json_layer)
+        return os.path.join(prefix, self.JSON)
+
+    def json_exists(self, json_layer=None):
+        """ does this file exist?
+        """
+        pth = self.json_path(json_layer=json_layer)
+        return os.path.isfile(pth)
+
+    def json_existing(self, locs=(), json_layer=None):
+        """ returns a list of locations (aka keys) in the json file
+        """
+        if self.json_exists(json_layer=json_layer):
+            json_data = autofile.json_.read_json(self.json_path(json_layer=json_layer))
+            keys = json_data.keys()
+            dct = json_data
+            for nested_key in locs:
+                if nested_key in keys:
+                    dct = dct[nested_key]
+                    keys = dct.keys()
+                else:
+                    dct = {}
+                    keys = []
+            locs = []
+            for key in keys:
+                if isinstance(dct[key], dict):
+                    locs.append(key)
+            locs = tuple([key] for key in keys)
+            
+            return locs
+
+    def _map(self, locs):
+        """ returns a list of mapped locations
+        """
+        if locs:
+            locs = [self.map_(locs)]
+        return locs
+
+    def add_json_entries(self, entry_dct):
+        """ add DataFiles to the DataSeries
+        """
+        entry_dct = {} if entry_dct is None else entry_dct
+
+        for name, obj in entry_dct.items():
+            assert isinstance(name, str)
+            assert isinstance(obj, JSONObject)
+            jsentry = JSONEntry(js=self, jobject=obj)
+            setattr(self.json, name, jsentry)
+
+    def json_create(self, json_layer=None):
+        """ json file creation
+        """
+        if not self.json_exists():
+            autofile.json_.write_json(
+                {}, self.json_path(json_layer=json_layer))
+
+    def _remove_layer_from_path(self, path, json_layer):
+        head, tail = os.path.split(path)
+        if tail == json_layer:
+            path = head
+        return path
 
     def root_locator_count(self):
         """ count the number of root locator values recursively
@@ -292,6 +364,150 @@ class DataSeriesFile():
         return ("DataSeriesFile('{}', {}, '{}')"
                 .format(self.dir.prefix, self.dir.map_.__name__,
                         self.file.name))
+
+
+class JSONObject():
+    def __init__(self, name, json_prefix=(None, None), function=None):
+        """
+        :param name: the file name
+        :type name: str
+        :param writer_: writes data to a string
+        :type writer_: callable[object->str]
+        :param reader_: reads data from a string
+        :type reader_: callable[str->object]
+        :param removable: Is this file removable?
+        :type removable: bool
+        """
+        self.name = name
+        self.json_prefix, self.json_layer = json_prefix
+        self.removable = False
+   
+    def items(self, path):
+        """ what are the parent keys in this json file
+        """
+        keys = []
+        entries = []
+        if os.path.isfile(path):
+           keys, entries = zip(*self.read_json(path).items())
+        return keys, entries
+
+    def _add_layer(self, key):
+        layered_key = key
+        if self.json_layer:
+            layered_key = self.json_prefix.copy()
+            layered_key.append(self.json_layer)
+            layered_key.extend(key)
+        return layered_key
+
+    def keys(self, path):
+        keys, _ = self.items(path)
+        return keys
+
+    def entries(self, path):
+        _, entries = self.items(path)
+        return entries 
+
+    def read_json(self, path):
+        return autofile.json_.read_json(path)
+
+    def write_json(self, json_data, path):
+        autofile.json_.write_json(json_data, path)
+
+    def exists(self, key, path):
+        exists = True
+        key = self._add_layer(key)
+        json_data = self.read_json(path)
+        keys = json_data.keys()
+        dct = json_data
+        for nested_key in key:
+            if nested_key in keys:
+                dct = dct[nested_key]
+                keys = dct.keys()
+            else:
+                exists = False
+        if exists:
+            if self.name not in dct:
+                exists = False
+        return exists
+
+    def read(self, key, path):
+        exists = True
+        key = self._add_layer(key)
+        json_data = self.read_json(path)
+        keys = json_data.keys()
+        dct = json_data
+        for nested_key in key:
+            if nested_key in keys:
+                dct = dct[nested_key]
+                keys = dct.keys()
+            else:
+                exists = False
+        if exists:
+            if self.name in dct:
+                return dct[self.name] 
+
+    def write(self, val, key, path):
+        key = self._add_layer(key)
+        current_json = self.read_json(path)
+        keys = current_json.keys()
+        dct = current_json
+        for nested_key in key:
+            if nested_key not in keys:
+                dct[nested_key] = {}
+            dct = dct[nested_key]
+            keys = dct.keys()
+        dct[self.name] = val 
+        self.write_json(current_json, path)
+
+
+class JSONEntry():
+    def __init__(self, js, jobject):
+        """ json manager mapping locator values to objects in a json file
+        """
+        self.js = js
+        self.json = jobject
+        self.removable = False
+
+    def exists(self, key=('database_entry'), mapping=True):
+        """ does this entry exist?
+        """
+        ret = False
+        if mapping:
+            ret = self.json.exists(self.js._map(key), self.js.json_path(
+                json_layer=self.json.json_layer))
+        else:
+            ret = self.json.exists(key, self.js.json_path(
+                json_layer=self.json.json_layer))
+        return ret    
+    
+    def existing(self, key=()):
+        """ returns the keys nested under this key 
+        """
+        return self.js.json_existing(locs=self.json._add_layer(key),
+                                     json_layer=self.json.json_layer)
+
+    def write(self, val, key=('database_entry'), mapping=True):
+        """ write data to this file
+        """
+        if not self.js.json_exists(json_layer=self.json.json_layer):
+            self.js.json_create(json_layer=self.json.json_layer)
+        if mapping:
+            key = self.js._map(key)
+        self.json.write(val, key, self.js.json_path(
+            json_layer=self.json.json_layer))
+
+    def read(self, key=('database_entry'), mapping=True):
+        """ read data from this file
+        """
+        ret = None
+        if self.exists(key, mapping=mapping):
+            if mapping:
+                ret = self.json.read(self.js._map(key), self.js.json_path(
+                    json_layer=self.json.json_layer))
+            else:
+                ret = self.json.read(key, self.js.json_path(
+                    json_layer=self.json.json_layer))
+        return ret       
 
 
 def _path_is_relative(pth):

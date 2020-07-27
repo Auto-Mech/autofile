@@ -37,6 +37,7 @@ class Extension():
     VRC_STRUCT = '.struct'
     VRC_POT = '.pot'
     VRC_FLUX = '.flux'
+    JSON = '.json'
 
 
 def information(file_name):
