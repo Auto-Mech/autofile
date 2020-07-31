@@ -27,7 +27,9 @@ def species_leaf(ich, chg, mul):
     assert automol.inchi.is_standard_form(ich)
     assert automol.inchi.is_complete(ich)
     assert isinstance(chg, numbers.Integral)
-    assert isinstance(mul, numbers.Integral)
+    assert isinstance(mul, numbers.Integral), (
+        'Multiplicity {} is not an integer'.format(mul))
+
     assert _is_valid_inchi_multiplicity(ich, mul)
 
     ick = automol.inchi.inchi_key(ich)

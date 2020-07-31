@@ -49,9 +49,8 @@ class DataFile():
     def read(self, dir_pth):
         """ read data from this file
         """
-        assert self.exists(dir_pth)
         assert self.exists(dir_pth), (
-            'Requested path does not exist {}'.format(dir_path)
+            'Requested path does not exist {}'.format(dir_pth)
             )
 
         pth = self.path(dir_pth)
