@@ -236,6 +236,7 @@ class DataSeries():
     def json_existing(self, locs=(), json_layer=None):
         """ returns a list of locations (aka keys) in the json file
         """
+        locs = []
         if self.json_exists(json_layer=json_layer):
             json_data = autofile.json_.read_json(self.json_path(json_layer=json_layer))
             keys = json_data.keys()
@@ -253,7 +254,7 @@ class DataSeries():
                     locs.append(key)
             locs = tuple([key] for key in keys)
             
-            return locs
+        return locs
 
     def _map(self, locs):
         """ returns a list of mapped locations
@@ -367,7 +368,7 @@ class DataSeriesFile():
 
 
 class JSONObject():
-    def __init__(self, name, json_prefix=(None, None), function=None):
+    def __init__(self, name, json_prefix=(None, None), function=None, writer_=(lambda _: _), reader_=(lambda _: _)):
         """
         :param name: the file name
         :type name: str
@@ -381,6 +382,8 @@ class JSONObject():
         self.name = name
         self.json_prefix, self.json_layer = json_prefix
         self.removable = False
+        self.writer_ = writer_
+        self.reader_ = reader_
    
     def items(self, path):
         """ what are the parent keys in this json file
@@ -431,9 +434,12 @@ class JSONObject():
         return exists
 
     def read(self, key, path):
+        json_data = self.read_json(path)
+        return self._read(key, json_data)
+
+    def _read(self, key, json_data):
         exists = True
         key = self._add_layer(key)
-        json_data = self.read_json(path)
         keys = json_data.keys()
         dct = json_data
         for nested_key in key:
@@ -444,7 +450,14 @@ class JSONObject():
                 exists = False
         if exists:
             if self.name in dct:
-                return dct[self.name] 
+                return self.reader_(dct[self.name] )
+
+    def read_all(self, keys, path):
+        json_data = self.read_json(path)
+        ret = []
+        for key in keys:
+            ret.append(self._read(key, json_data)) 
+        return ret    
 
     def write(self, val, key, path):
         key = self._add_layer(key)
@@ -456,9 +469,24 @@ class JSONObject():
                 dct[nested_key] = {}
             dct = dct[nested_key]
             keys = dct.keys()
+        val = self.writer_(val)    
         dct[self.name] = val 
         self.write_json(current_json, path)
 
+    def write_all(self, vals, all_keys, path):
+        current_json = self.read_json(path)
+        for key, val in zip(all_keys, vals):
+            key = self._add_layer(key)
+            keys = current_json.keys()
+            dct = current_json
+            for nested_key in key:
+                if nested_key not in keys:
+                    dct[nested_key] = {}
+                dct = dct[nested_key]
+                keys = dct.keys()
+            val = self.writer_(val)    
+            dct[self.name] = val 
+        self.write_json(current_json, path)
 
 class JSONEntry():
     def __init__(self, js, jobject):
@@ -496,6 +524,20 @@ class JSONEntry():
         self.json.write(val, key, self.js.json_path(
             json_layer=self.json.json_layer))
 
+    def write_all(self, vals, keys=(('database_entry')), mapping=True):
+        """ write data to this file
+        """
+        if not self.js.json_exists(json_layer=self.json.json_layer):
+            self.js.json_create(json_layer=self.json.json_layer)
+        if mapping:
+            new_keys = []
+            for key in keys:
+               new_keys.append(self.js._map(key))
+        else:
+            new_keys = keys
+        self.json.write_all(vals, new_keys, self.js.json_path(
+            json_layer=self.json.json_layer))
+
     def read(self, key=('database_entry'), mapping=True):
         """ read data from this file
         """
@@ -507,6 +549,22 @@ class JSONEntry():
             else:
                 ret = self.json.read(key, self.js.json_path(
                     json_layer=self.json.json_layer))
+        return ret       
+
+    def read_all(self, keys=(('database_entry')), mapping=True):
+        """ read data from this file
+        """
+        ret = []
+        new_keys = []
+        for key in keys:
+            if self.exists(key, mapping=mapping):
+                if mapping:
+                    new_keys.append(self.js._map(key))
+                else:
+                    new_keys.append(key)
+        if new_keys:            
+            ret = self.json.read_all(new_keys, self.js.json_path(
+                json_layer=self.json.json_layer))
         return ret       
 
 

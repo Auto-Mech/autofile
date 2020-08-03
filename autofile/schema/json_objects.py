@@ -39,8 +39,21 @@ def information(file_prefix, function=None, json_prefix=(None, None)):
         function signature against the information object
     :type function: callable
     """
+    def writer_(inf_obj):
+        if function is not None:
+            assert autofile.info.matches_function_signature(inf_obj, function)
+        inf_str = autofile.data_types.swrite.information(inf_obj)
+        return inf_str
+
+    def reader_(inf_str):
+        inf_obj = autofile.data_types.sread.information(inf_str)
+        if function is not None:
+            assert autofile.info.matches_function_signature(inf_obj, function)
+        return inf_obj
+
     name = autofile.data_types.name.information(file_prefix)
-    return model.JSONObject(name=name, json_prefix=json_prefix)
+    return model.JSONObject(name=name, json_prefix=json_prefix,
+                          writer_=writer_, reader_=reader_)
 
 
 def locator(file_prefix, map_dct_, loc_keys):
@@ -64,7 +77,9 @@ def gradient(file_prefix):
     """ generate gradient DataFile
     """
     name = autofile.data_types.name.gradient(file_prefix)
-    return model.JSONObject(name=name) 
+    writer_ = autofile.data_types.swrite.gradient_array
+    reader_ = autofile.data_types.sread.gradient_array
+    return model.JSONObject(writer_=writer_,reader_=reader_,name=name) 
 
 
 def hessian(file_prefix):
