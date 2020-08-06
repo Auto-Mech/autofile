@@ -51,7 +51,6 @@ class DataFile():
         """
         assert self.exists(dir_pth), (
             'Requested path does not exist {}'.format(dir_pth)
-            )
 
         pth = self.path(dir_pth)
         val_str = autofile.io_.read_file(pth)

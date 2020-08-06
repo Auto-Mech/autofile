@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "clean.py", line 383, in <module>
+    add_ene_yaml()
+  File "clean.py", line 274, in add_ene_yaml
+    if not sp_fs[-1].file.info.exists(locs):
+  File "/lcrc/project/CMRP/amech/autofile/autofile/model.py", line 263, in exists
+    return self.file.exists(self.dir.path(locs))
+  File "/lcrc/project/CMRP/amech/autofile/autofile/model.py", line 118, in path
+    root_locs = self._root_locators(locs)
+  File "/lcrc/project/CMRP/amech/autofile/autofile/model.py", line 236, in _root_locators
+    assert nlocs >= self.nlocs
+AssertionError

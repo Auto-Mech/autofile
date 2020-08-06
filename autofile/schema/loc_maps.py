@@ -318,6 +318,21 @@ def energy_transfer_trunk():
     return 'ETRANS'
 
 
+def vrctst_trunk():
+    """ vrctst trunk directory name
+    """
+    return 'VRC'
+
+
+def vrctst_leaf(num):
+    """ vrctst leaf directory name
+    """
+    assert isinstance(num, numbers.Integral) and 0 <= num <= 99, (
+        'Num {} must be integer between 0 and 99'.format(num)
+    )
+    return '{:02d}'.format(int(num))
+
+
 # Specifier mappings specific to the run file system
 def run_trunk():
     """ run trunk directory name
