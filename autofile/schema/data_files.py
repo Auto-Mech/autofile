@@ -224,6 +224,63 @@ def lennard_jones_sigma(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
+#  vrctst
+def vrctst_tst(file_prefix):
+    """ generate vrcttst_tst DataFile
+    """
+    name = autofile.data_types.name.vrctst_tst(file_prefix)
+    return model.DataFile(name=name)
+    # return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def vrctst_divsur(file_prefix):
+    """ generate vrctst_divsur DataFile
+    """
+    name = autofile.data_types.name.vrctst_divsur(file_prefix)
+    return model.DataFile(name=name)
+    # return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def vrctst_molpro(file_prefix):
+    """ generate vrctst_molpro DataFile
+    """
+    name = autofile.data_types.name.vrctst_molpro(file_prefix)
+    return model.DataFile(name=name)
+    # return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def vrctst_tml(file_prefix):
+    """ generate vrctst_tml DataFile
+    """
+    name = autofile.data_types.name.vrctst_tml(file_prefix)
+    return model.DataFile(name=name)
+    # return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def vrctst_struct(file_prefix):
+    """ generate vrctst_struct DataFile
+    """
+    name = autofile.data_types.name.vrctst_struct(file_prefix)
+    return model.DataFile(name=name)
+    # return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def vrctst_pot(file_prefix):
+    """ generate vrctst_pot DataFile
+    """
+    name = autofile.data_types.name.vrctst_pot(file_prefix)
+    return model.DataFile(name=name)
+    # return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def vrctst_flux(file_prefix):
+    """ generate vrctst_flux DataFile
+    """
+    name = autofile.data_types.name.vrctst_flux(file_prefix)
+    return model.DataFile(name=name)
+    # return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
 # helpers
 def _not_implemented(*_args, **_kwargs):
     raise NotImplementedError

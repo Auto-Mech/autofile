@@ -6,6 +6,7 @@ import subprocess
 import shutil
 import tempfile
 import automol
+
 import projrot_io
 from autofile import fs
 
@@ -48,7 +49,8 @@ def remove_empty_thy_ts_dirs():
         print(path)
         thy_dirs = os.listdir(path)
         print(thy_dirs)
-        if thy_dirs == ['dir.yaml']
+        if thy_dirs == ['dir.yaml']:
+            pass
         # for dir1 in thy_dirs:
         #     if dir1 == 'TS':
         #         thy_dir = os.path.join(path, dir1)
@@ -249,6 +251,104 @@ def add_zma_inp():
                     print(zma_path)
 
 
+def add_ene_yaml():
+    """ Add the energy files
+    """
+    ini = ['SPECIES', 'THEORY']
+
+    # saddle = bool('REACTION' in ini)
+
+    # managers = fs.iterate_managers(
+    #     PFX, ini, 'CONFORMER'
+    # )
+    managers = fs.iterate_managers(
+        PFX, ['SPECIES', 'THEORY'], 'CONFORMER')
+
+    for cnf_fs in managers:
+        for cnf_locs in cnf_fs[-1].existing():
+            cnf_path = cnf_fs[-1].path(cnf_locs)
+            sp_fs = fs.single_point(cnf_path)
+            sp_locs = fs.iterate_locators(cnf_path, ['SINGLE POINT'])
+            for locs in sp_locs:
+                sp_fs = fs.single_point(cnf_path)
+                if not sp_fs[-1].file.info.exists(locs):
+                    print('BAD')
+
+    # method = sp_lst[1]
+    # basis = sp_lst[2]
+    # if 'ccsd' not in method:
+    #     prog = 'gaussian09'
+    # inf_obj = autofile.schema.info_objects.run(
+    #     job='optimization', prog=prog, version='e.01',
+    #     method=method, basis=basis, status=status)
+    # inf_obj.utc_start_time = autofile.schema.utc_time()
+    # inf_obj.utc_end_time = autofile.schema.utc_time()
+    # sp_fs[-1].file.info.write(inf_obj, thy_info[1:4])
+
+
+def add_ene_to_sp():
+    """ Add the energy files
+    """
+    ini = ['SPECIES', 'THEORY']
+
+    # saddle = bool('REACTION' in ini)
+
+    # managers = fs.iterate_managers(
+    #     PFX, ini, 'CONFORMER'
+    # )
+    managers = fs.iterate_managers(
+        PFX, ['SPECIES'], 'THEORY'
+    )
+
+    for thy_fs in managers:
+        if thy_fs is not None:
+            for thy_locs in thy_fs[-1].existing():
+                thy_path = thy_fs[-1].path(thy_locs)
+                print('thy', thy_path)
+                cnf_fs = fs.conformer(thy_path)
+                for cnf_locs in cnf_fs[-1].existing():
+                    cnf_path = cnf_fs[-1].path(cnf_locs)
+                    print('cnf', cnf_path)
+                    sp_locs = fs.iterate_locators(cnf_path, ['SINGLE POINT'])
+                    sp_lst = list(sp_locs)
+                    print('thy_locs', thy_locs)
+                    print('sp_locs', sp_lst)
+                    if sp_lst:
+                        if (thy_locs,) not in sp_lst:
+                            if cnf_fs[-1].file.energy.exists(cnf_locs):
+                                print('ADD SP FILES')
+                                sp_fs = fs.single_point(cnf_path)
+                                sp_fs[-1].create(thy_locs)
+                                inp_str = cnf_fs[-1].file.geometry_input.read(cnf_locs)
+                                ene = cnf_fs[-1].file.energy.read(cnf_locs)
+                                sp_fs[-1].file.input.write(inp_str, thy_locs)
+                                sp_fs[-1].file.energy.write(ene, thy_locs)
+                            else:
+                                print('NEED SP FILE')
+                    else:
+                        print('ADD SP DIR AND FILES')
+                        sp_fs = fs.single_point(cnf_path)
+                        sp_fs[-1].create(thy_locs)
+                        inp_str = cnf_fs[-1].file.geometry_input.read(cnf_locs)
+                        ene = cnf_fs[-1].file.energy.read(cnf_locs)
+                        sp_fs[-1].file.input.write(inp_str, thy_locs)
+                        sp_fs[-1].file.energy.write(ene, thy_locs)
+
+
+
+                # method = sp_lst[1]
+                # basis = sp_lst[2]
+                # if 'ccsd' not in method:
+                #     prog = 'gaussian09'
+                # inf_obj = autofile.schema.info_objects.run(
+                #     job='optimization', prog=prog, version='e.01',
+                #     method=method, basis=basis, status=status)
+                # inf_obj.utc_start_time = autofile.schema.utc_time()
+                # inf_obj.utc_end_time = autofile.schema.utc_time()
+                # sp_fs[-1].file.info.write(inf_obj, thy_info[1:4])
+
+
+
 def check_zma_for_trans():
     """  Check zma for trans files
     """
@@ -276,7 +376,9 @@ if __name__ == '__main__':
     # add_zma_inp()
     # check_zma_for_trans()
     # remove_empty_thy_spc_dirs()
-    remove_empty_thy_ts_dirs()
+    # remove_empty_thy_ts_dirs()
     # remove_pf_dirs_from_save()
     # ts_keys()
     # write_freqs()
+    add_ene_yaml()
+    # add_ene_to_sp()

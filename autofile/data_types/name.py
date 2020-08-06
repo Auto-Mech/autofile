@@ -29,6 +29,14 @@ class Extension():
     EXTERNAL_SYMMETRY_FACTOR = '.esym'
     GRAPH = '.g.yaml'
     TRANSFORMATION = '.t.yaml'
+    # Various VaReCoF files
+    VRC_TST = '.tst'
+    VRC_DIVSUR = '.divsur'
+    VRC_MOLP = '.molpro'
+    VRC_TML = '.tml'
+    VRC_STRUCT = '.struct'
+    VRC_POT = '.pot'
+    VRC_FLUX = '.flux'
 
 
 def information(file_name):
@@ -179,6 +187,48 @@ def transformation(file_name):
     """ adds transformation extension, if missing
     """
     return _add_extension(file_name, Extension.TRANSFORMATION)
+
+
+def vrctst_tst(file_name):
+    """ adds vrctst_tst extension, if missing
+    """
+    return _add_extension(file_name, Extension.VRC_TST)
+
+
+def vrctst_divsur(file_name):
+    """ adds vrctst_divsur extension, if missing
+    """
+    return _add_extension(file_name, Extension.VRC_DIVSUR)
+
+
+def vrctst_molpro(file_name):
+    """ adds vrctst_molpro extension, if missing
+    """
+    return _add_extension(file_name, Extension.VRC_MOLP)
+
+
+def vrctst_tml(file_name):
+    """ adds vrctst_tml extension, if missing
+    """
+    return _add_extension(file_name, Extension.VRC_TML)
+
+
+def vrctst_struct(file_name):
+    """ adds vrctst_struct extension, if missing
+    """
+    return _add_extension(file_name, Extension.VRC_STRUCT)
+
+
+def vrctst_pot(file_name):
+    """ adds vrctst_pot extension, if missing
+    """
+    return _add_extension(file_name, Extension.VRC_POT)
+
+
+def vrctst_flux(file_name):
+    """ adds vrctst_flux extension, if missing
+    """
+    return _add_extension(file_name, Extension.VRC_FLUX)
 
 
 def _add_extension(file_name, ext):

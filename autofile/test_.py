@@ -221,6 +221,50 @@ def test__tau():
     assert tau_fs[-1].exists(locs)
 
 
+def test__vrctst():
+    """ test autofile.fs.vrctst
+    """
+    prefix = os.path.join(PREFIX, 'vrctst')
+    os.mkdir(prefix)
+
+    vrc_fs = autofile.fs.vrctst(prefix)
+    locs = [0]
+    print(vrc_fs[-1].path(locs))
+
+    ref_tst_str = '<TST STR>'
+    ref_divsur_str = '<DIVSUR STR>'
+    ref_molpro_str = '<MOLPRO STR>'
+    ref_tml_str = '<TML STR>'
+    ref_struct_str = '<STRUCT STR>'
+    ref_pot_str = '<POT STR>'
+    ref_flux_str = '<FLUX STR>'
+
+    vrc_fs[-1].create(locs)
+    vrc_fs[-1].file.vrctst_tst.write(ref_tst_str, locs)
+    vrc_fs[-1].file.vrctst_divsur.write(ref_divsur_str, locs)
+    vrc_fs[-1].file.vrctst_molpro.write(ref_molpro_str, locs)
+    vrc_fs[-1].file.vrctst_tml.write(ref_tml_str, locs)
+    vrc_fs[-1].file.vrctst_struct.write(ref_struct_str, locs)
+    vrc_fs[-1].file.vrctst_pot.write(ref_pot_str, locs)
+    vrc_fs[-1].file.vrctst_flux.write(ref_flux_str, locs)
+
+    tst_str = vrc_fs[-1].file.vrctst_tst.read(locs)
+    divsur_str = vrc_fs[-1].file.vrctst_divsur.read(locs)
+    molpro_str = vrc_fs[-1].file.vrctst_molpro.read(locs)
+    tml_str = vrc_fs[-1].file.vrctst_tml.read(locs)
+    struct_str = vrc_fs[-1].file.vrctst_struct.read(locs)
+    pot_str = vrc_fs[-1].file.vrctst_pot.read(locs)
+    flux_str = vrc_fs[-1].file.vrctst_flux.read(locs)
+
+    assert ref_tst_str == tst_str
+    assert ref_divsur_str == divsur_str
+    assert ref_molpro_str == molpro_str
+    assert ref_tml_str == tml_str
+    assert ref_struct_str == struct_str
+    assert ref_pot_str == pot_str
+    assert ref_flux_str == flux_str
+
+
 # def test__energy_transfer():
 #     """ test autofile.fs.energy_transfer
 #     """
@@ -301,8 +345,9 @@ if __name__ == '__main__':
     # test__tau()
     # test__single_point()
     # test__energy_transfer()
+    test__vrctst()
     # test__scan()
     # test__run()
     # test__build()
-    test__cscan()
+    # test__cscan()
     # test__zmatrix()
