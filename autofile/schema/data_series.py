@@ -326,6 +326,29 @@ def energy_transfer_leaf(prefix, root_ds=None):
     return theory_leaf(prefix, root_ds=root_ds)
 
 
+def vrctst_trunk(prefix, root_ds=None):
+    """ vrctst trunk DataSeries
+    """
+    _map = _pack_arguments(loc_maps.vrctst_trunk)
+    nlocs = _count_arguments(loc_maps.vrctst_trunk)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            root_ds=root_ds)
+
+
+def vrctst_leaf(prefix, root_ds=None):
+    """ vrctst leaf DataSeries
+    """
+    loc_dfile = data_files.locator(
+        file_prefix=SPEC_FILE_PREFIX,
+        map_dct_={'num': lambda locs: locs[0]},
+        loc_keys=['num'])
+
+    _map = _pack_arguments(loc_maps.vrctst_leaf)
+    nlocs = _count_arguments(loc_maps.vrctst_leaf)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            loc_dfile=loc_dfile, root_ds=root_ds)
+
+
 # DataSeries specific to the run file system
 def run_trunk(prefix, root_ds=None):
     """ run trunk DataSeries
