@@ -304,6 +304,20 @@ def test__vrctst():
 #     assert etrans_fs[-1].file.lennard_jones_sigma.read(locs) == ref_sig
 
 
+def test__instab():
+    """ test autofile.fs.instab
+    """
+    prefix = os.path.join(PREFIX, 'PREFIX')
+    os.mkdir(prefix)
+
+    instab_fs = autofile.fs.instab(prefix)
+    print(instab_fs[-1].path())
+
+    assert not instab_fs[-1].exists()
+    instab_fs[-1].create()
+    assert instab_fs[-1].exists()
+
+
 def test__run():
     """ test autofile.fs.run
     """
@@ -345,7 +359,8 @@ if __name__ == '__main__':
     # test__tau()
     # test__single_point()
     # test__energy_transfer()
-    test__vrctst()
+    # test__vrctst()
+    test__instab()
     # test__scan()
     # test__run()
     # test__build()
