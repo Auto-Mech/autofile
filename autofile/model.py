@@ -41,7 +41,9 @@ class DataFile():
     def write(self, val, dir_pth):
         """ write data to this file
         """
-        assert os.path.exists(dir_pth)
+        assert os.path.exists(dir_pth), (
+            'No path exists: {}'.format(dir_pth)
+        )
         pth = self.path(dir_pth)
         val_str = self.writer_(val)
         autofile.io_.write_file(pth, val_str)
@@ -87,7 +89,9 @@ class DataSeries():
         :param info_map_: maps `nlocs` locators to an information object, to
             be written in the data directory
         """
-        assert os.path.isdir(prefix)
+        assert os.path.isdir(prefix), (
+            'Path is not a dir: {}'. format(prefix)
+        )
         self.prefix = os.path.abspath(prefix)
         self.map_ = map_
         self.nlocs = nlocs
