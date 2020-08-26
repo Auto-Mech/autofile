@@ -183,10 +183,12 @@ def transition_state(prefix):
     geom_dfile = data_files.geometry(_FilePrefix.GEOM)
     ene_dfile = data_files.energy(_FilePrefix.GEOM)
     zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
+    vmat_dfile = data_files.vmatrix(_FilePrefix.GEOM)
     trunk_ds.add_data_files({
         _FileAttributeName.ENERGY: ene_dfile,
         _FileAttributeName.GEOM: geom_dfile,
-        _FileAttributeName.ZMAT: zmat_dfile})
+        _FileAttributeName.ZMAT: zmat_dfile,
+        _FileAttributeName.VMATRIX: vmat_dfile})
 
     return (trunk_ds,)
 
