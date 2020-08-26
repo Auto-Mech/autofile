@@ -4,6 +4,12 @@
 
 fails = [
 [
+    ['InChI=1S/C4H9/c1-3-4-2/h1,3-4H2,2H3', 'InChI=1S/H2/h1H'],
+    ['InChI=1S/C4H10/c1-3-4-2/h3-4H2,1-2H3', 'InChI=1S/H'],
+    'abst',
+    '/lcrc/project/PACC/AutoMech/data/save/RXN/C4H10.H/GPBIFMRNVFKQEQ/0_0/1_2/UHFFFAOYSA-N/C4H9.H2/MHWVAZWXCGSNKB/0_0/2_1/UHFFFAOYSA-N/2/u-ulpJU/TS/CONFS/c4vdoLTqwtF7u'
+],
+[
     ['InChI=1S/C2H3O2/c3-1-2-4/h1H,2H2'],
     ['InChI=1S/C2H3O2/c3-1-2-4/h1-3H'],
     'mig',

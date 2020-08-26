@@ -272,10 +272,6 @@ def cscan_branch1(cons_coo_val_dct):
     cons_coo_vals = [cons_coo_val_dct[name] for name in cons_coo_names]
     cons_coo_vals = [float(round(val, 2)) for val in cons_coo_vals]
 
-    # AVC note: Replaced old code (which I don't think I wrote), which
-    # incorrectly failed to keep the ordering of names and values consistent
-    # before zipping them back together.
-
     cons_coo_val_dct = dict(zip(cons_coo_names, cons_coo_vals))
     return _short_hash(cons_coo_val_dct)
 
