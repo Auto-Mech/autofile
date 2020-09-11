@@ -236,7 +236,9 @@ class DataSeries():
         """ locators for the root DataSeriesDir, if there is one
         """
         nlocs = len(locs)
-        assert nlocs >= self.nlocs
+        assert nlocs >= self.nlocs, (
+            '{} != {}'.format(nlocs, self.nlocs)
+        )
         root_nlocs = nlocs - self.nlocs
         return locs[:root_nlocs]
 
