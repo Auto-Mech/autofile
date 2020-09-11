@@ -166,7 +166,9 @@ def theory_leaf(method, basis, orb_type):
     """
     assert elstruct.Method.contains(method)
     assert elstruct.Basis.contains(basis)
-    assert orb_type in ('R', 'U')
+    assert orb_type in ('R', 'U'), (
+        'orb_type {} is not R or U'.format(orb_type)
+    )
 
     dir_name = ''.join([_short_hash(method.lower()),
                         _short_hash(basis.lower()),
