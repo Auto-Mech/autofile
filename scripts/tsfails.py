@@ -4,16 +4,10 @@
 
 fails = [
 [
-    ['InChI=1S/C4H9/c1-3-4-2/h1,3-4H2,2H3', 'InChI=1S/H2/h1H'],
-    ['InChI=1S/C4H10/c1-3-4-2/h3-4H2,1-2H3', 'InChI=1S/H'],
+    ['InChI=1S/C8H17/c1-7(2)6-8(3,4)5/h6H2,1-5H3', 'InChI=1S/H2/h1H'],
+    ['InChI=1S/C8H18/c1-7(2)6-8(3,4)5/h7H,6H2,1-5H3', 'InChI=1S/H'],
     'abst',
-    '/lcrc/project/PACC/AutoMech/data/save/RXN/C4H10.H/GPBIFMRNVFKQEQ/0_0/1_2/UHFFFAOYSA-N/C4H9.H2/MHWVAZWXCGSNKB/0_0/2_1/UHFFFAOYSA-N/2/u-ulpJU/TS/CONFS/c4vdoLTqwtF7u'
-],
-[
-    ['InChI=1S/C2H3O2/c3-1-2-4/h1H,2H2'],
-    ['InChI=1S/C2H3O2/c3-1-2-4/h1-3H'],
-    'mig',
-    '/lcrc/project/PACC/AutoMech/data/save/RXN/C2H3O2/OOSBGBJKELAIIG/0/2/UHFFFAOYSA-N/C2H3O2/GXBYUAHVCCRBRG/0/2/UHFFFAOYSA-N/2/u-ulpJU/TS/CONFS/c-1wIY_nsSZ8A'
+    '/lcrc/project/PACC/AutoMech/data/save/RXN/C8H17.H2/PHNIFEFKGAYXQK/0_0/2_1/UHFFFAOYSA-N/C8H18.H/JYYNQQFSTLPVPP/0_0/1_2/UHFFFAOYSA-N/2/u-ulpJU/TS/CONFS'
 ]
 ]
 
