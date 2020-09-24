@@ -50,6 +50,10 @@ def gradient(grad_str):
     assert grad.ndim == 2 and grad.shape[1] == 3
     return tuple(map(tuple, grad))
 
+def gradient_array(grad_list):
+    """convert gradient python list to gradient numpy ndarray
+    """
+    return numpy.array(grad_list)
 
 def hessian(hess_str):
     """ read a hessian (hartree bohr^-2) from a string (hartree bohr^-2)
