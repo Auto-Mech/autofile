@@ -28,6 +28,13 @@ def geometry(xyz_str):
     return geo
 
 
+def trajectory(traj_str):
+    """ read a trajectory of geometries (bohr) from a string (angstrom)
+    """
+    traj = automol.geom.from_xyz_trajectory_string(traj_str)
+    return traj
+
+
 def zmatrix(zma_str):
     """ read a zmatrix (bohr/radian) from a string (angstrom/degree)
     """
@@ -145,10 +152,37 @@ def lennard_jones_sigma(sig_str):
 
 
 def external_symmetry_factor(esf_str):
-    """ read an external symmetry factor from a string
+    """ read an external symmetry factor from a string (dimensionless)
     """
     esf = _float(esf_str)
     return esf
+
+
+def internal_symmetry_factor(isf_str):
+    """ read an internal symmetry factor from a string (dimensionless)
+    """
+    isf = _float(isf_str)
+    return isf
+
+
+def dipole_moment(dip_mom_str):
+    """ reads the x,y,z dipole moment vector from a string
+    """
+    dip_mom_str_io = _StringIO(dip_mom_str)
+    dip_mom = numpy.loadtxt(dip_mom_str_io)
+    assert dip_mom.ndim == 1
+    assert dip_mom.shape[0] == 3
+    return map(tuple, dip_mom)
+
+
+def polarizability(polar_str):
+    """ read a polarizability tensor () from a string
+    """
+    polar_str_io = _StringIO(polar_str)
+    polar = numpy.loadtxt(polar_str_io)
+    assert polar.ndim == 2
+    assert polar.shape[0] == polar.shape[1] == 3
+    return tuple(map(tuple, polar))
 
 
 def graph(gra_str):

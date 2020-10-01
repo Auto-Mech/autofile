@@ -42,7 +42,7 @@ def tau_trunk(nsamp, tors_ranges):
     tors_range_dct = dict(tors_ranges)
     for key, rng in tors_range_dct.items():
         tors_range_dct[key] = (rng[0]*180./numpy.pi, rng[1]*180./numpy.pi)
-   
+
     assert all(isinstance(key, str) and len(rng) == 2
                and all(isinstance(x, numbers.Real) for x in rng)
                for key, rng in tors_range_dct.items())
@@ -74,7 +74,7 @@ def scan_branch(grids):
         assert all(isinstance(x, numbers.Real) for x in vals), (
             '{} contains non-Real numbers'.format(vals)
         )
-    
+
     grids = autofile.info.Info(**grid_dct)
     inf_obj = autofile.info.Info(grids=grids)
     assert autofile.info.matches_function_signature(inf_obj, scan_branch)
@@ -110,11 +110,10 @@ def irc(idxs, coords):
     return inf_obj
 
 
-def lennard_jones(potential, nsamp,
-                  method, basis, program, version):
+def lennard_jones(nsamp, potential='lj_12_6',
+                  program='OneDMin', version='1.0'):
     """ energy transfer trunk """
     inf_obj = autofile.info.Info(potential=potential, nsamp=nsamp,
-                                 method=method, basis=basis,
                                  program=program, version=version)
     assert autofile.info.matches_function_signature(
         inf_obj, lennard_jones)
