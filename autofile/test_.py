@@ -2,6 +2,7 @@
 """
 import os
 import tempfile
+import numpy
 import autofile.fs
 import automol
 
@@ -276,7 +277,7 @@ def test__energy_transfer():
     # Create filesys
     bath_locs = ['InChI=1S/N2/c1-2', 0, 1]
     thy_locs = ['hf', 'sto-3g', 'R']
-    locs = [bath_locs, thy_locs]
+    locs = bath_locs + thy_locs
     print(locs)
     etrans_fs[-1].create(locs)
     etrans_path = etrans_fs[-1].path(locs)
@@ -284,10 +285,22 @@ def test__energy_transfer():
 
     ref_eps = 300.0
     ref_sig = 3.50
+    ref_inp_str = '<INP STR>'
+    ref_temp_str = '<TEMP STR>'
+    ref_traj_str = (('comment', automol.inchi.geometry('InChI=1S/H')),)
+
     etrans_fs[-1].file.lennard_jones_epsilon.write(ref_eps, locs)
     etrans_fs[-1].file.lennard_jones_sigma.write(ref_sig, locs)
-    assert etrans_fs[-1].file.lennard_jones_epsilon.read(locs) == ref_eps
-    assert etrans_fs[-1].file.lennard_jones_sigma.read(locs) == ref_sig
+    etrans_fs[-1].file.lennard_jones_input.write(ref_inp_str, locs)
+    etrans_fs[-1].file.lennard_jones_elstruct.write(ref_temp_str, locs)
+    etrans_fs[-1].file.trajectory.write(ref_traj_str, locs)
+    assert numpy.isclose(
+        etrans_fs[-1].file.lennard_jones_epsilon.read(locs), ref_eps)
+    assert numpy.isclose(
+        etrans_fs[-1].file.lennard_jones_sigma.read(locs), ref_sig)
+    assert etrans_fs[-1].file.lennard_jones_input.read(locs) == ref_inp_str
+    assert etrans_fs[-1].file.lennard_jones_elstruct.read(locs) == ref_temp_str
+    assert etrans_fs[-1].file.trajectory.read(locs) == ref_traj_str
 
 
 def test__instab():

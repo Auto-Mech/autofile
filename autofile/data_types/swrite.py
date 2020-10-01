@@ -175,6 +175,41 @@ def external_symmetry_factor(esf):
     return esf_str
 
 
+def internal_symmetry_factor(isf):
+    """ write an internal symmetry factor to a string
+    """
+    isf_str = _float(isf)
+    return isf_str
+
+
+def dipole_moment(dip_mom):
+    """ write a dipole moment vector to a string
+    """
+    dip_mom = numpy.array(dip_mom)
+    assert dip_mom.ndim == 1
+    assert dip_mom.shape[0] == 3
+
+    dip_mom_str_io = _StringIO()
+    numpy.savetxt(dip_mom_str_io, dip_mom)
+    dip_mom_str = dip_mom_str_io.getvalue()
+    dip_mom_str_io.close()
+    return dip_mom_str
+
+
+def polarizability(polar):
+    """ write a polarizability tensor to a string
+    """
+    polar = numpy.array(polar)
+    assert polar.ndim == 2
+    assert polar.shape[0] == polar.shape[1] == 3
+
+    polar_str_io = _StringIO()
+    numpy.savetxt(polar_str_io, polar)
+    polar_str = polar_str_io.getvalue()
+    polar_str_io.close()
+    return polar_str
+
+
 def graph(gra):
     """ write a molecular graph to a string
     """

@@ -384,6 +384,90 @@ def test__lennard_jones_sigma():
     assert numpy.isclose(ref_sig, sig)
 
 
+def test__external_symmetry_number():
+    """ test the symmetry number read/write functions
+    """
+    ref_num = 1.500
+
+    num_file_name = autofile.data_types.name.external_symmetry_number('test')
+    num_file_path = os.path.join(TMP_DIR, num_file_name)
+    num_str = autofile.data_types.swrite.external_symmetry_number(ref_num)
+
+    assert not os.path.isfile(num_file_path)
+    autofile.io_.write_file(num_file_path, num_str)
+    assert os.path.isfile(num_file_path)
+
+    num_str = autofile.io_.read_file(num_file_path)
+    num = autofile.data_types.sread.external_symmetry_number(num_str)
+    assert numpy.isclose(ref_num, num)
+
+
+def test__internal_symmetry_number():
+    """ test the symmetry number read/write functions
+    """
+    ref_num = 1.500
+
+    num_file_name = autofile.data_types.name.internal_symmetry_number('test')
+    num_file_path = os.path.join(TMP_DIR, num_file_name)
+    num_str = autofile.data_types.swrite.internal_symmetry_number(ref_num)
+
+    assert not os.path.isfile(num_file_path)
+    autofile.io_.write_file(num_file_path, num_str)
+    assert os.path.isfile(num_file_path)
+
+    num_str = autofile.io_.read_file(num_file_path)
+    num = autofile.data_types.sread.internal_symmetry_number(num_str)
+    assert numpy.isclose(ref_num, num)
+
+
+def test__polarizability():
+    """ test the vibro-rot alpha matrix read/write functions
+    """
+
+    ref_polar_mat = ((1.00, 2.00, 3.00),
+                     (4.00, 5.00, 6.00),
+                     (7.00, 8.00, 9.00))
+
+    polar_mat_file_name = (
+        autofile.data_types.name.polarizability('test'))
+    polar_mat_file_path = os.path.join(TMP_DIR, polar_mat_file_name)
+    polar_mat_str = autofile.data_types.swrite.polarizability(
+        ref_polar_mat)
+
+    assert not os.path.isfile(polar_mat_file_path)
+    autofile.io_.write_file(polar_mat_file_path, polar_mat_str)
+    assert os.path.isfile(polar_mat_file_path)
+
+    polar_mat_str = autofile.io_.read_file(
+        polar_mat_file_path)
+    polar_mat = autofile.data_types.sread.polarizability(
+        polar_mat_str)
+    assert numpy.allclose(ref_polar_mat, polar_mat)
+
+
+def test__dipole_moment():
+    """ test the dipole_moment tensor read/write functions
+    """
+
+    ref_dip_mom_vec = (1.00, 2.00, 3.00)
+
+    dip_mom_vec_file_name = (
+        autofile.data_types.name.dipole_moment('test'))
+    dip_mom_vec_file_path = os.path.join(TMP_DIR, dip_mom_vec_file_name)
+    dip_mom_vec_str = autofile.data_types.swrite.dipole_moment(
+        ref_dip_mom_vec)
+
+    assert not os.path.isfile(dip_mom_vec_file_path)
+    autofile.io_.write_file(dip_mom_vec_file_path, dip_mom_vec_str)
+    assert os.path.isfile(dip_mom_vec_file_path)
+
+    dip_mom_vec_str = autofile.io_.read_file(
+        dip_mom_vec_file_path)
+    dip_mom_vec = autofile.data_types.sread.dipole_moment(
+        dip_mom_vec_str)
+    assert numpy.allclose(ref_dip_mom_vec, dip_mom_vec)
+
+
 def test__graph():
     """ test the graph read/write functions
     """
@@ -444,5 +528,9 @@ if __name__ == '__main__':
     # test__quartic_centrifugal_distortion_constants()
     # test__lennard_jones_epsilon()
     # test__lennard_jones_sigma()
-    test__graph()
+    test__external_symmetry_number()
+    test__internal_symmetry_number()
+    test__dipole_moment()
+    test__polarizability()
+    # test__graph()
     # test__transformation()
