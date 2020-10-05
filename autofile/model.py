@@ -52,7 +52,7 @@ class DataFile():
         """ read data from this file
         """
         assert self.exists(dir_pth), (
-            'Requested path does not exist {}'.format(dir_pth)
+            f'Either the requested file, {self}, or the requested path, {dir_pth}, does not exist.'
         )
 
         pth = self.path(dir_pth)
