@@ -57,6 +57,7 @@ def reaction_leaf(rxn_ichs, rxn_chgs, rxn_muls, ts_mul):
     rxn_ichs = tuple(map(tuple, rxn_ichs))
     rxn_chgs = tuple(map(tuple, rxn_chgs))
     rxn_muls = tuple(map(tuple, rxn_muls))
+    # print('sort together test:', rxn_ichs, rxn_chgs, rxn_muls)
     assert ((rxn_ichs, rxn_chgs, rxn_muls) ==
             sort_together(rxn_ichs, rxn_chgs, rxn_muls))
     ichs1, ichs2 = rxn_ichs

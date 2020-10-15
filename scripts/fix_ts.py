@@ -3,6 +3,7 @@
 """
 
 import os
+import numpy
 import automol
 import autofile
 from automol.zmatrix._unimol_ts import hydrogen_migration
@@ -26,7 +27,7 @@ CLA = {
 }
 
 species_csv = autofile.io_.read_file(sys.argv[1]).splitlines()
-for idx, entry in enumerate(species_csv.split(',')):
+for idx, entry in enumerate(species_csv[0].split(',')):
     if 'inch' in entry:
         ich_idx = idx
 for i, fail in enumerate(tsfails.fails):
@@ -39,15 +40,15 @@ for i, fail in enumerate(tsfails.fails):
             if directory[0] == 'c' and 'conf' not in directory]
 
     cnf_parent = fail[2]
-    cnf_fs = autofile.fs.conformer(fail[2].replace('CONF',''))
-    inf_obj_s = cnf_fs[0].file.info.read()
-    nsampd = inf_obj_r.nsamp
+    cnf_fs = autofile.fs.conformer(fail[2].replace('CONFS',''))
+    inf_obj = cnf_fs[0].file.info.read()
+    # nsampd = inf_obj.nsamp
 
     #cnf_dirs.remove('conf.yaml')
     print('cnf_dirs:', cnf_dirs)
     for adir in cnf_dirs:
         print('dir:', adir)
-        path = os.path.join(fail[3], adir)
+        path = os.path.join(fail[2], adir)
         print('path:', path)
         zma_fs = autofile.fs.manager(path, 'ZMATRIX')
         reacs = fail[0].split('=')[0].split('+')
@@ -55,21 +56,26 @@ for i, fail in enumerate(tsfails.fails):
         reac_ichs = []
         prod_ichs = []
         for species in species_csv[1:]:
-            species = species.split()
+            species = species.split("'")
+            species_name = species[0].split(',')[0]
+            print('species test:', species_name, species, species[0], reacs)
             for i in range(len(reacs)):
-                if species[0] == reacs[i]:
-                    reacs[i] = species[ich_idx]
+                print('reacs test:', reacs[i], i)
+                if species_name == reacs[i]:
+                    print('ich_idx test:', species[ich_idx-1], ich_idx-1)
+                    reacs[i] = species[ich_idx-1]
             for i in range(len(prods)):
-                if species[0] == prods[i]:
-                    prods[i] = species[ich_idx]
+                if species_name == prods[i]:
+                    prods[i] = species[ich_idx-1]
         print('reacs: ', reacs)
         print('prods: ', prods)
         rct_geos = list(map(automol.inchi.geometry, reacs))#fail[0]))
         prd_geos = list(map(automol.inchi.geometry, prods))#fail[1]))
         rct_zmas = list(map(automol.geom.zmatrix, rct_geos))
         prd_zmas = list(map(automol.geom.zmatrix, prd_geos))
-        ret = CLA[fail[2]](rct_zmas, prd_zmas)
-        if fail[2] != 'add':
+        ret = CLA[fail[1]](rct_zmas, prd_zmas)
+        print('ret test:', ret)
+        if fail[1] != 'add':
             ts_zma, dist_name, frm_key, brk_key, tors_names, rcts_gra = ret
         else:
             ts_zma, dist_name, frm_key, tors_names, rcts_gra = ret
@@ -84,8 +90,8 @@ for i, fail in enumerate(tsfails.fails):
         zma_fs[-1].file.transformation.write(tra, [0])
         zma_fs[-1].file.reactant_graph.write(rcts_gra, [0])
         
-        tors_ranges = automol.zmatrix.torsional_sampling_ranges(tors_names)
-        tors_range_dct = dict(zip(
-            tuple(grp[0] for grp in tors_names), tors_ranges))
+        # tors_ranges = list(automol.zmatrix.torsional_sampling_ranges(tors_names))
+        tors_ranges = list([0, 360.] for tors in tors_names)
+        tors_range_dct = dict(zip(tors_names, tors_ranges))
         inf_obj.tors_ranges = tors_range_dct
         cnf_fs[0].file.info.write(inf_obj)
