@@ -1118,7 +1118,15 @@ def path(pfx, key_locs_lst):
     return pth
 
 
-def manager(pfx, key):
+def manager(pfx, key_locs_lst, key):
+    """ Get the manager for a specific part of the file system
+    """
+    pth = path(pfx, key_locs_lst)
+    fs_ = _manager(pth, key)
+    return fs_
+
+
+def _manager(pfx, key):
     """ Get the manager for a specific part of the file system
     """
     fs_ = FILE_SYSTEM_MANAGER_DCT[key](pfx)
@@ -1135,7 +1143,7 @@ def iterate_locators(pfx, keys):
         if len(keys_) == 1:
             key_, = keys_
 
-            fs_ = manager(pfx_, key_)
+            fs_ = _manager(pfx_, key_)
             for locs in fs_[-1].existing():
                 locs_lst[-1] = locs
                 yield tuple(locs_lst)
@@ -1143,7 +1151,7 @@ def iterate_locators(pfx, keys):
             idx = depth - len(keys_)
             key_, keys_ = keys_[0], keys_[1:]
 
-            fs_ = manager(pfx_, key_)
+            fs_ = _manager(pfx_, key_)
             for locs in fs_[-1].existing():
                 pfx_ = fs_[-1].path(locs)
                 locs_lst[idx] = locs
@@ -1158,13 +1166,13 @@ def iterate_paths(pfx, keys):
     if len(keys) == 1:
         key, = keys
 
-        fs_ = manager(pfx, key)
+        fs_ = _manager(pfx, key)
         for locs in fs_[-1].existing():
             yield fs_[-1].path(locs)
     else:
         key, keys = keys[0], keys[1:]
 
-        fs_ = manager(pfx, key)
+        fs_ = _manager(pfx, key)
         for locs in fs_[-1].existing():
             pfx = fs_[-1].path(locs)
             yield from iterate_paths(pfx, keys)
@@ -1174,7 +1182,7 @@ def iterate_managers(pfx, keys, key):
     """ Iterate over managers at a specific level in the file system hierarchy
     """
     for pth in iterate_paths(pfx, keys):
-        yield manager(pth, key)
+        yield _manager(pth, key)
 
 
 if __name__ == '__main__':

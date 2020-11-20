@@ -24,10 +24,9 @@ def example2():
 
     """
 
-    path = fs.path(PFX, [('SPECIES', ['InChI=1S/HO2/c1-2/h1H', 0, 2]),
-                         ('THEORY', ['wb97xd', '6-31g*', 'U'])])
-
-    cnf_fs = fs.manager(path, 'CONFORMER')
+    cnf_fs = fs.manager(path, [('SPECIES', ['InChI=1S/HO2/c1-2/h1H', 0, 2]),
+                               ('THEORY', ['wb97xd', '6-31g*', 'U'])])
+                        'CONFORMER')
 
     # Read out the z-matrix for this conformer and print it
     zma = cnf_fs[-1].file.zmatrix.read(['cel7a4s_k6Ay5'])
@@ -128,4 +127,4 @@ def example6():
 # example3()
 # example4()
 # example5()
-example6()
+# example6()
