@@ -21,6 +21,8 @@ def information(file_prefix, function=None):
     def reader_(inf_str):
         inf_obj = autofile.data_types.sread.information(inf_str)
         if function is not None:
+            print(inf_obj)
+            print(function)
             assert autofile.info.matches_function_signature(inf_obj, function)
         return inf_obj
 
@@ -203,6 +205,15 @@ def transformation(file_prefix):
     name = autofile.data_types.name.transformation(file_prefix)
     writer_ = autofile.data_types.swrite.transformation
     reader_ = autofile.data_types.sread.transformation
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def transformation_old(file_prefix):
+    """ generate transformation DataFile
+    """
+    name = autofile.data_types.name.transformation_old(file_prefix)
+    writer_ = autofile.data_types.swrite.transformation_old
+    reader_ = autofile.data_types.sread.transformation_old
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 

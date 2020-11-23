@@ -77,6 +77,7 @@ class _FilePrefix():
 class _FileAttributeName():
     """ DataFile attribute names """
     INFO = 'info'
+    INFO2 = 'info2'
     INPUT = 'input'
     OUTPUT = 'output'
     VMATRIX = 'vmatrix'
@@ -334,11 +335,14 @@ def conformer(prefix):
     leaf_ds = data_series.conformer_leaf(prefix, root_ds=trunk_ds)
 
     min_ene_dfile = data_files.energy(_FilePrefix.MIN)
-    inf_dfile = data_files.information(_FilePrefix.CONF,
-                                       function=info_objects.conformer_trunk)
+    old_inf_dfile = data_files.information(
+        _FilePrefix.CONF, function=info_objects.conformer_trunk_old)
+    inf_dfile = data_files.information(
+        _FilePrefix.CONF, function=info_objects.conformer_trunk)
     traj_dfile = data_files.trajectory(_FilePrefix.CONF)
     trunk_ds.add_data_files({
-        _FileAttributeName.INFO: inf_dfile,
+        _FileAttributeName.INFO: old_inf_dfile,
+        _FileAttributeName.INFO2: inf_dfile,
         _FileAttributeName.ENERGY: min_ene_dfile,
         _FileAttributeName.TRAJ: traj_dfile})
 
@@ -436,6 +440,7 @@ def single_point(prefix, json_layer=None):
         _JSONAttributeName.ENERGY: ene_jobj})
 
     return (trunk_ds, leaf_ds)
+
 
 def high_spin(prefix):
     """ construct the high-spin, single-point filesystem (2 layers)
@@ -539,12 +544,12 @@ def zmatrix(prefix):
     trunk_ds = data_series.zmatrix_trunk(prefix)
     leaf_ds = data_series.zmatrix_leaf(prefix, root_ds=trunk_ds)
 
-    zmat_inf_dfile = data_files.information(_FilePrefix.ZMAT,
-                                            function=info_objects.run)
+    zmat_inf_dfile = data_files.information(
+        _FilePrefix.ZMAT, function=info_objects.run)
     zmat_inp_dfile = data_files.input_file(_FilePrefix.ZMAT)
 
-    inf_dfile = data_files.information(_FilePrefix.CONF,
-                                       function=info_objects.conformer_trunk)
+    tors_inf_dfile = data_files.information(
+        _FilePrefix.ZMAT, function=info_objects.torsional_names)
 
     zmat_dfile = data_files.zmatrix(_FilePrefix.ZMAT)
     vma_dfile = data_files.vmatrix(_FilePrefix.ZMAT)
@@ -553,7 +558,7 @@ def zmatrix(prefix):
 
     leaf_ds.add_data_files({
         _FileAttributeName.GEOM_INFO:  zmat_inf_dfile,
-        _FileAttributeName.TORS_INFO: inf_dfile,
+        _FileAttributeName.TORS_INFO: tors_inf_dfile,
         _FileAttributeName.GEOM_INPUT: zmat_inp_dfile,
         _FileAttributeName.ZMAT: zmat_dfile,
         _FileAttributeName.VMATRIX: vma_dfile,

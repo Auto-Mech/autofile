@@ -6,7 +6,19 @@ import autofile.info
 from autofile.schema._util import utc_time as _utc_time
 
 
-def conformer_trunk(nsamp, tors_ranges):
+def conformer_trunk(nsamp):
+    """ conformer trunk information
+
+    :param nsamp: the number of samples
+    :type nsamp: int
+    """
+    assert isinstance(nsamp, numbers.Integral)
+    inf_obj = autofile.info.Info(nsamp=nsamp)
+    assert autofile.info.matches_function_signature(inf_obj, conformer_trunk)
+    return inf_obj
+
+
+def conformer_trunk_old(nsamp, tors_ranges):
     """ conformer trunk information
 
     :param nsamp: the number of samples
@@ -26,7 +38,7 @@ def conformer_trunk(nsamp, tors_ranges):
     tors_ranges = autofile.info.Info(**tors_range_dct)
     assert isinstance(nsamp, numbers.Integral)
     inf_obj = autofile.info.Info(nsamp=nsamp, tors_ranges=tors_ranges)
-    assert autofile.info.matches_function_signature(inf_obj, conformer_trunk)
+    assert autofile.info.matches_function_signature(inf_obj, conformer_trunk_old)
     return inf_obj
 
 
@@ -81,6 +93,30 @@ def scan_branch(grids):
     return inf_obj
 
 
+def torsional_names(tors_ranges):
+    """ conformer trunk information
+
+    :param nsamp: the number of samples
+    :type nsamp: int
+    :param tors_ranges: sampling ranges [(start, end)] for each torsional
+        coordinate, by z-matrix coordinate name
+    :type tors_ranges: dict[str: (float, float)]
+    """
+    tors_range_dct = dict(tors_ranges)
+    for key, rng in tors_range_dct.items():
+        tors_range_dct[key] = (rng[0]*180./numpy.pi, rng[1]*180./numpy.pi)
+
+    assert all(isinstance(key, str) and len(rng) == 2
+               and all(isinstance(x, numbers.Real) for x in rng)
+               for key, rng in tors_range_dct.items())
+
+    tors_ranges = autofile.info.Info(**tors_range_dct)
+
+    inf_obj = autofile.info.Info(tors_ranges=tors_ranges)
+    assert autofile.info.matches_function_signature(inf_obj, tors_ranges)
+    return inf_obj
+
+
 def vpt2(fermi_treatment):
     """ vpt2 information
 
@@ -110,11 +146,19 @@ def irc(idxs, coords):
     return inf_obj
 
 
-def lennard_jones(nsamp, potential='lj_12_6',
-                  program='OneDMin', version='1.0'):
+def lennard_jones(program, version, potential, param_lst):
     """ energy transfer trunk """
-    inf_obj = autofile.info.Info(potential=potential, nsamp=nsamp,
-                                 program=program, version=version)
+
+    assert isinstance(program, str)
+    assert isinstance(version, str)
+    assert isinstance(potential, str)
+    assert all(isinstance(val1, float) and isinstance(val2, float)
+               for val1, val2 in param_lst)
+
+    params = autofile.info.Info(*param_lst)
+    inf_obj = autofile.info.Info(program=program, version=version,
+                                 potential=potential,
+                                 params=params)
     assert autofile.info.matches_function_signature(
         inf_obj, lennard_jones)
     return inf_obj

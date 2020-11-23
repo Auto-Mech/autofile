@@ -57,10 +57,12 @@ def gradient(grad_str):
     assert grad.ndim == 2 and grad.shape[1] == 3
     return tuple(map(tuple, grad))
 
+
 def gradient_array(grad_list):
     """convert gradient python list to gradient numpy ndarray
     """
     return numpy.array(grad_list)
+
 
 def hessian(hess_str):
     """ read a hessian (hartree bohr^-2) from a string (hartree bohr^-2)
@@ -199,6 +201,13 @@ def transformation(tra_str):
     return tra
 
 
+def transformation_old(tra_str):
+    """ read a chemical transformation from a string
+    """
+    tra = automol.graph.trans.from_string(tra_str)
+    return tra
+
+
 def _float(val_str):
     assert apf.is_number(val_str)
     val = float(val_str)
@@ -206,12 +215,11 @@ def _float(val_str):
 
 
 def _frequencies(freq_str):
-    if len(freq_str.split()) == 1:
-       freqs = [float(freq) for freq in freq_str.split()]
-    else:
-        freq_str_io = _StringIO(freq_str)
-        freqs = numpy.loadtxt(freq_str_io)
-        assert freqs.ndim == 1
+    freq_str_io = _StringIO(freq_str)
+    freqs = numpy.loadtxt(freq_str_io)
+    if freqs.ndim == 0:
+        freqs = numpy.array(freqs, ndmin=1)
+    assert freqs.ndim == 1
     return tuple(freqs)
 
 

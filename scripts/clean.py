@@ -371,6 +371,13 @@ def check_zma_for_trans():
     print('\nBAD CNT', BAD)
 
 
+def add_tors_names_file():
+    """ add torsional files
+    """
+
+
+
+
 if __name__ == '__main__':
     # add_zma_trans()
     # add_zma_inp()

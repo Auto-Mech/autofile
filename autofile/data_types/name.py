@@ -225,6 +225,12 @@ def transformation(file_name):
     return _add_extension(file_name, Extension.TRANSFORMATION)
 
 
+def transformation_old(file_name):
+    """ adds transformation extension, if missing
+    """
+    return _add_extension(file_name, Extension.TRANSFORMATION)
+
+
 def vrctst_tst(file_name):
     """ adds vrctst_tst extension, if missing
     """

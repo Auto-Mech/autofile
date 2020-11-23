@@ -223,6 +223,14 @@ def transformation(tra):
     tra_str = automol.graph.trans.string(tra)
     return tra_str
 
+
+def transformation_old(tra):
+    """ write a chemical transformation to a string
+    """
+    tra_str = automol.graph.trans.string(tra)
+    return tra_str
+
+
 def gradient_array(ndarray):
     """ transform numpy array into python list
     """
@@ -230,6 +238,7 @@ def gradient_array(ndarray):
     if isinstance(out, numpy.ndarray):
         out = ndarray.tolist()
     return out
+
 
 def _float(val):
     assert isinstance(val, _Real)
