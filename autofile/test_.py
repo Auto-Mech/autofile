@@ -2,6 +2,7 @@
 """
 import os
 import tempfile
+import numpy
 import autofile.fs
 import automol
 
@@ -265,43 +266,41 @@ def test__vrctst():
     assert ref_flux_str == flux_str
 
 
-# def test__energy_transfer():
-#     """ test autofile.fs.energy_transfer
-#     """
-#     prefix = os.path.join(PREFIX, 'etrans')
-#     os.mkdir(prefix)
-#
-#  #   spc_fs = autofile.fs.species(prefix)
-#  #   spc_locs = ['InChI=1S/C2H2F2/c3-1-2-4/h1-2H/b2-1+', 0, 1]
-#  #   spc_fs[-1].create(spc_locs)
-#  #   spc_path = spc_fs[-1].path(spc_locs)
-#  #   print(spc_fs[-1].path(spc_locs))
-#
-#     etrans_fs = autofile.fs.energy_transfer(prefix)
-#     spc_locs = [['InChI=1S/C2H2F2/c3-1-2-4/h1-2H/b2-1+', 0, 1],[],[]]
-#     etrans_fs[-1].create(spc_locs)
-#     etrans_spc_path = etrans_fs[-1].path(spc_locs)
-#     print(etrans_spc_path)
-#     thy_locs = [ 'hf', 'sto-3g', True]
-#     etrans_thy_fs = autofile.fs.theory(etrans_spc_path)
-#     etrans_thy_fs[-1].create(thy_locs)
-#     etrans_thy_path = etrans_thy_fs[-1].path(thy_locs)
-#     print(etrans_thy_path)
-#     spc_path = print(etrans_spc_s[-1].path(spc_locs))
-#     print(etrans_spc_s[-1].path(spc_locs))
-#     locs = ['InChI=1S/C2H2F2/c3-1-2-4/h1-2H/b2-1+', 0, 1]
-#     etrans_fs[-1].create(locs)
-#     print(etrans_fs[-1].path(locs))
-#
-#     ref_eps = 300.0
-#     ref_sig = 3.50
-#     print(etrans_fs[-1].file.lennard_jones_epsilon.path(locs))
-#     print(etrans_fs[-1].file.lennard_jones_sigma.path(locs))
-#     # etrans_fs[-1].create(locs)
-#     etrans_fs[-1].file.lennard_jones_epsilon.write(ref_eps, locs)
-#     etrans_fs[-1].file.lennard_jones_sigma.write(ref_sig, locs)
-#     assert etrans_fs[-1].file.lennard_jones_epsilon.read(locs) == ref_eps
-#     assert etrans_fs[-1].file.lennard_jones_sigma.read(locs) == ref_sig
+def test__energy_transfer():
+    """ test autofile.fs.energy_transfer
+    """
+    prefix = os.path.join(PREFIX, 'ETRANS')
+    os.mkdir(prefix)
+
+    etrans_fs = autofile.fs.energy_transfer(prefix)
+
+    # Create filesys
+    bath_locs = ['InChI=1S/N2/c1-2', 0, 1]
+    thy_locs = ['hf', 'sto-3g', 'R']
+    locs = bath_locs + thy_locs
+    print(locs)
+    etrans_fs[-1].create(locs)
+    etrans_path = etrans_fs[-1].path(locs)
+    print(etrans_path)
+
+    ref_eps = 300.0
+    ref_sig = 3.50
+    ref_inp_str = '<INP STR>'
+    ref_temp_str = '<TEMP STR>'
+    ref_traj_str = (('comment', automol.inchi.geometry('InChI=1S/H')),)
+
+    etrans_fs[-1].file.lennard_jones_epsilon.write(ref_eps, locs)
+    etrans_fs[-1].file.lennard_jones_sigma.write(ref_sig, locs)
+    etrans_fs[-1].file.lennard_jones_input.write(ref_inp_str, locs)
+    etrans_fs[-1].file.lennard_jones_elstruct.write(ref_temp_str, locs)
+    etrans_fs[-1].file.trajectory.write(ref_traj_str, locs)
+    assert numpy.isclose(
+        etrans_fs[-1].file.lennard_jones_epsilon.read(locs), ref_eps)
+    assert numpy.isclose(
+        etrans_fs[-1].file.lennard_jones_sigma.read(locs), ref_sig)
+    assert etrans_fs[-1].file.lennard_jones_input.read(locs) == ref_inp_str
+    assert etrans_fs[-1].file.lennard_jones_elstruct.read(locs) == ref_temp_str
+    assert etrans_fs[-1].file.trajectory.read(locs) == ref_traj_str
 
 
 def test__instab():
@@ -358,9 +357,9 @@ if __name__ == '__main__':
     # test__conformer()
     # test__tau()
     # test__single_point()
-    # test__energy_transfer()
+    test__energy_transfer()
     # test__vrctst()
-    test__instab()
+    # test__instab()
     # test__scan()
     # test__run()
     # test__build()

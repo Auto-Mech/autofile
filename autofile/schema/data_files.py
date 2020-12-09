@@ -21,6 +21,8 @@ def information(file_prefix, function=None):
     def reader_(inf_str):
         inf_obj = autofile.data_types.sread.information(inf_str)
         if function is not None:
+            print(inf_obj)
+            print(function)
             assert autofile.info.matches_function_signature(inf_obj, function)
         return inf_obj
 
@@ -206,6 +208,15 @@ def transformation(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
+def transformation_old(file_prefix):
+    """ generate transformation DataFile
+    """
+    name = autofile.data_types.name.transformation_old(file_prefix)
+    writer_ = autofile.data_types.swrite.transformation_old
+    reader_ = autofile.data_types.sread.transformation_old
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
 def lennard_jones_epsilon(file_prefix):
     """ generate lennard_jones_epsilon DataFile
     """
@@ -221,6 +232,56 @@ def lennard_jones_sigma(file_prefix):
     name = autofile.data_types.name.lennard_jones_sigma(file_prefix)
     writer_ = autofile.data_types.swrite.lennard_jones_sigma
     reader_ = autofile.data_types.sread.lennard_jones_sigma
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def external_symmetry_number(file_prefix):
+    """ generate external_symmetry_number DataFile
+    """
+    name = autofile.data_types.name.external_symmetry_number(file_prefix)
+    writer_ = autofile.data_types.swrite.external_symmetry_number
+    reader_ = autofile.data_types.sread.external_symmetry_number
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def internal_symmetry_number(file_prefix):
+    """ generate internal_symmetry_number DataFile
+    """
+    name = autofile.data_types.name.internal_symmetry_number(file_prefix)
+    writer_ = autofile.data_types.swrite.internal_symmetry_number
+    reader_ = autofile.data_types.sread.internal_symmetry_number
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def lennard_jones_input(file_prefix):
+    """ generate input file for the LJ params program
+    """
+    name = autofile.data_types.name.lennard_jones_input(file_prefix)
+    return model.DataFile(name=name)
+
+
+def lennard_jones_elstruct(file_prefix):
+    """ generate elec struct template file for the LJ params program
+    """
+    name = autofile.data_types.name.lennard_jones_elstruct(file_prefix)
+    return model.DataFile(name=name)
+
+
+def dipole_moment(file_prefix):
+    """ generate dipole_moment DataFile
+    """
+    name = autofile.data_types.name.dipole_moment(file_prefix)
+    writer_ = autofile.data_types.swrite.dipole_moment
+    reader_ = autofile.data_types.sread.dipole_moment
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def polarizability(file_prefix):
+    """ generate polarizability DataFile
+    """
+    name = autofile.data_types.name.polarizability(file_prefix)
+    writer_ = autofile.data_types.swrite.polarizability
+    reader_ = autofile.data_types.sread.polarizability
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 

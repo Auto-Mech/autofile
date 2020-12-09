@@ -8,6 +8,7 @@ class Extension():
     INPUT_LOG = '.inp'
     OUTPUT_LOG = '.out'
     PROJROT_LOG = '.prot'
+    TEMPLATE = '.temp'
     SHELL_SCRIPT = '.sh'
     ENERGY = '.ene'
     GEOMETRY = '.xyz'
@@ -27,6 +28,10 @@ class Extension():
     LJ_EPSILON = '.eps'
     LJ_SIGMA = '.sig'
     EXTERNAL_SYMMETRY_FACTOR = '.esym'
+    INTERNAL_SYMMETRY_FACTOR = '.isym'
+    DIPOLE_MOMENT = '.dmom'
+    POLARIZABILITY = '.polar'
+    # Transformation files
     GRAPH = '.g.yaml'
     TRANSFORMATION = '.t.yaml'
     # Various VaReCoF files
@@ -172,10 +177,40 @@ def lennard_jones_sigma(file_name):
     return _add_extension(file_name, Extension.LJ_SIGMA)
 
 
+def lennard_jones_input(file_name):
+    """ adds lennard-jones input file extension, if missing
+    """
+    return _add_extension(file_name, Extension.INPUT_LOG)
+
+
+def lennard_jones_elstruct(file_name):
+    """ adds lennard-jones sigma extension, if missing
+    """
+    return _add_extension(file_name, Extension.TEMPLATE)
+
+
 def external_symmetry_factor(file_name):
     """ adds external symmetry number extension, if missing
     """
     return _add_extension(file_name, Extension.EXTERNAL_SYMMETRY_FACTOR)
+
+
+def internal_symmetry_factor(file_name):
+    """ adds internal symmetry number extension, if missing
+    """
+    return _add_extension(file_name, Extension.INTERNAL_SYMMETRY_FACTOR)
+
+
+def dipole_moment(file_name):
+    """ adds dipole moment extension, if missing
+    """
+    return _add_extension(file_name, Extension.DIPOLE_MOMENT)
+
+
+def polarizability(file_name):
+    """ adds dipole moment extension, if missing
+    """
+    return _add_extension(file_name, Extension.POLARIZABILITY)
 
 
 def graph(file_name):
@@ -185,6 +220,12 @@ def graph(file_name):
 
 
 def transformation(file_name):
+    """ adds transformation extension, if missing
+    """
+    return _add_extension(file_name, Extension.TRANSFORMATION)
+
+
+def transformation_old(file_name):
     """ adds transformation extension, if missing
     """
     return _add_extension(file_name, Extension.TRANSFORMATION)
