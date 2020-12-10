@@ -3,9 +3,9 @@
 """
 
 fails = [
-[   'C6H14+C1H3O2=C6H13(1)+C1H4O2',
-    'abst',
-    '/lcrc/project/PACC/AutoMech/data/save/RXN/C6H13.CH4O2/SLRMKLOOKWAIED/0_0/2_1/UHFFFAOYSA-N/C6H14.CH3O2/YKAORUCITAOIIN/0_0/1_2/UHFFFAOYSA-N/2/u-ulpJU/TS/CONFS'
+[   'r0=p0+p1',
+    'bsci',
+    '/lcrc/project/PACC/AutoMech/data/save/RXN/C3H7O/WNTIOWHNXOLOTD/0/2/UHFFFAOYSA-N/C3H6.HO/DLRZIMWIPGTZES/0_0/1_2/UHFFFAOYSA-N/2/u-ulpJU/TS/CONFS/'
 ]
 ]
 #[   'C8H18+H1O1=C8H17(6)+H2O1',
