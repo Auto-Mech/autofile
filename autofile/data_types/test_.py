@@ -4,6 +4,7 @@ import os
 import tempfile
 import numpy
 import automol
+from phydat import phycon
 import autofile.info
 import autofile.data_types
 
@@ -176,6 +177,42 @@ def test__vmatrix():
     vma_str = autofile.io_.read_file(vma_file_path)
     vma = autofile.data_types.sread.vmatrix(vma_str)
     assert vma == ref_vma
+
+
+def test__torsional_names():
+    """ test the torsion names read/write functions
+    """
+    ref_tors = {
+        'D4': (0.0, 3.14159),
+        'D11': (0.0, 6.28319),
+        'D2': (0.0, 3.14159),
+        'D18': (0.0, 3.14159)
+    }
+    sort_ref_tors = {
+        'D2': (0.0, 3.14159),
+        'D4': (0.0, 3.14159),
+        'D11': (0.0, 6.28319),
+        'D18': (0.0, 3.14159)
+    }
+
+    tors_file_name = autofile.data_types.name.torsional_names('test')
+    tors_file_path = os.path.join(TMP_DIR, tors_file_name)
+    tors_str = autofile.data_types.swrite.torsional_names(ref_tors)
+
+    assert not os.path.isfile(tors_file_path)
+    autofile.io_.write_file(tors_file_path, tors_str)
+    assert os.path.isfile(tors_file_path)
+
+    tors_str = autofile.io_.read_file(tors_file_path)
+    tors = autofile.data_types.sread.torsional_names(tors_str)
+    tors_info = zip(tors.items(), sort_ref_tors.items())
+    for (name1, rng1), (name2, rng2) in tors_info:
+        rng1 = numpy.array(rng1) * phycon.DEG2RAD
+        rng2 = numpy.array(rng2)
+        print(name1, name2)
+        print(rng1, rng2)
+        assert name1 == name2
+        assert numpy.allclose(rng1, rng2)
 
 
 def test__gradient():
@@ -521,6 +558,7 @@ if __name__ == '__main__':
     # test__hessian()
     # test__trajectory()
     # test__vmatrix()
+    test__torsional_names()
     # test__anharmonic_frequencies()
     # test__anharmonic_zpve()
     # test__anharmonicity_matrix()
@@ -528,9 +566,9 @@ if __name__ == '__main__':
     # test__quartic_centrifugal_distortion_constants()
     # test__lennard_jones_epsilon()
     # test__lennard_jones_sigma()
-    test__external_symmetry_number()
-    test__internal_symmetry_number()
-    test__dipole_moment()
-    test__polarizability()
+    # test__external_symmetry_number()
+    # test__internal_symmetry_number()
+    # test__dipole_moment()
+    # test__polarizability()
     # test__graph()
     # test__transformation()

@@ -2,8 +2,11 @@
     converts properties formatted in strings of externally preferred units
     to properties in internally used units and used data type
 """
+
 from io import StringIO as _StringIO
+from numbers import Real as _Real
 import numpy
+import yaml
 import automol
 import autoparse.find as apf
 import autofile.info
@@ -96,6 +99,23 @@ def gradient_array(grad_list):
     :rtype: numpy array
     """
     return numpy.array(grad_list)
+
+
+def torsional_names(tors_str):
+    """ Write the torsions and their ranges (radian) to a string (degree).
+
+        :param tors_str: names and angle ranges of torsional coordinates
+        :type tors_str: str
+        :rtype: dict[str: tuple(float)]
+    """
+
+    tors_dct = yaml.load(tors_str, Loader=yaml.FullLoader)
+
+    assert all(isinstance(key, str) and len(rng) == 2
+               and all(isinstance(x, _Real) for x in rng)
+               for key, rng in tors_dct.items())
+
+    return tors_dct
 
 
 def hessian(hess_str):

@@ -82,7 +82,7 @@ class _FileAttributeName():
     INPUT = 'input'
     OUTPUT = 'output'
     VMATRIX = 'vmatrix'
-    TORS_INFO = 'torsion_info'
+    TORS = 'torsional_names'
     GEOM_INFO = 'geometry_info'
     GRAD_INFO = 'gradient_info'
     HESS_INFO = 'hessian_info'
@@ -123,6 +123,7 @@ class _FileAttributeName():
     VRC_STRUCT = 'vrctst_struct'
     VRC_POT = 'vrctst_pot'
     VRC_FLUX = 'vrctst_flux'
+
 
 class _JSONAttributeName():
     """ JSON attribute names """
@@ -546,8 +547,7 @@ def zmatrix(prefix):
         _FilePrefix.ZMAT, function=info_objects.run)
     zmat_inp_dfile = data_files.input_file(_FilePrefix.ZMAT)
 
-    tors_inf_dfile = data_files.information(
-        _FilePrefix.ZMAT, function=info_objects.torsional_names)
+    tors_dfile = data_files.torsional_names(_FilePrefix.ZMAT)
 
     zmat_dfile = data_files.zmatrix(_FilePrefix.ZMAT)
     vma_dfile = data_files.vmatrix(_FilePrefix.ZMAT)
@@ -556,7 +556,7 @@ def zmatrix(prefix):
 
     leaf_ds.add_data_files({
         _FileAttributeName.GEOM_INFO:  zmat_inf_dfile,
-        _FileAttributeName.TORS_INFO: tors_inf_dfile,
+        _FileAttributeName.TORS_NAMES: tors_dfile,
         _FileAttributeName.GEOM_INPUT: zmat_inp_dfile,
         _FileAttributeName.ZMAT: zmat_dfile,
         _FileAttributeName.VMATRIX: vma_dfile,
