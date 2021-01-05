@@ -50,7 +50,7 @@ for i, fail in enumerate(tsfails.fails):
         print('dir:', adir)
         path = os.path.join(fail[2], adir)
         print('path:', path)
-        zma_fs = autofile.fs.manager(path, 'ZMATRIX')
+        zma_fs = autofile.fs.zmatrix(path)
         reacs = fail[0].split('=')[0].split('+')
         prods = fail[0].split('=')[1].split('+')
         reac_ichs = []

@@ -238,18 +238,18 @@ def lennard_jones_sigma(file_prefix):
 def external_symmetry_number(file_prefix):
     """ generate external_symmetry_number DataFile
     """
-    name = autofile.data_types.name.external_symmetry_number(file_prefix)
-    writer_ = autofile.data_types.swrite.external_symmetry_number
-    reader_ = autofile.data_types.sread.external_symmetry_number
+    name = autofile.data_types.name.external_symmetry_factor(file_prefix)
+    writer_ = autofile.data_types.swrite.external_symmetry_factor
+    reader_ = autofile.data_types.sread.external_symmetry_factor
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
 def internal_symmetry_number(file_prefix):
     """ generate internal_symmetry_number DataFile
     """
-    name = autofile.data_types.name.internal_symmetry_number(file_prefix)
-    writer_ = autofile.data_types.swrite.internal_symmetry_number
-    reader_ = autofile.data_types.sread.internal_symmetry_number
+    name = autofile.data_types.name.internal_symmetry_factor(file_prefix)
+    writer_ = autofile.data_types.swrite.internal_symmetry_factor
+    reader_ = autofile.data_types.sread.internal_symmetry_factor
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 

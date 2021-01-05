@@ -197,7 +197,7 @@ def graph(gra_str):
 def transformation(tra_str):
     """ read a chemical transformation from a string
     """
-    tra = automol.graph.trans.from_string(tra_str)
+    tra = automol.graph.trans.old_from_string(tra_str)
     return tra
 
 

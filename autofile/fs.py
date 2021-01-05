@@ -58,6 +58,7 @@ class _FilePrefix():
     RUN = 'run'
     BUILD = 'build'
     CONF = 'conf'
+    SAMP = 'samp'
     TAU = 'tau'
     SP = 'sp'
     HS = 'hs'
@@ -338,7 +339,7 @@ def conformer(prefix):
     old_inf_dfile = data_files.information(
         _FilePrefix.CONF, function=info_objects.conformer_trunk_old)
     inf_dfile = data_files.information(
-        _FilePrefix.CONF, function=info_objects.conformer_trunk)
+        _FilePrefix.SAMP, function=info_objects.conformer_trunk)
     traj_dfile = data_files.trajectory(_FilePrefix.CONF)
     trunk_ds.add_data_files({
         _FileAttributeName.INFO: old_inf_dfile,

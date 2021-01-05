@@ -5,6 +5,7 @@ import tempfile
 import numpy
 import autofile.fs
 import automol
+import pytest
 
 PREFIX = tempfile.mkdtemp()
 print(PREFIX)
@@ -39,11 +40,15 @@ def test__reaction():
         2
     ]
     rxn_fs = autofile.fs.reaction(prefix)
+    print(rxn_fs[-1].root.existing())
+    print(rxn_fs[-1].existing())
     print(rxn_fs[-1].path(locs))
 
     assert not rxn_fs[-1].exists(locs)
     rxn_fs[-1].create(locs)
     assert rxn_fs[-1].exists(locs)
+    print(rxn_fs[-1].root.existing())
+    print(rxn_fs[-1].existing())
 
 
 def test__transition_state():
@@ -86,10 +91,12 @@ def test__conformer():
     locs = [autofile.schema.generate_new_conformer_id()]
     cnf_fs = autofile.fs.conformer(prefix)
     print(cnf_fs[-1].path(locs))
-
     assert not cnf_fs[-1].exists(locs)
     cnf_fs[-1].create(locs)
     assert cnf_fs[-1].exists(locs)
+    inf_obj = autofile.schema.info_objects.conformer_trunk(0)
+    cnf_fs[0].file.info2.write(inf_obj)
+    print(cnf_fs[0].file.info2.read())
 
 
 def test__single_point():
@@ -107,6 +114,33 @@ def test__single_point():
     sp_fs[-1].create(locs)
     sp_fs[-1].file.energy.write(ref_ene, locs)
     assert sp_fs[-1].file.energy.read(locs) == ref_ene
+    sp_fs[-1].removable = True
+    sp_fs[-1].file.energy.removable = True
+    sp_fs[-1].file.energy.remove(locs)
+    sp_fs[-1].remove(locs)
+    assert not sp_fs[-1].exists(locs)
+
+
+def test__high_spin():
+    """ test autofile.fs.high_spin
+    """
+    prefix = os.path.join(PREFIX, 'high_spin')
+    os.mkdir(prefix)
+
+    sp_fs = autofile.fs.high_spin(prefix)
+    locs = ['hf', 'sto-3g', 'U']
+    print(sp_fs[-1].path(locs))
+
+    ref_ene = 5.7
+    print(sp_fs[-1].file.energy.path(locs))
+    sp_fs[-1].create(locs)
+    sp_fs[-1].file.energy.write(ref_ene, locs)
+    assert sp_fs[-1].file.energy.read(locs) == ref_ene
+    sp_fs[-1].removable = True
+    sp_fs[-1].file.energy.removable = True
+    sp_fs[-1].file.energy.remove(locs)
+    sp_fs[-1].remove(locs)
+    assert not sp_fs[-1].exists(locs)
 
 
 def test__zmatrix():
@@ -129,7 +163,7 @@ def test__zmatrix():
     assert automol.zmatrix.almost_equal(
         zma_fs[-1].file.zmatrix.read(locs), ref_zma)
 
-    ref_tra = (frozenset({frozenset({10, 7})}),
+    ref_tra = ('abstraction high', frozenset({frozenset({10, 7})}),
                frozenset({frozenset({0, 10})}))
 
     zma_fs[-1].file.transformation.write(ref_tra, locs)
@@ -188,6 +222,11 @@ def test__scan():
     scn_fs[-1].file.geometry_input.write(ref_inp_str, locs)
     assert scn_fs[-1].file.geometry_input.read(locs) == ref_inp_str
 
+    inf_obj = autofile.schema.info_objects.scan_branch({'d4': numpy.array([0, 2])})
+    scn_fs[1].create(['d4'])
+    scn_fs[1].file.info.write(inf_obj, ['d4'])
+    assert scn_fs[1].file.info.read(['d4']) == inf_obj
+
 
 def test__cscan():
     """ test autofile.fs.cscan
@@ -221,10 +260,15 @@ def test__tau():
     tau_fs[-1].create(locs)
     assert tau_fs[-1].exists(locs)
 
+    inf_obj = autofile.schema.info_objects.tau_trunk(0, {})
+    tau_fs[0].file.info.write(inf_obj)
+    print(tau_fs[0].file.info.read())
+
 
 def test__vrctst():
     """ test autofile.fs.vrctst
     """
+
     prefix = os.path.join(PREFIX, 'vrctst')
     os.mkdir(prefix)
 
@@ -349,19 +393,83 @@ def test__build():
     assert build_fs[-1].file.input.read(['MESS', 0]) == ref_inp_str
 
 
+def test__json_io():
+    """ test autofile.json_.read_json and write_json
+    """
+    prefix = os.path.join(PREFIX, 'tau')
+    file_path = os.path.join(prefix, 'test.json')
+    jsona = {'a': 1}
+    jsonb = {'b': 2}
+    autofile.json_.write_json(jsona, file_path)
+    autofile.json_.write_json(jsonb, file_path)
+    assert autofile.json_.read_json(file_path) == jsonb
+    with pytest.raises(IOError):
+        json_err = {'eek'}
+        autofile.json_.write_json(json_err, file_path)
+        # assert autofile.json_.read_json(file_path) == jsonb
+    # with pytest.raises(IOError):
+    # json_err = 'not_a_json'
+    # autofile.io_.write_file(file_path, json_err)
+    # assert autofile.json_.read_json(file_path) == jsonb
+
+
+def test__json_tau_save():
+    """ test <fs>.json.<property>.write
+    """
+    prefix = os.path.join(PREFIX, 'tau')
+    tau_fs = autofile.fs.tau(prefix)
+    save_path = tau_fs[-1].root.path()
+    print(tau_fs[-1].json_path())
+    tau_fs[-1].root.create()
+    tau_fs[-1].json_create()
+    print(tau_fs[-1].json_existing())
+    print(tau_fs[-1].json_path())
+    locs = [autofile.schema.generate_new_tau_id()]
+    print(tau_fs[-1].exists(locs))
+    print(tau_fs[-1].json_path(locs))
+    sp_locs = ['hf', 'sto-3g', 'U']
+    ref_ene = 5.7
+    print(tau_fs[-1].json.energy.exists(locs))
+    tau_fs[-1].json.energy.write(ref_ene, locs)
+    assert tau_fs[-1].json.energy.exists(locs)
+    print(tau_fs[-1].json.geometry.exists(locs))
+    print(tau_fs[-1].json.gradient.exists(locs))
+    print(tau_fs[-1].json.geometry_info.exists(locs))
+    assert tau_fs[-1].json.energy.read(locs) == ref_ene
+
+    tau_fs[-1].json_existing(locs=locs)
+    tau_fs[-1].json.energy.write_all([ref_ene], [locs])
+    tau_fs[-1].json.energy.read_all([locs])
+    sp_save_fs = autofile.fs.single_point(
+                 save_path, json_layer=locs)
+    sp_save_fs[-1].json_existing()
+    sp_save_fs[-1].json_existing(locs=sp_locs)
+    tau_fs[-1].json_existing(locs=sp_locs, json_layer=locs)
+    sp_ene = 5.5
+    print(sp_save_fs[-1].json.energy.exists(sp_locs))
+    sp_save_fs[-1].json.energy.write(sp_ene, sp_locs)
+    assert sp_save_fs[-1].json.energy.exists(sp_locs)
+    assert sp_save_fs[-1].json.energy.read(sp_locs) == sp_ene
+    sp_save_fs[-1].json_existing()
+    sp_save_fs[-1].json_existing(locs=sp_locs)
+    tau_fs[-1].json_existing(locs=sp_locs, json_layer=locs)
+
 if __name__ == '__main__':
-    # test__species()
-    # test__reaction()
-    # test__transition_state()
-    # test__theory()
-    # test__conformer()
-    # test__tau()
-    # test__single_point()
-    test__energy_transfer()
-    # test__vrctst()
-    # test__instab()
-    # test__scan()
-    # test__run()
-    # test__build()
-    # test__cscan()
+    test__species()
+    test__reaction()
+    test__transition_state()
+    test__theory()
+    test__conformer()
+    test__tau()
+    test__single_point()
+    test__high_spin()
+    # test__energy_transfer()
+    test__json_io()
+    test__json_tau_save()
+    test__vrctst()
+    test__instab()
+    test__scan()
+    test__run()
+    test__build()
+    test__cscan()
     # test__zmatrix()
