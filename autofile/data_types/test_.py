@@ -389,16 +389,16 @@ def test__external_symmetry_number():
     """
     ref_num = 1.500
 
-    num_file_name = autofile.data_types.name.external_symmetry_number('test')
+    num_file_name = autofile.data_types.name.external_symmetry_factor('test')
     num_file_path = os.path.join(TMP_DIR, num_file_name)
-    num_str = autofile.data_types.swrite.external_symmetry_number(ref_num)
+    num_str = autofile.data_types.swrite.external_symmetry_factor(ref_num)
 
     assert not os.path.isfile(num_file_path)
     autofile.io_.write_file(num_file_path, num_str)
     assert os.path.isfile(num_file_path)
 
     num_str = autofile.io_.read_file(num_file_path)
-    num = autofile.data_types.sread.external_symmetry_number(num_str)
+    num = autofile.data_types.sread.external_symmetry_factor(num_str)
     assert numpy.isclose(ref_num, num)
 
 
@@ -407,16 +407,16 @@ def test__internal_symmetry_number():
     """
     ref_num = 1.500
 
-    num_file_name = autofile.data_types.name.internal_symmetry_number('test')
+    num_file_name = autofile.data_types.name.internal_symmetry_factor('test')
     num_file_path = os.path.join(TMP_DIR, num_file_name)
-    num_str = autofile.data_types.swrite.internal_symmetry_number(ref_num)
+    num_str = autofile.data_types.swrite.internal_symmetry_factor(ref_num)
 
     assert not os.path.isfile(num_file_path)
     autofile.io_.write_file(num_file_path, num_str)
     assert os.path.isfile(num_file_path)
 
     num_str = autofile.io_.read_file(num_file_path)
-    num = autofile.data_types.sread.internal_symmetry_number(num_str)
+    num = autofile.data_types.sread.internal_symmetry_factor(num_str)
     assert numpy.isclose(ref_num, num)
 
 

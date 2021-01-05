@@ -23,7 +23,8 @@ def read_json(file_path):
     except:        
         if os.path.exists('_'.join([file_path,'backup'])):
             copyfile('_'.join([file_path,'backup']), file_path)
-            raise Exception('failure reading json file, falling back to {}_backup'.format(file_path))
+            print('failure reading json file, falling back to {}_backup'.format(file_path))
+            raise IOError
         else:
             raise Exception('failure reading json file, no backup to fall back to for {}'.format(file_path))
     return json_dct
@@ -50,7 +51,8 @@ def write_json(json_dct, file_path):
     except:        
         if os.path.exists('_'.join([file_path,'backup'])):
             copyfile('_'.join([file_path,'backup']), file_path)
-            raise Exception('failure writing json file, falling back to {}_backup'.format(file_path))
+            print('failure writing json file, falling back to {}_backup'.format(file_path))
+            raise IOError
         else:
             raise Exception('failure writing json file, no backup to fall back to for {}'.format(file_path))
     with open(file_path.replace('.json','.avail'), 'w') as a:

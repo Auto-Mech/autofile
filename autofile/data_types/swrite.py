@@ -220,7 +220,7 @@ def graph(gra):
 def transformation(tra):
     """ write a chemical transformation to a string
     """
-    tra_str = automol.graph.trans.string(tra)
+    tra_str = automol.graph.trans.old_string(tra)
     return tra_str
 
 

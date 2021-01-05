@@ -50,7 +50,7 @@ for i, fail in enumerate(tsfails.fails):
         print('dir:', adir)
         path = os.path.join(fail[2], adir)
         print('path:', path)
-        zma_fs = autofile.fs.manager(path, 'ZMATRIX')
+        zma_fs = autofile.fs.zmatrix(path)
         reacs = fail[0].split('=')[0].split('+')
         prods = fail[0].split('=')[1].split('+')
         reac_ichs = []
@@ -75,7 +75,12 @@ for i, fail in enumerate(tsfails.fails):
         prd_zmas = list(map(automol.geom.zmatrix, prd_geos))
         ret = CLA[fail[1]](rct_zmas, prd_zmas)
         print('ret test:', ret)
-        if fail[1] != 'add':
+        if 'mig' in fail[1]:
+            ts_zma, dist_name, frm_key, brk_key, _, tors_names, rcts_gra = ret
+        elif 'bsci' in fail[1]:
+            ts_zma, dist_name, brk_key, tors_names, rcts_gra = ret
+            frm_key = frozenset({})
+        elif fail[1] != 'add':
             ts_zma, dist_name, frm_key, brk_key, tors_names, rcts_gra = ret
         else:
             ts_zma, dist_name, frm_key, tors_names, rcts_gra = ret

@@ -197,7 +197,7 @@ def graph(gra_str):
 def transformation(tra_str):
     """ read a chemical transformation from a string
     """
-    tra = automol.graph.trans.from_string(tra_str)
+    tra = automol.graph.trans.old_from_string(tra_str)
     return tra
 
 
@@ -215,11 +215,12 @@ def _float(val_str):
 
 
 def _frequencies(freq_str):
-    freq_str_io = _StringIO(freq_str)
-    freqs = numpy.loadtxt(freq_str_io)
-    if freqs.ndim == 0:
-        freqs = numpy.array(freqs, ndmin=1)
-    assert freqs.ndim == 1
+    if len(freq_str.split()) == 1:
+        freqs = [float(freq) for freq in freq_str.split()]
+    else:    
+        freq_str_io = _StringIO(freq_str)
+        freqs = numpy.loadtxt(freq_str_io)
+        assert freqs.ndim == 1
     return tuple(freqs)
 
 
