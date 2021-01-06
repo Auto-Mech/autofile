@@ -8,6 +8,7 @@ from numbers import Real as _Real
 import numpy
 import yaml
 import automol
+from phydat import phycon
 import autoparse.find as apf
 import autofile.info
 
@@ -114,6 +115,9 @@ def torsional_names(tors_str):
     assert all(isinstance(key, str) and len(rng) == 2
                and all(isinstance(x, _Real) for x in rng)
                for key, rng in tors_dct.items())
+
+    for name, rng in tors_dct.items():
+        tors_dct[name] = (rng[0] * phycon.DEG2RAD, rng[1] * phycon.DEG2RAD)
 
     return tors_dct
 

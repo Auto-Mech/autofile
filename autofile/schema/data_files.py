@@ -236,6 +236,15 @@ def vmatrix(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
+def torsional_names(file_prefix):
+    """ generate torsional_names DataFile
+    """
+    name = autofile.data_types.name.torsional_names(file_prefix)
+    writer_ = autofile.data_types.swrite.torsional_names
+    reader_ = autofile.data_types.sread.torsional_names
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
 def trajectory(file_prefix):
     """ generate trajectory DataFile
     :param file_prefix: path to file

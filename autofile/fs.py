@@ -82,7 +82,7 @@ class _FileAttributeName():
     INPUT = 'input'
     OUTPUT = 'output'
     VMATRIX = 'vmatrix'
-    TORS = 'torsional_names'
+    TORS_NAMES = 'torsional_names'
     GEOM_INFO = 'geometry_info'
     GRAD_INFO = 'gradient_info'
     HESS_INFO = 'hessian_info'

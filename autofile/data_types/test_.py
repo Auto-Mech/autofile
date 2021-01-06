@@ -207,10 +207,6 @@ def test__torsional_names():
     tors = autofile.data_types.sread.torsional_names(tors_str)
     tors_info = zip(tors.items(), sort_ref_tors.items())
     for (name1, rng1), (name2, rng2) in tors_info:
-        rng1 = numpy.array(rng1) * phycon.DEG2RAD
-        rng2 = numpy.array(rng2)
-        print(name1, name2)
-        print(rng1, rng2)
         assert name1 == name2
         assert numpy.allclose(rng1, rng2)
 
