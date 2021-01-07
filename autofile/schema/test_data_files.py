@@ -254,7 +254,7 @@ def test__data_files__trajectory():
     ref_comments = ['energy: -187.3894105487809',
                     'energy: -187.3850624381528']
 
-    ref_traj = list(zip(ref_comments, ref_geos))
+    ref_traj = list(zip(ref_geos, ref_comments))
 
     traj_dfile = autofile.schema.data_files.trajectory('test')
 

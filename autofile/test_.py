@@ -164,7 +164,10 @@ def test__zmatrix():
     assert automol.zmatrix.almost_equal(
         zma_fs[-1].file.zmatrix.read(locs), ref_zma)
 
-    ref_tra = ('abstraction high', frozenset({frozenset({10, 7})}),
+    # new tra format when the time comes
+    # ref_tra = ('abstraction high', frozenset({frozenset({10, 7})}),
+    #            frozenset({frozenset({0, 10})}))
+    ref_tra = (frozenset({frozenset({10, 7})}),
                frozenset({frozenset({0, 10})}))
 
     zma_fs[-1].file.transformation.write(ref_tra, locs)
@@ -195,14 +198,6 @@ def test__zmatrix():
 
     zma_fs[-1].file.reactant_graph.write(ref_gra, locs)
     rct_gra = zma_fs[-1].file.reactant_graph.read(locs)
-
-    rct_atm_keys_lst = automol.graph.connected_components_atom_keys(rct_gra)
-    print(rct_atm_keys_lst)
-
-    # this is how we can get the product graph
-    prd_gra = automol.graph.trans.apply(tra, rct_gra)
-    prd_atm_keys_lst = automol.graph.connected_components_atom_keys(prd_gra)
-    print(prd_atm_keys_lst)
 
     assert rct_gra == ref_gra
 
@@ -332,20 +327,23 @@ def test__energy_transfer():
     ref_sig = 3.50
     ref_inp_str = '<INP STR>'
     ref_temp_str = '<TEMP STR>'
-    ref_traj_str = (('comment', automol.inchi.geometry('InChI=1S/H')),)
+    ref_traj = (
+        ((('H', (0.0, 0.0, 0.0)),), 'comment 1'),
+        ((('H', (0.0, 0.0, 0.0)),), 'comment 2')
+    )
 
     etrans_fs[-1].file.lennard_jones_epsilon.write(ref_eps, locs)
     etrans_fs[-1].file.lennard_jones_sigma.write(ref_sig, locs)
     etrans_fs[-1].file.lennard_jones_input.write(ref_inp_str, locs)
     etrans_fs[-1].file.lennard_jones_elstruct.write(ref_temp_str, locs)
-    etrans_fs[-1].file.trajectory.write(ref_traj_str, locs)
+    etrans_fs[-1].file.trajectory.write(ref_traj, locs)
     assert numpy.isclose(
         etrans_fs[-1].file.lennard_jones_epsilon.read(locs), ref_eps)
     assert numpy.isclose(
         etrans_fs[-1].file.lennard_jones_sigma.read(locs), ref_sig)
     assert etrans_fs[-1].file.lennard_jones_input.read(locs) == ref_inp_str
     assert etrans_fs[-1].file.lennard_jones_elstruct.read(locs) == ref_temp_str
-    assert etrans_fs[-1].file.trajectory.read(locs) == ref_traj_str
+    assert etrans_fs[-1].file.trajectory.read(locs) == ref_traj
 
 
 def test__instab():
@@ -457,21 +455,21 @@ def test__json_tau_save():
 
 
 if __name__ == '__main__':
-    test__species()
-    test__reaction()
-    test__transition_state()
-    test__theory()
-    test__conformer()
-    test__tau()
-    test__single_point()
-    test__high_spin()
+    # test__species()
+    # test__reaction()
+    # test__transition_state()
+    # test__theory()
+    # test__conformer()
+    # test__tau()
+    # test__single_point()
+    # test__high_spin()
     # test__energy_transfer()
-    test__json_io()
-    test__json_tau_save()
-    test__vrctst()
-    test__instab()
-    test__scan()
-    test__run()
-    test__build()
-    test__cscan()
-    # test__zmatrix()
+    # test__json_io()
+    # test__json_tau_save()
+    # test__vrctst()
+    # test__instab()
+    # test__scan()
+    # test__run()
+    # test__build()
+    # test__cscan()
+    test__zmatrix()

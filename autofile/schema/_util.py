@@ -16,7 +16,7 @@ def is_valid_inchi_multiplicity(ich, mul):
     """
     assert isinstance(mul, numbers.Integral)
     return mul in automol.graph.possible_spin_multiplicities(
-        automol.inchi.graph(ich, no_stereo=True))
+        automol.inchi.graph(ich, remove_stereo=True))
 
 
 def short_hash(obj):

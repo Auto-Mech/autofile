@@ -116,7 +116,7 @@ def test__trajectory():
     ref_comments = [
         'energy: -187.38941054878092',
         'energy: -187.3850624381528']
-    traj = tuple(zip(ref_comments, ref_geo_lst))
+    traj = tuple(zip(ref_geo_lst, ref_comments))
 
     traj_file_name = autofile.data_types.name.trajectory('test')
     traj_file_path = os.path.join(TMP_DIR, traj_file_name)
@@ -552,9 +552,9 @@ if __name__ == '__main__':
     # test__information()
     # test__gradient()
     # test__hessian()
-    # test__trajectory()
+    test__trajectory()
     # test__vmatrix()
-    test__torsional_names()
+    # test__torsional_names()
     # test__anharmonic_frequencies()
     # test__anharmonic_zpve()
     # test__anharmonicity_matrix()

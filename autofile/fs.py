@@ -102,6 +102,7 @@ class _FileAttributeName():
     TRAJ = 'trajectory'
     REACTANT_GRAPH = 'reactant_graph'
     TRANS = 'transformation'
+    TRANS_NEW = 'transformation_new'
     ANHFREQ = 'anharmonic_frequencies'
     ANHZPVE = 'anharmonic_zpve'
     XMAT = 'anharmonicity_matrix'
@@ -553,6 +554,7 @@ def zmatrix(prefix):
     vma_dfile = data_files.vmatrix(_FilePrefix.ZMAT)
     graph_dfile = data_files.graph(_FilePrefix.ZMAT)
     trans_dfile = data_files.transformation(_FilePrefix.ZMAT)
+    # trans_new_dfile = data_files.transformation_new(_FilePrefix.ZMAT)
 
     leaf_ds.add_data_files({
         _FileAttributeName.GEOM_INFO:  zmat_inf_dfile,
@@ -561,6 +563,7 @@ def zmatrix(prefix):
         _FileAttributeName.ZMAT: zmat_dfile,
         _FileAttributeName.VMATRIX: vma_dfile,
         _FileAttributeName.REACTANT_GRAPH: graph_dfile,
+        # _FileAttributeName.TRANS_NEW: trans_new_dfile})
         _FileAttributeName.TRANS: trans_dfile})
 
     return (trunk_ds, leaf_ds)

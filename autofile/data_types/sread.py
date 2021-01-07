@@ -284,7 +284,7 @@ def dipole_moment(dip_mom_str):
     dip_mom = numpy.loadtxt(dip_mom_str_io)
     assert dip_mom.ndim == 1
     assert dip_mom.shape[0] == 3
-    return map(tuple, dip_mom)
+    return tuple(dip_mom)
 
 
 def polarizability(polar_str):
@@ -323,7 +323,7 @@ def transformation(tra_str):
     return tra
 
 
-def transformation_old(tra_str):
+def transformation_new(tra_str):
     """ read a chemical transformation from a string
     """
     tra = automol.graph.trans.from_string(tra_str)
