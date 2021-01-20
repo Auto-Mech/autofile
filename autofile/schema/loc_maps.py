@@ -187,7 +187,7 @@ def conformer_leaf(cid):
     """ conformer leaf directory name
     """
     assert cid[0] == 'c', (
-            'cid {} does not start with c'.format(cid))
+        'cid {} does not start with c'.format(cid))
     assert _is_random_string_identifier(cid[1:])
     return cid
 
