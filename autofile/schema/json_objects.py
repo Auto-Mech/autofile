@@ -6,6 +6,13 @@ import autofile.data_types
 
 def input_file(file_prefix, json_prefix=(None, None)):
     """ generate input entry in json file
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.input_file(file_prefix)
     return model.JSONObject(name=name, json_prefix=json_prefix)
@@ -13,6 +20,13 @@ def input_file(file_prefix, json_prefix=(None, None)):
 
 def output_file(file_prefix):
     """ generate output entry in json file
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.output_file(file_prefix)
     return model.JSONObject(name=name)
@@ -20,6 +34,13 @@ def output_file(file_prefix):
 
 def energy(file_prefix, json_prefix=(None, None)):
     """ generate energy  entry in json file
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.energy(file_prefix)
     return model.JSONObject(name=name, json_prefix=json_prefix)
@@ -27,17 +48,30 @@ def energy(file_prefix, json_prefix=(None, None)):
 
 def geometry(file_prefix):
     """ generate geometry entry in json file
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.geometry(file_prefix)
     return model.JSONObject(name=name)
 
 
 def information(file_prefix, function=None, json_prefix=(None, None)):
-    """ information DataFile
-
+    """ information JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
     :param function: optional information-generator function, for checking the
         function signature against the information object
     :type function: callable
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     def writer_(inf_obj):
         if function is not None:
@@ -58,7 +92,7 @@ def information(file_prefix, function=None, json_prefix=(None, None)):
 
 
 def locator(file_prefix, map_dct_, loc_keys):
-    """ locator DataFile
+    """ locator JSONObject
 
     Specifiers are stored in information files according to `map_dct_` and read
     back out according to `loc_keys_`. The file may contain auxiliary
@@ -76,7 +110,14 @@ def locator(file_prefix, map_dct_, loc_keys):
 
 
 def gradient(file_prefix):
-    """ generate gradient DataFile
+    """ generate gradient JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.gradient(file_prefix)
     writer_ = autofile.data_types.swrite.gradient_array
@@ -86,49 +127,98 @@ def gradient(file_prefix):
 
 
 def hessian(file_prefix):
-    """ generate hessian DataFile
+    """ generate hessian JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.hessian(file_prefix)
     return model.JSONObject(name=name)
 
 
 def harmonic_frequencies(file_prefix):
-    """ generate harmonic_frequencies DataFile
+    """ generate harmonic_frequencies JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.harmonic_frequencies(file_prefix)
     return model.JSONObject(name=name)
 
 
 def anharmonic_frequencies(file_prefix):
-    """ generate anharmonic_frequencies DataFile
+    """ generate anharmonic_frequencies JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.anharmonic_frequencies(file_prefix)
     return model.JSONObject(name=name)
 
 
 def anharmonic_zpve(file_prefix):
-    """ generate anharmonic_zpve DataFile
+    """ generate anharmonic_zpve JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.anharmonic_zpve(file_prefix)
     return model.JSONObject(name=name)
 
 
 def anharmonicity_matrix(file_prefix):
-    """ generate anharmonicity matrix DataFile
+    """ generate anharmonicity matrix JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.anharmonicity_matrix(file_prefix)
     return model.JSONObject(name=name)
 
 
 def vibro_rot_alpha_matrix(file_prefix):
-    """ generate vibro_rot_alpha matrix DataFile
+    """ generate vibro_rot_alpha matrix JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.vibro_rot_alpha_matrix(file_prefix)
     return model.JSONObject(name=name)
 
 
 def quartic_centrifugal_dist_consts(file_prefix):
-    """ generate vibro_rot_alpha matrix DataFile
+    """ generate vibro_rot_alpha matrix JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = (
         autofile.data_types.name.quartic_centrifugal_dist_consts(file_prefix))
@@ -136,49 +226,98 @@ def quartic_centrifugal_dist_consts(file_prefix):
 
 
 def zmatrix(file_prefix):
-    """ generate zmatrix DataFile
+    """ generate zmatrix JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.zmatrix(file_prefix)
     return model.JSONObject(name=name)
 
 
 def vmatrix(file_prefix):
-    """ generate vmatrix DataFile
+    """ generate vmatrix JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.vmatrix(file_prefix)
     return model.JSONObject(name=name)
 
 
 def trajectory(file_prefix):
-    """ generate trajectory DataFile
+    """ generate trajectory JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.trajectory(file_prefix)
     return model.JSONObject(name=name)
 
 
 def graph(file_prefix):
-    """ generate graph DataFile
+    """ generate graph JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.graph(file_prefix)
     return model.JSONObject(name=name)
 
 
 def transformation(file_prefix):
-    """ generate transformation DataFile
+    """ generate transformation JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.transformation(file_prefix)
     return model.JSONObject(name=name)
 
 
 def lennard_jones_epsilon(file_prefix):
-    """ generate lennard_jones_epsilon DataFile
+    """ generate lennard_jones_epsilon JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.lennard_jones_epsilon(file_prefix)
     return model.JSONObject(name=name)
 
 
 def lennard_jones_sigma(file_prefix):
-    """ generate lennard_jones_sigma DataFile
+    """ generate lennard_jones_sigma JSONObject
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :param json_prefix: top level keys
+        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
+    :type json_prefix: tuple
+    :return: instance of JSONObject class
+    :rtype: JSONObject
     """
     name = autofile.data_types.name.lennard_jones_sigma(file_prefix)
     return model.JSONObject(name=name)
