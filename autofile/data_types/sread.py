@@ -217,7 +217,7 @@ def _float(val_str):
 def _frequencies(freq_str):
     if len(freq_str.split()) == 1:
         freqs = [float(freq) for freq in freq_str.split()]
-    else:    
+    else:
         freq_str_io = _StringIO(freq_str)
         freqs = numpy.loadtxt(freq_str_io)
         assert freqs.ndim == 1

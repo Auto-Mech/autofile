@@ -52,7 +52,8 @@ class DataFile():
         """ read data from this file
         """
         assert self.exists(dir_pth), (
-            'Either requested file {} or requested path does not exist {}'.format(self, dir_pth)
+            'Either requested file {}'.format(self),
+            'or requested path does not exist {}'.format(dir_pth)
         )
 
         pth = self.path(dir_pth)
@@ -215,7 +216,7 @@ class DataSeries():
         pths = filter(os.path.isdir, glob.glob(pth_pattern))
         pths = tuple(sorted(os.path.join(prefix, pth) for pth in pths))
         return pths
-        
+    
     def json_path(self, json_layer=None):
         """ json file path
         """
@@ -238,7 +239,8 @@ class DataSeries():
         """
         locs = []
         if self.json_exists(json_layer=json_layer):
-            json_data = autofile.json_.read_json(self.json_path(json_layer=json_layer))
+            json_data = autofile.json_.read_json(
+                self.json_path(json_layer=json_layer))
             keys = json_data.keys()
             dct = json_data
             for nested_key in locs:
@@ -253,10 +255,10 @@ class DataSeries():
                 if isinstance(dct[key], dict):
                     locs.append(key)
             locs = tuple([key] for key in keys)
-            
+
         return locs
 
-    def _map(self, locs):
+    def map(self, locs):
         """ returns a list of mapped locations
         """
         if locs:
@@ -370,10 +372,15 @@ class DataSeriesFile():
 
 
 class JSONObject():
-    def __init__(self, name, json_prefix=(None, None), function=None, writer_=(lambda _: _), reader_=(lambda _: _)):
+    """ json manager """
+    def __init__(
+            self, name, json_prefix=(None, None), removable=False,
+            writer_=(lambda _: _), reader_=(lambda _: _)):
         """
         :param name: the file name
         :type name: str
+        :param json_prefix: static, top level keys
+        :type json_prefix: tuple
         :param writer_: writes data to a string
         :type writer_: callable[object->str]
         :param reader_: reads data from a string
@@ -386,17 +393,19 @@ class JSONObject():
         self.removable = False
         self.writer_ = writer_
         self.reader_ = reader_
-   
+
     def items(self, path):
         """ what are the parent keys in this json file
         """
         keys = []
         entries = []
         if os.path.isfile(path):
-           keys, entries = zip(*self.read_json(path).items())
+            keys, entries = zip(*self.read_json(path).items())
         return keys, entries
 
     def _add_layer(self, key):
+        """ add a key to the json loc list
+        """
         layered_key = key
         if self.json_layer:
             layered_key = self.json_prefix.copy()
@@ -405,20 +414,30 @@ class JSONObject():
         return layered_key
 
     def keys(self, path):
+        """ return the keys of a json
+        """
         keys, _ = self.items(path)
         return keys
 
     def entries(self, path):
+        """ return the entries of a json
+        """
         _, entries = self.items(path)
-        return entries 
+        return entries
 
     def read_json(self, path):
+        """ read a json
+        """
         return autofile.json_.read_json(path)
 
     def write_json(self, json_data, path):
+        """ write a json
+        """
         autofile.json_.write_json(json_data, path)
 
     def exists(self, key, path):
+        """ check existance of a json
+        """
         exists = True
         key = self._add_layer(key)
         json_data = self.read_json(path)
@@ -436,10 +455,14 @@ class JSONObject():
         return exists
 
     def read(self, key, path):
+        """ read a key out of a json file
+        """
         json_data = self.read_json(path)
         return self._read(key, json_data)
 
     def _read(self, key, json_data):
+        """ read a key out of a json file
+        """
         exists = True
         key = self._add_layer(key)
         keys = json_data.keys()
@@ -452,16 +475,22 @@ class JSONObject():
                 exists = False
         if exists:
             if self.name in dct:
-                return self.reader_(dct[self.name] )
+                return self.reader_(dct[self.name])
+        return None
 
     def read_all(self, keys, path):
+        """ read a key out of a json file for
+            many keys
+        """
         json_data = self.read_json(path)
         ret = []
         for key in keys:
-            ret.append(self._read(key, json_data)) 
-        return ret    
+            ret.append(self._read(key, json_data))
+        return ret
 
     def write(self, val, key, path):
+        """ write a value for a key in a json
+        """
         key = self._add_layer(key)
         current_json = self.read_json(path)
         keys = current_json.keys()
@@ -471,11 +500,13 @@ class JSONObject():
                 dct[nested_key] = {}
             dct = dct[nested_key]
             keys = dct.keys()
-        val = self.writer_(val)    
-        dct[self.name] = val 
+        val = self.writer_(val)
+        dct[self.name] = val
         self.write_json(current_json, path)
 
     def write_all(self, vals, all_keys, path):
+        """ write values for multiple keys in a json
+        """
         current_json = self.read_json(path)
         for key, val in zip(all_keys, vals):
             key = self._add_layer(key)
@@ -486,11 +517,14 @@ class JSONObject():
                     dct[nested_key] = {}
                 dct = dct[nested_key]
                 keys = dct.keys()
-            val = self.writer_(val)    
-            dct[self.name] = val 
+            val = self.writer_(val)
+            dct[self.name] = val
         self.write_json(current_json, path)
 
+
 class JSONEntry():
+    """ json manager for a given datatype
+    """
     def __init__(self, js, jobject):
         """ json manager mapping locator values to objects in a json file
         """
@@ -503,18 +537,20 @@ class JSONEntry():
         """
         ret = False
         if mapping:
-            ret = self.json.exists(self.js._map(key), self.js.json_path(
-                json_layer=self.json.json_layer))
+            ret = self.json.exists(
+                self.js.map(key), self.js.json_path(
+                    json_layer=self.json.json_layer))
         else:
             ret = self.json.exists(key, self.js.json_path(
                 json_layer=self.json.json_layer))
-        return ret    
-    
+        return ret
+
     def existing(self, key=()):
-        """ returns the keys nested under this key 
+        """ returns the keys nested under this key
         """
-        return self.js.json_existing(locs=self.json._add_layer(key),
-                                     json_layer=self.json.json_layer)
+        return self.js.json_existing(
+            locs=self.json._add_layer(key),
+            json_layer=self.json.json_layer)
 
     def write(self, val, key=('database_entry'), mapping=True):
         """ write data to this file
@@ -522,7 +558,7 @@ class JSONEntry():
         if not self.js.json_exists(json_layer=self.json.json_layer):
             self.js.json_create(json_layer=self.json.json_layer)
         if mapping:
-            key = self.js._map(key)
+            key = self.js.map(key)
         self.json.write(val, key, self.js.json_path(
             json_layer=self.json.json_layer))
 
@@ -534,7 +570,7 @@ class JSONEntry():
         if mapping:
             new_keys = []
             for key in keys:
-               new_keys.append(self.js._map(key))
+                new_keys.append(self.js.map(key))
         else:
             new_keys = keys
         self.json.write_all(vals, new_keys, self.js.json_path(
@@ -546,12 +582,12 @@ class JSONEntry():
         ret = None
         if self.exists(key, mapping=mapping):
             if mapping:
-                ret = self.json.read(self.js._map(key), self.js.json_path(
+                ret = self.json.read(self.js.map(key), self.js.json_path(
                     json_layer=self.json.json_layer))
             else:
                 ret = self.json.read(key, self.js.json_path(
                     json_layer=self.json.json_layer))
-        return ret       
+        return ret
 
     def read_all(self, keys=(('database_entry')), mapping=True):
         """ read data from this file
@@ -561,13 +597,13 @@ class JSONEntry():
         for key in keys:
             if self.exists(key, mapping=mapping):
                 if mapping:
-                    new_keys.append(self.js._map(key))
+                    new_keys.append(self.js.map(key))
                 else:
                     new_keys.append(key)
-        if new_keys:            
+        if new_keys:
             ret = self.json.read_all(new_keys, self.js.json_path(
                 json_layer=self.json.json_layer))
-        return ret       
+        return ret
 
 
 def _path_is_relative(pth):

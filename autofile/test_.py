@@ -3,9 +3,10 @@
 import os
 import tempfile
 import numpy
+import pytest
+
 import autofile.fs
 import automol
-import pytest
 
 PREFIX = tempfile.mkdtemp()
 print(PREFIX)
@@ -441,7 +442,7 @@ def test__json_tau_save():
     tau_fs[-1].json.energy.write_all([ref_ene], [locs])
     tau_fs[-1].json.energy.read_all([locs])
     sp_save_fs = autofile.fs.single_point(
-                 save_path, json_layer=locs)
+        save_path, json_layer=locs)
     sp_save_fs[-1].json_existing()
     sp_save_fs[-1].json_existing(locs=sp_locs)
     tau_fs[-1].json_existing(locs=sp_locs, json_layer=locs)
@@ -453,6 +454,7 @@ def test__json_tau_save():
     sp_save_fs[-1].json_existing()
     sp_save_fs[-1].json_existing(locs=sp_locs)
     tau_fs[-1].json_existing(locs=sp_locs, json_layer=locs)
+
 
 if __name__ == '__main__':
     test__species()

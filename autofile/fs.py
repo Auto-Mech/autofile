@@ -425,16 +425,13 @@ def single_point(prefix, json_layer=None):
         _FileAttributeName.INFO: inf_dfile,
         _FileAttributeName.INPUT: inp_dfile,
         _FileAttributeName.ENERGY: ene_dfile})
-    inp_jobj = json_objects.input_file(_FilePrefix.SP, 
-                                        json_prefix=(json_layer,
-                                                    _LayerPrefix.SP))
-    inf_jobj = json_objects.information(_FilePrefix.SP,
-                                        json_prefix=(json_layer,
-                                                    _LayerPrefix.SP),
-                                        function=info_objects.run)
-    ene_jobj = json_objects.energy(_FilePrefix.SP,
-                                   json_prefix=(json_layer,
-                                               _LayerPrefix.SP))
+    inp_jobj = json_objects.input_file(
+        _FilePrefix.SP, json_prefix=(json_layer, _LayerPrefix.SP))
+    inf_jobj = json_objects.information(
+        _FilePrefix.SP, json_prefix=(
+            json_layer, _LayerPrefix.SP), function=info_objects.run)
+    ene_jobj = json_objects.energy(
+        _FilePrefix.SP, json_prefix=(json_layer, _LayerPrefix.SP))
     leaf_ds.add_json_entries({
         _JSONAttributeName.INFO: inf_jobj,
         _JSONAttributeName.INPUT: inp_jobj,
@@ -824,12 +821,12 @@ def tau(prefix):
         _FileAttributeName.HESS: hess_dfile,
         _FileAttributeName.HFREQ: hfreq_dfile})
 
-    geom_inf_jobj = json_objects.information(_FilePrefix.GEOM,
-                                            function=info_objects.run)
-    grad_inf_jobj = json_objects.information(_FilePrefix.GRAD,
-                                            function=info_objects.run)
-    hess_inf_jobj = json_objects.information(_FilePrefix.HESS,
-                                            function=info_objects.run)
+    geom_inf_jobj = json_objects.information(
+        _FilePrefix.GEOM, function=info_objects.run)
+    grad_inf_jobj = json_objects.information(
+        _FilePrefix.GRAD, function=info_objects.run)
+    hess_inf_jobj = json_objects.information(
+        _FilePrefix.HESS, function=info_objects.run)
     geom_inp_jobj = json_objects.input_file(_FilePrefix.GEOM)
     grad_inp_jobj = json_objects.input_file(_FilePrefix.GRAD)
     hess_inp_jobj = json_objects.input_file(_FilePrefix.HESS)
