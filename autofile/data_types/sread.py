@@ -64,7 +64,7 @@ def zmatrix(zma_str):
     :return: zmatrix as internally used tuple object
     :rtype: tuple
     """
-    zma = automol.zmatrix.from_string(zma_str)
+    zma = automol.zmat.from_string(zma_str)
     return zma
 
 
@@ -75,7 +75,7 @@ def vmatrix(vma_str):
     :return: vmatrix as internally used tuple object
     :rtype: tuple
     """
-    vma = automol.vmatrix.from_string(vma_str)
+    vma = automol.vmat.from_string(vma_str)
     return vma
 
 
