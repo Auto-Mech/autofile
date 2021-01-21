@@ -6,13 +6,13 @@ import os
 import numpy
 import automol
 import autofile
-from automol.zmatrix._unimol_ts import hydrogen_migration
-from automol.zmatrix._unimol_ts import concerted_unimolecular_elimination
-from automol.zmatrix._unimol_ts import beta_scission
-from automol.zmatrix._bimol_ts import insertion
-from automol.zmatrix._bimol_ts import substitution
-from automol.zmatrix._bimol_ts import addition
-from automol.zmatrix._bimol_ts import hydrogen_abstraction
+from automol.zmat._unimol_ts import hydrogen_migration
+from automol.zmat._unimol_ts import concerted_unimolecular_elimination
+from automol.zmat._unimol_ts import beta_scission
+from automol.zmat._bimol_ts import insertion
+from automol.zmat._bimol_ts import substitution
+from automol.zmat._bimol_ts import addition
+from automol.zmat._bimol_ts import hydrogen_abstraction
 import tsfails
 import sys
 
@@ -95,7 +95,7 @@ for i, fail in enumerate(tsfails.fails):
         zma_fs[-1].file.transformation.write(tra, [0])
         zma_fs[-1].file.reactant_graph.write(rcts_gra, [0])
         
-        # tors_ranges = list(automol.zmatrix.torsional_sampling_ranges(tors_names))
+        # tors_ranges = list(automol.zmat.torsional_sampling_ranges(tors_names))
         tors_ranges = list([0, 360.] for tors in tors_names)
         tors_range_dct = dict(zip(tors_names, tors_ranges))
         inf_obj.tors_ranges = tors_range_dct

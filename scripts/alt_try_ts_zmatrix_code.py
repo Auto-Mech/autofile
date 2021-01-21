@@ -56,11 +56,11 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
             # the reactant graph *in terms of the z-matrix keys*.
 
             # Attempt to determine the transformation in the forward direction
-            forw_tra, forw_rct_gra = automol.zmatrix.ts.zmatrix_reaction_info(
+            forw_tra, forw_rct_gra = automol.zmat.ts.zmatrix_reaction_info(
                 ts_zma, rct_gras, prd_gras)
 
             # Attempt to determine the transformation in the backward direction
-            back_tra, back_rct_gra = automol.zmatrix.ts.zmatrix_reaction_info(
+            back_tra, back_rct_gra = automol.zmat.ts.zmatrix_reaction_info(
                 ts_zma, rct_gras=prd_gras, prd_gras=rct_gras)
 
             # The transformations (formed/broken keys) returned by the above
@@ -108,8 +108,8 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
             # connections between the next closest atoms.
             if forw_tra is None and back_tra is None:
                 # print("No TS subgraph match")
-                # print(automol.zmatrix.string(ts_zma))
-                # print(automol.geom.string(automol.zmatrix.geometry(ts_zma)))
+                # print(automol.zmat.string(ts_zma))
+                # print(automol.geom.string(automol.zmat.geometry(ts_zma)))
                 # print('ichs')
                 # print(rct_ichs)
                 # print(prd_ichs)
@@ -125,7 +125,7 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
 
             if forw_tra is not None and back_tra is not None:
                 # print("Overlap match")
-                # print(automol.zmatrix.string(ts_zma))
+                # print(automol.zmat.string(ts_zma))
                 # print('ichs')
                 # print(rct_ichs)
                 # print(prd_ichs)
@@ -133,7 +133,7 @@ for rxn_locs, in fs.iterate_locators(PFX, ['REACTION']):
                 # print(list((automol.inchi.smiles(ich) for ich in rct_ichs)))
                 # print(list((automol.inchi.smiles(ich) for ich in prd_ichs)))
                 # print(zma_path)
-                # print(automol.geom.string(automol.zmatrix.geometry(ts_zma)))
+                # print(automol.geom.string(automol.zmat.geometry(ts_zma)))
                 OVERLAP_COUNT += 1
                 # fails.append(
                     # [rct_ichs, prd_ichs, 'rxn', zma_path]

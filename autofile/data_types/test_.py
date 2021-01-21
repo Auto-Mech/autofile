@@ -131,17 +131,19 @@ def test__zmatrix():
     """ test the zmatrix read/write functions
     """
     ref_zma = (
-        (('C', (None, None, None), (None, None, None)),
-         ('O', (0, None, None), ('r1', None, None)),
-         ('H', (0, 1, None), ('r2', 'a1', None)),
-         ('H', (0, 1, 2), ('r3', 'a2', 'd1')),
-         ('H', (0, 1, 2), ('r4', 'a3', 'd2')),
-         ('H', (1, 0, 2), ('r5', 'a4', 'd3'))),
-        {'r1': 2.67535,
-         'r2': 2.06501, 'a1': 1.9116242,
-         'r3': 2.06501, 'a2': 1.9116242, 'd1': 2.108497362,
-         'r4': 2.06458, 'a3': 1.9020947, 'd2': 4.195841334,
-         'r5': 1.83748, 'a4': 1.8690905, 'd3': 5.228936625})
+        ('C', (None, None, None), (None, None, None),
+         (None, None, None)),
+        ('O', (0, None, None), ('r1', None, None),
+         (2.67535, None, None)),
+        ('H', (0, 1, None), ('r2', 'a1', None),
+         (2.06501, 1.9116242, None)),
+        ('H', (0, 1, 2), ('r3', 'a2', 'd1'),
+         (2.06501, 1.9116242, 2.108497362)),
+        ('H', (0, 1, 2), ('r4', 'a3', 'd2'),
+         (2.06458, 1.9020947, 4.195841334)),
+        ('H', (1, 0, 2), ('r5', 'a4', 'd3'),
+         (1.83748, 1.8690905, 5.228936625))
+    )
 
     zma_file_name = autofile.data_types.name.zmatrix('test')
     zma_file_path = os.path.join(TMP_DIR, zma_file_name)
@@ -153,7 +155,7 @@ def test__zmatrix():
 
     zma_str = autofile.io_.read_file(zma_file_path)
     zma = autofile.data_types.sread.zmatrix(zma_str)
-    assert automol.zmatrix.almost_equal(ref_zma, zma)
+    assert automol.zmat.almost_equal(ref_zma, zma)
 
 
 def test__vmatrix():

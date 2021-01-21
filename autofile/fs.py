@@ -424,9 +424,9 @@ def single_point(prefix, json_layer=None):
                                        function=info_objects.run)
     ene_dfile = data_files.energy(_FilePrefix.SP)
     leaf_ds.add_data_files({
-        _FileAttributeName.INFO: inf_dfile,
-        _FileAttributeName.INPUT: inp_dfile,
-        _FileAttributeName.ENERGY: ene_dfile})
+        FileAttributeName.INFO: inf_dfile,
+        FileAttributeName.INPUT: inp_dfile,
+        FileAttributeName.ENERGY: ene_dfile})
     inp_jobj = json_objects.input_file(
         _FilePrefix.SP, json_prefix=(json_layer, _LayerPrefix.SP))
     inf_jobj = json_objects.information(

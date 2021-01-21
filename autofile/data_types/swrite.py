@@ -72,8 +72,8 @@ def zmatrix(zma):
     :return: zmatrix as string
     :rtype: str
     """
-    assert automol.zmatrix.is_valid(zma)
-    zma_str = automol.zmatrix.string(zma)
+    assert automol.zmat.is_valid(zma)
+    zma_str = automol.zmat.string(zma)
     return zma_str
 
 
@@ -84,8 +84,8 @@ def vmatrix(vma):
     :return: vmatrix string
     :rtype: str
     """
-    assert automol.vmatrix.is_valid(vma)
-    vma_str = automol.vmatrix.string(vma)
+    assert automol.vmat.is_valid(vma)
+    vma_str = automol.vmat.string(vma)
     return vma_str
 
 
