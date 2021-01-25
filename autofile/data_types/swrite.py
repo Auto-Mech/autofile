@@ -2,10 +2,13 @@
     converts properties in internally used units and used data type
     to properties formatted in strings of externally preferred units
 """
+
 from io import StringIO as _StringIO
 from numbers import Real as _Real
 import numpy
+import yaml
 import automol
+from phydat import phycon
 import autofile.info
 
 
@@ -53,7 +56,7 @@ def trajectory(traj):
     :return: trajectory
     :rtype: str
     """
-    comments, geo_lst = zip(*traj)
+    geo_lst, comments = zip(*traj)
     assert all(isinstance(comment, str) and len(comment.splitlines()) == 1
                for comment in comments)
     assert all(map(automol.geom.is_valid, geo_lst))
@@ -69,8 +72,8 @@ def zmatrix(zma):
     :return: zmatrix as string
     :rtype: str
     """
-    assert automol.zmatrix.is_valid(zma)
-    zma_str = automol.zmatrix.string(zma)
+    assert automol.zmat.is_valid(zma)
+    zma_str = automol.zmat.string(zma)
     return zma_str
 
 
@@ -81,9 +84,34 @@ def vmatrix(vma):
     :return: vmatrix string
     :rtype: str
     """
-    assert automol.vmatrix.is_valid(vma)
-    vma_str = automol.vmatrix.string(vma)
+    assert automol.vmat.is_valid(vma)
+    vma_str = automol.vmat.string(vma)
     return vma_str
+
+
+def torsional_names(tors_dct):
+    """ Write the torsions and their ranges (radian) to a string (degree).
+
+        :param tors_dct: names and angle ranges of torsional coordinates
+        :type tors_dct: dict[str: tuple(float)]
+        :rtype: str
+    """
+
+    assert all(isinstance(key, str) and len(rng) == 2
+               and all(isinstance(x, _Real) for x in rng)
+               for key, rng in tors_dct.items())
+
+    tors_names = list(tors_dct.keys())
+    tors_names.sort(key=lambda x: int(x.split('D')[1]))
+    sorted_dct = {}
+    for name in tors_names:
+        sorted_dct[name] = (
+            tors_dct[name][0]*phycon.RAD2DEG, tors_dct[name][1]*phycon.RAD2DEG
+        )
+
+    tors_str = yaml.dump(sorted_dct, default_flow_style=True, sort_keys=False)
+
+    return tors_str
 
 
 def gradient(grad):
@@ -318,7 +346,7 @@ def transformation(tra):
     return tra_str
 
 
-def transformation_old(tra):
+def transformation_new(tra):
     """ write a chemical transformation to a string
     """
     tra_str = automol.graph.trans.string(tra)

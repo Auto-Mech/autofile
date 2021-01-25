@@ -4,6 +4,7 @@ import os
 import tempfile
 import numpy
 import automol
+from phydat import phycon
 import autofile.info
 import autofile.data_types
 
@@ -115,7 +116,7 @@ def test__trajectory():
     ref_comments = [
         'energy: -187.38941054878092',
         'energy: -187.3850624381528']
-    traj = tuple(zip(ref_comments, ref_geo_lst))
+    traj = tuple(zip(ref_geo_lst, ref_comments))
 
     traj_file_name = autofile.data_types.name.trajectory('test')
     traj_file_path = os.path.join(TMP_DIR, traj_file_name)
@@ -130,17 +131,19 @@ def test__zmatrix():
     """ test the zmatrix read/write functions
     """
     ref_zma = (
-        (('C', (None, None, None), (None, None, None)),
-         ('O', (0, None, None), ('r1', None, None)),
-         ('H', (0, 1, None), ('r2', 'a1', None)),
-         ('H', (0, 1, 2), ('r3', 'a2', 'd1')),
-         ('H', (0, 1, 2), ('r4', 'a3', 'd2')),
-         ('H', (1, 0, 2), ('r5', 'a4', 'd3'))),
-        {'r1': 2.67535,
-         'r2': 2.06501, 'a1': 1.9116242,
-         'r3': 2.06501, 'a2': 1.9116242, 'd1': 2.108497362,
-         'r4': 2.06458, 'a3': 1.9020947, 'd2': 4.195841334,
-         'r5': 1.83748, 'a4': 1.8690905, 'd3': 5.228936625})
+        ('C', (None, None, None), (None, None, None),
+         (None, None, None)),
+        ('O', (0, None, None), ('r1', None, None),
+         (2.67535, None, None)),
+        ('H', (0, 1, None), ('r2', 'a1', None),
+         (2.06501, 1.9116242, None)),
+        ('H', (0, 1, 2), ('r3', 'a2', 'd1'),
+         (2.06501, 1.9116242, 2.108497362)),
+        ('H', (0, 1, 2), ('r4', 'a3', 'd2'),
+         (2.06458, 1.9020947, 4.195841334)),
+        ('H', (1, 0, 2), ('r5', 'a4', 'd3'),
+         (1.83748, 1.8690905, 5.228936625))
+    )
 
     zma_file_name = autofile.data_types.name.zmatrix('test')
     zma_file_path = os.path.join(TMP_DIR, zma_file_name)
@@ -152,7 +155,7 @@ def test__zmatrix():
 
     zma_str = autofile.io_.read_file(zma_file_path)
     zma = autofile.data_types.sread.zmatrix(zma_str)
-    assert automol.zmatrix.almost_equal(ref_zma, zma)
+    assert automol.zmat.almost_equal(ref_zma, zma)
 
 
 def test__vmatrix():
@@ -176,6 +179,38 @@ def test__vmatrix():
     vma_str = autofile.io_.read_file(vma_file_path)
     vma = autofile.data_types.sread.vmatrix(vma_str)
     assert vma == ref_vma
+
+
+def test__torsional_names():
+    """ test the torsion names read/write functions
+    """
+    ref_tors = {
+        'D4': (0.0, 3.14159),
+        'D11': (0.0, 6.28319),
+        'D2': (0.0, 3.14159),
+        'D18': (0.0, 3.14159)
+    }
+    sort_ref_tors = {
+        'D2': (0.0, 3.14159),
+        'D4': (0.0, 3.14159),
+        'D11': (0.0, 6.28319),
+        'D18': (0.0, 3.14159)
+    }
+
+    tors_file_name = autofile.data_types.name.torsional_names('test')
+    tors_file_path = os.path.join(TMP_DIR, tors_file_name)
+    tors_str = autofile.data_types.swrite.torsional_names(ref_tors)
+
+    assert not os.path.isfile(tors_file_path)
+    autofile.io_.write_file(tors_file_path, tors_str)
+    assert os.path.isfile(tors_file_path)
+
+    tors_str = autofile.io_.read_file(tors_file_path)
+    tors = autofile.data_types.sread.torsional_names(tors_str)
+    tors_info = zip(tors.items(), sort_ref_tors.items())
+    for (name1, rng1), (name2, rng2) in tors_info:
+        assert name1 == name2
+        assert numpy.allclose(rng1, rng2)
 
 
 def test__gradient():
@@ -519,8 +554,9 @@ if __name__ == '__main__':
     # test__information()
     # test__gradient()
     # test__hessian()
-    # test__trajectory()
+    test__trajectory()
     # test__vmatrix()
+    # test__torsional_names()
     # test__anharmonic_frequencies()
     # test__anharmonic_zpve()
     # test__anharmonicity_matrix()
@@ -528,9 +564,9 @@ if __name__ == '__main__':
     # test__quartic_centrifugal_distortion_constants()
     # test__lennard_jones_epsilon()
     # test__lennard_jones_sigma()
-    test__external_symmetry_number()
-    test__internal_symmetry_number()
-    test__dipole_moment()
-    test__polarizability()
+    # test__external_symmetry_number()
+    # test__internal_symmetry_number()
+    # test__dipole_moment()
+    # test__polarizability()
     # test__graph()
     # test__transformation()

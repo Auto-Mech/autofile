@@ -15,6 +15,7 @@ class Extension():
     TRAJECTORY = '.t.xyz'
     ZMATRIX = '.zmat'
     VMATRIX = '.vmat'
+    TORS = '.tors'
     GRADIENT = '.grad'
     HESSIAN = '.hess'
     HARMONIC_ZPVE = '.hzpve'
@@ -103,6 +104,12 @@ def vmatrix(file_name):
     """ adds variable zmatrix extension, if missing
     """
     return _add_extension(file_name, Extension.VMATRIX)
+
+
+def torsional_names(file_name):
+    """ adds variable torsional names extension, if missing
+    """
+    return _add_extension(file_name, Extension.TORS)
 
 
 def gradient(file_name):

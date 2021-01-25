@@ -20,7 +20,6 @@ def test__species():
 
     locs = ['InChI=1S/C2H2F2/c3-1-2-4/h1-2H/b2-1+', 0, 1]
     spc_fs = autofile.fs.species(prefix)
-    print(spc_fs[-1].path(locs))
 
     assert not spc_fs[-1].exists(locs)
     spc_fs[-1].create(locs)
@@ -41,15 +40,10 @@ def test__reaction():
         2
     ]
     rxn_fs = autofile.fs.reaction(prefix)
-    print(rxn_fs[-1].root.existing())
-    print(rxn_fs[-1].existing())
-    print(rxn_fs[-1].path(locs))
 
     assert not rxn_fs[-1].exists(locs)
     rxn_fs[-1].create(locs)
     assert rxn_fs[-1].exists(locs)
-    print(rxn_fs[-1].root.existing())
-    print(rxn_fs[-1].existing())
 
 
 def test__transition_state():
@@ -59,7 +53,6 @@ def test__transition_state():
     os.mkdir(prefix)
 
     ts_fs = autofile.fs.transition_state(prefix)
-    print(ts_fs[0].path())
 
     assert not ts_fs[0].exists()
     ts_fs[0].create()
@@ -74,10 +67,8 @@ def test__theory():
 
     thy_fs = autofile.fs.theory(prefix)
     locs = ['hf', 'sto-3g', 'U']
-    print(thy_fs[-1].path(locs))
 
     ref_ene = 5.7
-    print(thy_fs[-1].file.energy.path(locs))
     thy_fs[-1].create(locs)
     thy_fs[-1].file.energy.write(ref_ene, locs)
     assert thy_fs[-1].file.energy.read(locs) == ref_ene
@@ -91,13 +82,11 @@ def test__conformer():
 
     locs = [autofile.schema.generate_new_conformer_id()]
     cnf_fs = autofile.fs.conformer(prefix)
-    print(cnf_fs[-1].path(locs))
     assert not cnf_fs[-1].exists(locs)
     cnf_fs[-1].create(locs)
     assert cnf_fs[-1].exists(locs)
     inf_obj = autofile.schema.info_objects.conformer_trunk(0)
     cnf_fs[0].file.info2.write(inf_obj)
-    print(cnf_fs[0].file.info2.read())
 
 
 def test__single_point():
@@ -108,10 +97,8 @@ def test__single_point():
 
     sp_fs = autofile.fs.single_point(prefix)
     locs = ['hf', 'sto-3g', 'U']
-    print(sp_fs[-1].path(locs))
 
     ref_ene = 5.7
-    print(sp_fs[-1].file.energy.path(locs))
     sp_fs[-1].create(locs)
     sp_fs[-1].file.energy.write(ref_ene, locs)
     assert sp_fs[-1].file.energy.read(locs) == ref_ene
@@ -130,10 +117,8 @@ def test__high_spin():
 
     sp_fs = autofile.fs.high_spin(prefix)
     locs = ['hf', 'sto-3g', 'U']
-    print(sp_fs[-1].path(locs))
 
     ref_ene = 5.7
-    print(sp_fs[-1].file.energy.path(locs))
     sp_fs[-1].create(locs)
     sp_fs[-1].file.energy.write(ref_ene, locs)
     assert sp_fs[-1].file.energy.read(locs) == ref_ene
@@ -152,25 +137,25 @@ def test__zmatrix():
 
     zma_fs = autofile.fs.zmatrix(prefix)
     locs = [0]
-    print(zma_fs[-1].path(locs))
 
-    ref_zma = ((('O', (None, None, None), (None, None, None)),
-                ('H', (0, None, None), ('R1', None, None))),
-               {'R1': 1.84779})
+    ref_zma = (
+        ('O', (None, None, None), (None, None, None), (None, None, None)),
+        ('H', (0, None, None), ('R1', None, None), (1.84779, None, None)))
 
-    print(zma_fs[-1].file.zmatrix.path(locs))
     zma_fs[-1].create(locs)
     zma_fs[-1].file.zmatrix.write(ref_zma, locs)
-    assert automol.zmatrix.almost_equal(
+    assert automol.zmat.almost_equal(
         zma_fs[-1].file.zmatrix.read(locs), ref_zma)
 
-    ref_tra = ('abstraction high', frozenset({frozenset({10, 7})}),
+    # new tra format when the time comes
+    # ref_tra = ('abstraction high', frozenset({frozenset({10, 7})}),
+    #            frozenset({frozenset({0, 10})}))
+    ref_tra = (frozenset({frozenset({10, 7})}),
                frozenset({frozenset({0, 10})}))
 
     zma_fs[-1].file.transformation.write(ref_tra, locs)
     tra = zma_fs[-1].file.transformation.read(locs)
 
-    print(tra)
     assert tra == ref_tra
 
     ref_gra = ({0: ('C', 0, None), 1: ('C', 0, None), 2: ('C', 0, None),
@@ -196,14 +181,6 @@ def test__zmatrix():
     zma_fs[-1].file.reactant_graph.write(ref_gra, locs)
     rct_gra = zma_fs[-1].file.reactant_graph.read(locs)
 
-    rct_atm_keys_lst = automol.graph.connected_components_atom_keys(rct_gra)
-    print(rct_atm_keys_lst)
-
-    # this is how we can get the product graph
-    prd_gra = automol.graph.trans.apply(tra, rct_gra)
-    prd_atm_keys_lst = automol.graph.connected_components_atom_keys(prd_gra)
-    print(prd_atm_keys_lst)
-
     assert rct_gra == ref_gra
 
 
@@ -215,15 +192,14 @@ def test__scan():
 
     scn_fs = autofile.fs.scan(prefix)
     locs = [['d3', 'd4'], [2, 3]]
-    print(scn_fs[-1].path(locs))
 
     ref_inp_str = '<input string>'
-    print(scn_fs[-1].file.geometry_input.path(locs))
     scn_fs[-1].create(locs)
     scn_fs[-1].file.geometry_input.write(ref_inp_str, locs)
     assert scn_fs[-1].file.geometry_input.read(locs) == ref_inp_str
 
-    inf_obj = autofile.schema.info_objects.scan_branch({'d4': numpy.array([0, 2])})
+    inf_obj = autofile.schema.info_objects.scan_branch(
+        {'d4': numpy.array([0, 2])})
     scn_fs[1].create(['d4'])
     scn_fs[1].file.info.write(inf_obj, ['d4'])
     assert scn_fs[1].file.info.read(['d4']) == inf_obj
@@ -236,12 +212,9 @@ def test__cscan():
     os.mkdir(prefix)
 
     scn_fs = autofile.fs.cscan(prefix)
-    # the dictionary at the end specifies the constraint values
     locs = [{'R1': 1., 'A2': 2.3}, ['D3', 'D4'], [1.2, 2.9]]
-    print(scn_fs[-1].path(locs))
 
     ref_inp_str = '<input string>'
-    print(scn_fs[-1].file.geometry_input.path(locs))
     scn_fs[-1].create(locs)
     scn_fs[-1].file.geometry_input.write(ref_inp_str, locs)
     assert scn_fs[-1].file.geometry_input.read(locs) == ref_inp_str
@@ -255,7 +228,6 @@ def test__tau():
 
     locs = [autofile.schema.generate_new_tau_id()]
     tau_fs = autofile.fs.tau(prefix)
-    print(tau_fs[-1].path(locs))
 
     assert not tau_fs[-1].exists(locs)
     tau_fs[-1].create(locs)
@@ -263,7 +235,6 @@ def test__tau():
 
     inf_obj = autofile.schema.info_objects.tau_trunk(0, {})
     tau_fs[0].file.info.write(inf_obj)
-    print(tau_fs[0].file.info.read())
 
 
 def test__vrctst():
@@ -275,7 +246,6 @@ def test__vrctst():
 
     vrc_fs = autofile.fs.vrctst(prefix)
     locs = [0]
-    print(vrc_fs[-1].path(locs))
 
     ref_tst_str = '<TST STR>'
     ref_divsur_str = '<DIVSUR STR>'
@@ -323,29 +293,29 @@ def test__energy_transfer():
     bath_locs = ['InChI=1S/N2/c1-2', 0, 1]
     thy_locs = ['hf', 'sto-3g', 'R']
     locs = bath_locs + thy_locs
-    print(locs)
     etrans_fs[-1].create(locs)
-    etrans_path = etrans_fs[-1].path(locs)
-    print(etrans_path)
 
     ref_eps = 300.0
     ref_sig = 3.50
     ref_inp_str = '<INP STR>'
     ref_temp_str = '<TEMP STR>'
-    ref_traj_str = (('comment', automol.inchi.geometry('InChI=1S/H')),)
+    ref_traj = (
+        ((('H', (0.0, 0.0, 0.0)),), 'comment 1'),
+        ((('H', (0.0, 0.0, 0.0)),), 'comment 2')
+    )
 
     etrans_fs[-1].file.lennard_jones_epsilon.write(ref_eps, locs)
     etrans_fs[-1].file.lennard_jones_sigma.write(ref_sig, locs)
     etrans_fs[-1].file.lennard_jones_input.write(ref_inp_str, locs)
     etrans_fs[-1].file.lennard_jones_elstruct.write(ref_temp_str, locs)
-    etrans_fs[-1].file.trajectory.write(ref_traj_str, locs)
+    etrans_fs[-1].file.trajectory.write(ref_traj, locs)
     assert numpy.isclose(
         etrans_fs[-1].file.lennard_jones_epsilon.read(locs), ref_eps)
     assert numpy.isclose(
         etrans_fs[-1].file.lennard_jones_sigma.read(locs), ref_sig)
     assert etrans_fs[-1].file.lennard_jones_input.read(locs) == ref_inp_str
     assert etrans_fs[-1].file.lennard_jones_elstruct.read(locs) == ref_temp_str
-    assert etrans_fs[-1].file.trajectory.read(locs) == ref_traj_str
+    assert etrans_fs[-1].file.trajectory.read(locs) == ref_traj
 
 
 def test__instab():
@@ -369,10 +339,8 @@ def test__run():
     os.mkdir(prefix)
 
     run_fs = autofile.fs.run(prefix)
-    print(run_fs[-1].path(['gradient']))
 
     ref_inp_str = '<input string>'
-    print(run_fs[-1].file.input.path(['gradient']))
     run_fs[-1].create(['gradient'])
     run_fs[-1].file.input.write(ref_inp_str, ['gradient'])
     assert run_fs[-1].file.input.read(['gradient']) == ref_inp_str
@@ -385,10 +353,8 @@ def test__build():
     os.mkdir(prefix)
 
     build_fs = autofile.fs.build(prefix)
-    print(build_fs[-1].path(['MESS', 0]))
 
     ref_inp_str = '<input string>'
-    print(build_fs[-1].file.input.path(['MESS', 0]))
     build_fs[-1].create(['MESS', 0])
     build_fs[-1].file.input.write(ref_inp_str, ['MESS', 0])
     assert build_fs[-1].file.input.read(['MESS', 0]) == ref_inp_str
@@ -457,21 +423,21 @@ def test__json_tau_save():
 
 
 if __name__ == '__main__':
-    test__species()
-    test__reaction()
-    test__transition_state()
-    test__theory()
-    test__conformer()
-    test__tau()
-    test__single_point()
-    test__high_spin()
+    # test__species()
+    # test__reaction()
+    # test__transition_state()
+    # test__theory()
+    # test__conformer()
+    # test__tau()
+    # test__single_point()
+    # test__high_spin()
     # test__energy_transfer()
-    test__json_io()
+    # test__json_io()
     test__json_tau_save()
-    test__vrctst()
-    test__instab()
-    test__scan()
-    test__run()
-    test__build()
-    test__cscan()
+    # test__vrctst()
+    # test__instab()
+    # test__scan()
+    # test__run()
+    # test__build()
+    # test__cscan()
     # test__zmatrix()

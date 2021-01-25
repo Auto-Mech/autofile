@@ -236,6 +236,15 @@ def vmatrix(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
+def torsional_names(file_prefix):
+    """ generate torsional_names DataFile
+    """
+    name = autofile.data_types.name.torsional_names(file_prefix)
+    writer_ = autofile.data_types.swrite.torsional_names
+    reader_ = autofile.data_types.sread.torsional_names
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
 def trajectory(file_prefix):
     """ generate trajectory DataFile
     :param file_prefix: path to file
@@ -245,7 +254,7 @@ def trajectory(file_prefix):
     """
     name = autofile.data_types.name.trajectory(file_prefix)
     writer_ = autofile.data_types.swrite.trajectory
-    reader_ = _not_implemented
+    reader_ = autofile.data_types.sread.trajectory
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
@@ -275,16 +284,16 @@ def transformation(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
-def transformation_old(file_prefix):
+def transformation_new(file_prefix):
     """ generate transformation DataFile
     :param file_prefix: path to file
     :type file_prefix: str
     :return: instance of DataFile class
     :rtype: Datafile
     """
-    name = autofile.data_types.name.transformation_old(file_prefix)
-    writer_ = autofile.data_types.swrite.transformation_old
-    reader_ = autofile.data_types.sread.transformation_old
+    name = autofile.data_types.name.transformation_new(file_prefix)
+    writer_ = autofile.data_types.swrite.transformation_new
+    reader_ = autofile.data_types.sread.transformation_new
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 

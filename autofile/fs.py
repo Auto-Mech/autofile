@@ -75,14 +75,14 @@ class _FilePrefix():
     VRCTST = 'vrctst'
 
 
-class _FileAttributeName():
+class FileAttributeName():
     """ DataFile attribute names """
     INFO = 'info'
     INFO2 = 'info2'
     INPUT = 'input'
     OUTPUT = 'output'
     VMATRIX = 'vmatrix'
-    TORS_INFO = 'torsion_info'
+    TORS_NAMES = 'torsional_names'
     GEOM_INFO = 'geometry_info'
     GRAD_INFO = 'gradient_info'
     HESS_INFO = 'hessian_info'
@@ -102,6 +102,7 @@ class _FileAttributeName():
     TRAJ = 'trajectory'
     REACTANT_GRAPH = 'reactant_graph'
     TRANS = 'transformation'
+    TRANS_NEW = 'transformation_new'
     ANHFREQ = 'anharmonic_frequencies'
     ANHZPVE = 'anharmonic_zpve'
     XMAT = 'anharmonicity_matrix'
@@ -123,6 +124,7 @@ class _FileAttributeName():
     VRC_STRUCT = 'vrctst_struct'
     VRC_POT = 'vrctst_pot'
     VRC_FLUX = 'vrctst_flux'
+
 
 class _JSONAttributeName():
     """ JSON attribute names """
@@ -238,10 +240,10 @@ def transition_state(prefix):
     zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
     vmat_dfile = data_files.vmatrix(_FilePrefix.GEOM)
     trunk_ds.add_data_files({
-        _FileAttributeName.ENERGY: ene_dfile,
-        _FileAttributeName.GEOM: geom_dfile,
-        _FileAttributeName.ZMAT: zmat_dfile,
-        _FileAttributeName.VMATRIX: vmat_dfile})
+        FileAttributeName.ENERGY: ene_dfile,
+        FileAttributeName.GEOM: geom_dfile,
+        FileAttributeName.ZMAT: zmat_dfile,
+        FileAttributeName.VMATRIX: vmat_dfile})
 
     return (trunk_ds,)
 
@@ -273,12 +275,12 @@ def theory(prefix):
     trans_dfile = data_files.transformation(_FilePrefix.INSTAB)
 
     leaf_ds.add_data_files({
-        _FileAttributeName.ENERGY: ene_dfile,
-        _FileAttributeName.GEOM: geom_dfile,
-        _FileAttributeName.HESS: hess_dfile,
-        _FileAttributeName.ZMAT: zmat_dfile,
-        _FileAttributeName.REACTANT_GRAPH: graph_dfile,
-        _FileAttributeName.TRANS: trans_dfile})
+        FileAttributeName.ENERGY: ene_dfile,
+        FileAttributeName.GEOM: geom_dfile,
+        FileAttributeName.HESS: hess_dfile,
+        FileAttributeName.ZMAT: zmat_dfile,
+        FileAttributeName.REACTANT_GRAPH: graph_dfile,
+        FileAttributeName.TRANS: trans_dfile})
 
     return (leaf_ds,)
 
@@ -342,10 +344,10 @@ def conformer(prefix):
         _FilePrefix.SAMP, function=info_objects.conformer_trunk)
     traj_dfile = data_files.trajectory(_FilePrefix.CONF)
     trunk_ds.add_data_files({
-        _FileAttributeName.INFO: old_inf_dfile,
-        _FileAttributeName.INFO2: inf_dfile,
-        _FileAttributeName.ENERGY: min_ene_dfile,
-        _FileAttributeName.TRAJ: traj_dfile})
+        FileAttributeName.INFO: old_inf_dfile,
+        FileAttributeName.INFO2: inf_dfile,
+        FileAttributeName.ENERGY: min_ene_dfile,
+        FileAttributeName.TRAJ: traj_dfile})
 
     geom_inf_dfile = data_files.information(_FilePrefix.GEOM,
                                             function=info_objects.run)
@@ -375,26 +377,26 @@ def conformer(prefix):
     polar_dfile = data_files.polarizability(_FilePrefix.GEOM)
 
     leaf_ds.add_data_files({
-        _FileAttributeName.GEOM_INFO: geom_inf_dfile,
-        _FileAttributeName.GRAD_INFO: grad_inf_dfile,
-        _FileAttributeName.HESS_INFO: hess_inf_dfile,
-        _FileAttributeName.GEOM_INPUT: geom_inp_dfile,
-        _FileAttributeName.GRAD_INPUT: grad_inp_dfile,
-        _FileAttributeName.HESS_INPUT: hess_inp_dfile,
-        _FileAttributeName.ENERGY: ene_dfile,
-        _FileAttributeName.GEOM: geom_dfile,
-        _FileAttributeName.GRAD: grad_dfile,
-        _FileAttributeName.HESS: hess_dfile,
-        _FileAttributeName.HFREQ: hfreq_dfile,
-        _FileAttributeName.VPT2_INFO: vpt2_inf_dfile,
-        _FileAttributeName.VPT2_INPUT: vpt2_inp_dfile,
-        _FileAttributeName.ANHFREQ: anhfreq_dfile,
-        _FileAttributeName.ANHZPVE: anhzpve_dfile,
-        _FileAttributeName.XMAT: xmat_dfile,
-        _FileAttributeName.VIBROT_MAX: vibrot_mat_dfile,
-        _FileAttributeName.CENTIF_DIST: centrif_dist_dfile,
-        _FileAttributeName.DIP_MOM: dip_mom_dfile,
-        _FileAttributeName.POLAR: polar_dfile})
+        FileAttributeName.GEOM_INFO: geom_inf_dfile,
+        FileAttributeName.GRAD_INFO: grad_inf_dfile,
+        FileAttributeName.HESS_INFO: hess_inf_dfile,
+        FileAttributeName.GEOM_INPUT: geom_inp_dfile,
+        FileAttributeName.GRAD_INPUT: grad_inp_dfile,
+        FileAttributeName.HESS_INPUT: hess_inp_dfile,
+        FileAttributeName.ENERGY: ene_dfile,
+        FileAttributeName.GEOM: geom_dfile,
+        FileAttributeName.GRAD: grad_dfile,
+        FileAttributeName.HESS: hess_dfile,
+        FileAttributeName.HFREQ: hfreq_dfile,
+        FileAttributeName.VPT2_INFO: vpt2_inf_dfile,
+        FileAttributeName.VPT2_INPUT: vpt2_inp_dfile,
+        FileAttributeName.ANHFREQ: anhfreq_dfile,
+        FileAttributeName.ANHZPVE: anhzpve_dfile,
+        FileAttributeName.XMAT: xmat_dfile,
+        FileAttributeName.VIBROT_MAX: vibrot_mat_dfile,
+        FileAttributeName.CENTIF_DIST: centrif_dist_dfile,
+        FileAttributeName.DIP_MOM: dip_mom_dfile,
+        FileAttributeName.POLAR: polar_dfile})
 
     return (trunk_ds, leaf_ds)
 
@@ -422,9 +424,9 @@ def single_point(prefix, json_layer=None):
                                        function=info_objects.run)
     ene_dfile = data_files.energy(_FilePrefix.SP)
     leaf_ds.add_data_files({
-        _FileAttributeName.INFO: inf_dfile,
-        _FileAttributeName.INPUT: inp_dfile,
-        _FileAttributeName.ENERGY: ene_dfile})
+        FileAttributeName.INFO: inf_dfile,
+        FileAttributeName.INPUT: inp_dfile,
+        FileAttributeName.ENERGY: ene_dfile})
     inp_jobj = json_objects.input_file(
         _FilePrefix.SP, json_prefix=(json_layer, _LayerPrefix.SP))
     inf_jobj = json_objects.information(
@@ -463,9 +465,9 @@ def high_spin(prefix):
                                        function=info_objects.run)
     ene_dfile = data_files.energy(_FilePrefix.HS)
     leaf_ds.add_data_files({
-        _FileAttributeName.INFO: inf_dfile,
-        _FileAttributeName.INPUT: inp_dfile,
-        _FileAttributeName.ENERGY: ene_dfile})
+        FileAttributeName.INFO: inf_dfile,
+        FileAttributeName.INPUT: inp_dfile,
+        FileAttributeName.ENERGY: ene_dfile})
 
     return (trunk_ds, leaf_ds)
 
@@ -505,9 +507,9 @@ def symmetry(prefix):
     geom_dfile = data_files.geometry(_FilePrefix.GEOM)
 
     trunk_ds.add_data_files({
-        _FileAttributeName.TRAJ: traj_dfile})
+        FileAttributeName.TRAJ: traj_dfile})
     leaf_ds.add_data_files({
-        _FileAttributeName.GEOM: geom_dfile})
+        FileAttributeName.GEOM: geom_dfile})
 
     return (trunk_ds, leaf_ds)
 
@@ -546,22 +548,23 @@ def zmatrix(prefix):
         _FilePrefix.ZMAT, function=info_objects.run)
     zmat_inp_dfile = data_files.input_file(_FilePrefix.ZMAT)
 
-    tors_inf_dfile = data_files.information(
-        _FilePrefix.ZMAT, function=info_objects.torsional_names)
+    tors_dfile = data_files.torsional_names(_FilePrefix.ZMAT)
 
     zmat_dfile = data_files.zmatrix(_FilePrefix.ZMAT)
     vma_dfile = data_files.vmatrix(_FilePrefix.ZMAT)
     graph_dfile = data_files.graph(_FilePrefix.ZMAT)
     trans_dfile = data_files.transformation(_FilePrefix.ZMAT)
+    # trans_new_dfile = data_files.transformation_new(_FilePrefix.ZMAT)
 
     leaf_ds.add_data_files({
-        _FileAttributeName.GEOM_INFO:  zmat_inf_dfile,
-        _FileAttributeName.TORS_INFO: tors_inf_dfile,
-        _FileAttributeName.GEOM_INPUT: zmat_inp_dfile,
-        _FileAttributeName.ZMAT: zmat_dfile,
-        _FileAttributeName.VMATRIX: vma_dfile,
-        _FileAttributeName.REACTANT_GRAPH: graph_dfile,
-        _FileAttributeName.TRANS: trans_dfile})
+        FileAttributeName.GEOM_INFO:  zmat_inf_dfile,
+        FileAttributeName.TORS_NAMES: tors_dfile,
+        FileAttributeName.GEOM_INPUT: zmat_inp_dfile,
+        FileAttributeName.ZMAT: zmat_dfile,
+        FileAttributeName.VMATRIX: vma_dfile,
+        FileAttributeName.REACTANT_GRAPH: graph_dfile,
+        # FileAttributeName.TRANS_NEW: trans_new_dfile})
+        FileAttributeName.TRANS: trans_dfile})
 
     return (trunk_ds, leaf_ds)
 
@@ -603,14 +606,14 @@ def scan(prefix):
 
     vma_dfile = data_files.vmatrix(_FilePrefix.SCAN)
     trunk_ds.add_data_files({
-        _FileAttributeName.VMATRIX: vma_dfile})
+        FileAttributeName.VMATRIX: vma_dfile})
 
     inf_dfile = data_files.information(_FilePrefix.SCAN,
                                        function=info_objects.scan_branch)
     traj_dfile = data_files.trajectory(_FilePrefix.SCAN)
     branch_ds.add_data_files({
-        _FileAttributeName.INFO: inf_dfile,
-        _FileAttributeName.TRAJ: traj_dfile})
+        FileAttributeName.INFO: inf_dfile,
+        FileAttributeName.TRAJ: traj_dfile})
 
     # Need an irc file in the branch!
     # Need an run irc file in the forward and backward direction
@@ -634,20 +637,20 @@ def scan(prefix):
     hess_dfile = data_files.hessian(_FilePrefix.HESS)
     hfreq_dfile = data_files.harmonic_frequencies(_FilePrefix.HESS)
     leaf_ds.add_data_files({
-        _FileAttributeName.GEOM_INFO: geom_inf_dfile,
-        _FileAttributeName.GRAD_INFO: grad_inf_dfile,
-        _FileAttributeName.HESS_INFO: hess_inf_dfile,
-        _FileAttributeName.IRC_INFO: irc_inf_dfile,
-        _FileAttributeName.GEOM_INPUT: geom_inp_dfile,
-        _FileAttributeName.GRAD_INPUT: grad_inp_dfile,
-        _FileAttributeName.HESS_INPUT: hess_inp_dfile,
-        _FileAttributeName.IRC_INPUT: irc_inp_dfile,
-        _FileAttributeName.ENERGY: ene_dfile,
-        _FileAttributeName.GEOM: geom_dfile,
-        _FileAttributeName.ZMAT: zmat_dfile,
-        _FileAttributeName.GRAD: grad_dfile,
-        _FileAttributeName.HESS: hess_dfile,
-        _FileAttributeName.HFREQ: hfreq_dfile})
+        FileAttributeName.GEOM_INFO: geom_inf_dfile,
+        FileAttributeName.GRAD_INFO: grad_inf_dfile,
+        FileAttributeName.HESS_INFO: hess_inf_dfile,
+        FileAttributeName.IRC_INFO: irc_inf_dfile,
+        FileAttributeName.GEOM_INPUT: geom_inp_dfile,
+        FileAttributeName.GRAD_INPUT: grad_inp_dfile,
+        FileAttributeName.HESS_INPUT: hess_inp_dfile,
+        FileAttributeName.IRC_INPUT: irc_inp_dfile,
+        FileAttributeName.ENERGY: ene_dfile,
+        FileAttributeName.GEOM: geom_dfile,
+        FileAttributeName.ZMAT: zmat_dfile,
+        FileAttributeName.GRAD: grad_dfile,
+        FileAttributeName.HESS: hess_dfile,
+        FileAttributeName.HFREQ: hfreq_dfile})
 
     return (trunk_ds, branch_ds, leaf_ds)
 
@@ -718,8 +721,8 @@ def cscan(prefix):
     traj_dfile = data_files.trajectory(_FilePrefix.SCAN)
 
     branch1_ds.add_data_files({
-        _FileAttributeName.INFO: inf_dfile,
-        _FileAttributeName.TRAJ: traj_dfile})
+        FileAttributeName.INFO: inf_dfile,
+        FileAttributeName.TRAJ: traj_dfile})
 
     geom_inf_dfile = data_files.information(_FilePrefix.GEOM,
                                             function=info_objects.run)
@@ -737,18 +740,18 @@ def cscan(prefix):
     hess_dfile = data_files.hessian(_FilePrefix.HESS)
     hfreq_dfile = data_files.harmonic_frequencies(_FilePrefix.HESS)
     leaf_ds.add_data_files({
-        _FileAttributeName.GEOM_INFO: geom_inf_dfile,
-        _FileAttributeName.GRAD_INFO: grad_inf_dfile,
-        _FileAttributeName.HESS_INFO: hess_inf_dfile,
-        _FileAttributeName.GEOM_INPUT: geom_inp_dfile,
-        _FileAttributeName.GRAD_INPUT: grad_inp_dfile,
-        _FileAttributeName.HESS_INPUT: hess_inp_dfile,
-        _FileAttributeName.ENERGY: ene_dfile,
-        _FileAttributeName.GEOM: geom_dfile,
-        _FileAttributeName.ZMAT: zmat_dfile,
-        _FileAttributeName.GRAD: grad_dfile,
-        _FileAttributeName.HESS: hess_dfile,
-        _FileAttributeName.HFREQ: hfreq_dfile})
+        FileAttributeName.GEOM_INFO: geom_inf_dfile,
+        FileAttributeName.GRAD_INFO: grad_inf_dfile,
+        FileAttributeName.HESS_INFO: hess_inf_dfile,
+        FileAttributeName.GEOM_INPUT: geom_inp_dfile,
+        FileAttributeName.GRAD_INPUT: grad_inp_dfile,
+        FileAttributeName.HESS_INPUT: hess_inp_dfile,
+        FileAttributeName.ENERGY: ene_dfile,
+        FileAttributeName.GEOM: geom_dfile,
+        FileAttributeName.ZMAT: zmat_dfile,
+        FileAttributeName.GRAD: grad_dfile,
+        FileAttributeName.HESS: hess_dfile,
+        FileAttributeName.HFREQ: hfreq_dfile})
 
     return (trunk_ds, branch1_ds, branch2_ds, leaf_ds)
 
@@ -788,9 +791,9 @@ def tau(prefix):
                                        function=info_objects.tau_trunk)
     traj_dfile = data_files.trajectory(_FilePrefix.TAU)
     trunk_ds.add_data_files({
-        _FileAttributeName.VMATRIX: vma_dfile,
-        _FileAttributeName.INFO: inf_dfile,
-        _FileAttributeName.TRAJ: traj_dfile})
+        FileAttributeName.VMATRIX: vma_dfile,
+        FileAttributeName.INFO: inf_dfile,
+        FileAttributeName.TRAJ: traj_dfile})
 
     geom_inf_dfile = data_files.information(_FilePrefix.GEOM,
                                             function=info_objects.run)
@@ -808,18 +811,18 @@ def tau(prefix):
     hess_dfile = data_files.hessian(_FilePrefix.HESS)
     hfreq_dfile = data_files.harmonic_frequencies(_FilePrefix.HESS)
     leaf_ds.add_data_files({
-        _FileAttributeName.GEOM_INFO: geom_inf_dfile,
-        _FileAttributeName.GRAD_INFO: grad_inf_dfile,
-        _FileAttributeName.HESS_INFO: hess_inf_dfile,
-        _FileAttributeName.GEOM_INPUT: geom_inp_dfile,
-        _FileAttributeName.GRAD_INPUT: grad_inp_dfile,
-        _FileAttributeName.HESS_INPUT: hess_inp_dfile,
-        _FileAttributeName.ENERGY: ene_dfile,
-        _FileAttributeName.GEOM: geom_dfile,
-        _FileAttributeName.ZMAT: zmat_dfile,
-        _FileAttributeName.GRAD: grad_dfile,
-        _FileAttributeName.HESS: hess_dfile,
-        _FileAttributeName.HFREQ: hfreq_dfile})
+        FileAttributeName.GEOM_INFO: geom_inf_dfile,
+        FileAttributeName.GRAD_INFO: grad_inf_dfile,
+        FileAttributeName.HESS_INFO: hess_inf_dfile,
+        FileAttributeName.GEOM_INPUT: geom_inp_dfile,
+        FileAttributeName.GRAD_INPUT: grad_inp_dfile,
+        FileAttributeName.HESS_INPUT: hess_inp_dfile,
+        FileAttributeName.ENERGY: ene_dfile,
+        FileAttributeName.GEOM: geom_dfile,
+        FileAttributeName.ZMAT: zmat_dfile,
+        FileAttributeName.GRAD: grad_dfile,
+        FileAttributeName.HESS: hess_dfile,
+        FileAttributeName.HFREQ: hfreq_dfile})
 
     geom_inf_jobj = json_objects.information(
         _FilePrefix.GEOM, function=info_objects.run)
@@ -886,12 +889,12 @@ def energy_transfer(prefix):
     traj_dfile = data_files.trajectory(_FilePrefix.LJ)
 
     leaf_ds.add_data_files({
-        _FileAttributeName.INFO: inf_dfile,
-        _FileAttributeName.LJ_INPUT: lj_inp_dfile,
-        _FileAttributeName.LJ_ELSTRUCT: temp_inp_dfile,
-        _FileAttributeName.LJ_EPS: eps_dfile,
-        _FileAttributeName.LJ_SIG: sig_dfile,
-        _FileAttributeName.TRAJ: traj_dfile})
+        FileAttributeName.INFO: inf_dfile,
+        FileAttributeName.LJ_INPUT: lj_inp_dfile,
+        FileAttributeName.LJ_ELSTRUCT: temp_inp_dfile,
+        FileAttributeName.LJ_EPS: eps_dfile,
+        FileAttributeName.LJ_SIG: sig_dfile,
+        FileAttributeName.TRAJ: traj_dfile})
 
     return (trunk_ds, branch_ds, leaf_ds)
 
@@ -941,13 +944,13 @@ def vrctst(prefix):
     flux_dfile = data_files.vrctst_flux(_FilePrefix.VRCTST)
 
     leaf_ds.add_data_files({
-        _FileAttributeName.VRC_TST: tst_inp_dfile,
-        _FileAttributeName.VRC_DIVSUR: divsur_inp_dfile,
-        _FileAttributeName.VRC_MOLP: molp_inp_dfile,
-        _FileAttributeName.VRC_TML: tml_inp_dfile,
-        _FileAttributeName.VRC_STRUCT: struct_inp_dfile,
-        _FileAttributeName.VRC_POT: pot_inp_dfile,
-        _FileAttributeName.VRC_FLUX: flux_dfile
+        FileAttributeName.VRC_TST: tst_inp_dfile,
+        FileAttributeName.VRC_DIVSUR: divsur_inp_dfile,
+        FileAttributeName.VRC_MOLP: molp_inp_dfile,
+        FileAttributeName.VRC_TML: tml_inp_dfile,
+        FileAttributeName.VRC_STRUCT: struct_inp_dfile,
+        FileAttributeName.VRC_POT: pot_inp_dfile,
+        FileAttributeName.VRC_FLUX: flux_dfile
     })
 
     return (trunk_ds, leaf_ds)
@@ -983,9 +986,9 @@ def instab(prefix):
     geom_dfile = data_files.geometry(_FilePrefix.GEOM)
 
     trunk_ds.add_data_files({
-        _FileAttributeName.GEOM_INFO:  geom_inf_dfile,
-        _FileAttributeName.GEOM_INPUT: geom_inp_dfile,
-        _FileAttributeName.GEOM: geom_dfile})
+        FileAttributeName.GEOM_INFO:  geom_inf_dfile,
+        FileAttributeName.GEOM_INPUT: geom_inp_dfile,
+        FileAttributeName.GEOM: geom_dfile})
 
     return (trunk_ds,)
 
@@ -1020,13 +1023,13 @@ def run(prefix):
     zmat_dfile = data_files.zmatrix(_FilePrefix.ZMAT)
 
     trunk_ds.add_data_files({
-        _FileAttributeName.INFO: inf_dfile})
+        FileAttributeName.INFO: inf_dfile})
     leaf_ds.add_data_files({
-        _FileAttributeName.INFO: inf_dfile,
-        _FileAttributeName.INPUT: inp_dfile,
-        _FileAttributeName.OUTPUT: out_dfile,
-        _FileAttributeName.GEOM: geom_dfile,
-        _FileAttributeName.ZMAT: zmat_dfile})
+        FileAttributeName.INFO: inf_dfile,
+        FileAttributeName.INPUT: inp_dfile,
+        FileAttributeName.OUTPUT: out_dfile,
+        FileAttributeName.GEOM: geom_dfile,
+        FileAttributeName.ZMAT: zmat_dfile})
 
     return (trunk_ds, leaf_ds)
 
@@ -1051,9 +1054,9 @@ def subrun(prefix):
     inp_dfile = data_files.input_file(_FilePrefix.RUN)
     out_dfile = data_files.output_file(_FilePrefix.RUN)
     leaf_ds.add_data_files({
-        _FileAttributeName.INFO: inf_dfile,
-        _FileAttributeName.INPUT: inp_dfile,
-        _FileAttributeName.OUTPUT: out_dfile})
+        FileAttributeName.INFO: inf_dfile,
+        FileAttributeName.INPUT: inp_dfile,
+        FileAttributeName.OUTPUT: out_dfile})
 
     return (leaf_ds,)
 
@@ -1078,8 +1081,8 @@ def build(prefix):
     inp_dfile = data_files.input_file(_FilePrefix.BUILD)
     out_dfile = data_files.output_file(_FilePrefix.BUILD)
     leaf_ds.add_data_files({
-        _FileAttributeName.INPUT: inp_dfile,
-        _FileAttributeName.OUTPUT: out_dfile})
+        FileAttributeName.INPUT: inp_dfile,
+        FileAttributeName.OUTPUT: out_dfile})
 
     return (trunk_ds, leaf_ds)
 

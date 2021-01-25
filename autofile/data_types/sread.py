@@ -2,9 +2,13 @@
     converts properties formatted in strings of externally preferred units
     to properties in internally used units and used data type
 """
+
 from io import StringIO as _StringIO
+from numbers import Real as _Real
 import numpy
+import yaml
 import automol
+from phydat import phycon
 import autoparse.find as apf
 import autofile.info
 
@@ -60,7 +64,7 @@ def zmatrix(zma_str):
     :return: zmatrix as internally used tuple object
     :rtype: tuple
     """
-    zma = automol.zmatrix.from_string(zma_str)
+    zma = automol.zmat.from_string(zma_str)
     return zma
 
 
@@ -71,7 +75,7 @@ def vmatrix(vma_str):
     :return: vmatrix as internally used tuple object
     :rtype: tuple
     """
-    vma = automol.vmatrix.from_string(vma_str)
+    vma = automol.vmat.from_string(vma_str)
     return vma
 
 
@@ -96,6 +100,26 @@ def gradient_array(grad_list):
     :rtype: numpy array
     """
     return numpy.array(grad_list)
+
+
+def torsional_names(tors_str):
+    """ Write the torsions and their ranges (radian) to a string (degree).
+
+        :param tors_str: names and angle ranges of torsional coordinates
+        :type tors_str: str
+        :rtype: dict[str: tuple(float)]
+    """
+
+    tors_dct = yaml.load(tors_str, Loader=yaml.FullLoader)
+
+    assert all(isinstance(key, str) and len(rng) == 2
+               and all(isinstance(x, _Real) for x in rng)
+               for key, rng in tors_dct.items())
+
+    for name, rng in tors_dct.items():
+        tors_dct[name] = (rng[0] * phycon.DEG2RAD, rng[1] * phycon.DEG2RAD)
+
+    return tors_dct
 
 
 def hessian(hess_str):
@@ -260,7 +284,7 @@ def dipole_moment(dip_mom_str):
     dip_mom = numpy.loadtxt(dip_mom_str_io)
     assert dip_mom.ndim == 1
     assert dip_mom.shape[0] == 3
-    return map(tuple, dip_mom)
+    return tuple(dip_mom)
 
 
 def polarizability(polar_str):
@@ -299,7 +323,7 @@ def transformation(tra_str):
     return tra
 
 
-def transformation_old(tra_str):
+def transformation_new(tra_str):
     """ read a chemical transformation from a string
     """
     tra = automol.graph.trans.from_string(tra_str)
