@@ -33,8 +33,7 @@ class Extension():
     DIPOLE_MOMENT = '.dmom'
     POLARIZABILITY = '.polar'
     # Transformation files
-    GRAPH = '.g.yaml'
-    TRANSFORMATION = '.t.yaml'
+    REACTION = '.r.yaml'
     # Various VaReCoF files
     VRC_TST = '.tst'
     VRC_DIVSUR = '.divsur'
@@ -220,22 +219,10 @@ def polarizability(file_name):
     return _add_extension(file_name, Extension.POLARIZABILITY)
 
 
-def graph(file_name):
-    """ adds graph extension, if missing
+def reaction(file_name):
+    """ adds reaction extension, if missing
     """
-    return _add_extension(file_name, Extension.GRAPH)
-
-
-def transformation(file_name):
-    """ adds transformation extension, if missing
-    """
-    return _add_extension(file_name, Extension.TRANSFORMATION)
-
-
-def transformation_old(file_name):
-    """ adds transformation extension, if missing
-    """
-    return _add_extension(file_name, Extension.TRANSFORMATION)
+    return _add_extension(file_name, Extension.REACTION)
 
 
 def vrctst_tst(file_name):

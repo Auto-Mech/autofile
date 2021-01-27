@@ -301,32 +301,14 @@ def polarizability(polar_str):
     return tuple(map(tuple, polar))
 
 
-def graph(gra_str):
-    """ read a molecular graph from a string
-    :param gra_str: molecular graph
-    :type gra_str: str
-    :return: molecular graph tuple (autochem format)
-    :rtype: tuple
+def reaction(rxn_str):
+    """ read a reaction object from a string
+    :param rxn_str: reaction string
+    :type rxn_str: str
+    :return: an automol Reaction object
+    :rtype: automol.reac.Reaction
     """
-    gra = automol.graph.from_string(gra_str)
-    return gra
-
-
-def transformation(tra_str):
-    """ read a chemical transformation from a string
-    :param tra_str: trasformation string
-    :type tra_str: str
-    :return: breaking and forming bonds
-    :rtype: tuple
-    """
-    tra = automol.graph.trans.old_from_string(tra_str)
-    return tra
-
-
-def transformation_new(tra_str):
-    """ read a chemical transformation from a string
-    """
-    tra = automol.graph.trans.from_string(tra_str)
+    tra = automol.reac.from_string(rxn_str)
     return tra
 
 

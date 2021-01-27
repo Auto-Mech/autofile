@@ -147,41 +147,32 @@ def test__zmatrix():
     assert automol.zmat.almost_equal(
         zma_fs[-1].file.zmatrix.read(locs), ref_zma)
 
-    # new tra format when the time comes
-    # ref_tra = ('abstraction high', frozenset({frozenset({10, 7})}),
-    #            frozenset({frozenset({0, 10})}))
-    ref_tra = (frozenset({frozenset({10, 7})}),
-               frozenset({frozenset({0, 10})}))
+    ref_rxn = automol.reac.Reaction(
+        rxn_cls=automol.par.ReactionClass.HYDROGEN_ABSTRACTION,
+        forw_tsg=(
+            {0: ('C', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
+             3: ('H', 0, None), 4: ('H', 0, None), 5: ('O', 0, None),
+             6: ('H', 0, None)},
+            {frozenset({5, 6}): (1, None), frozenset({0, 3}): (1, None),
+             frozenset({4, 5}): (0.1, None),
+             frozenset({0, 1}): (1, None), frozenset({0, 2}): (1, None),
+             frozenset({0, 4}): (0.9, None)}),
+        back_tsg=(
+            {0: ('O', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
+             3: ('C', 0, None), 4: ('H', 0, None), 5: ('H', 0, None),
+             6: ('H', 0, None)},
+            {frozenset({0, 2}): (0.9, None),
+             frozenset({2, 3}): (0.1, None),
+             frozenset({3, 6}): (1, None), frozenset({0, 1}): (1, None),
+             frozenset({3, 4}): (1, None), frozenset({3, 5}): (1, None)}),
+        rcts_keys=((0, 1, 2, 3, 4), (5, 6)),
+        prds_keys=((0, 1, 2), (3, 4, 5, 6)),
+    )
 
-    zma_fs[-1].file.transformation.write(ref_tra, locs)
-    tra = zma_fs[-1].file.transformation.read(locs)
+    zma_fs[-1].file.reaction.write(ref_rxn, locs)
+    rxn = zma_fs[-1].file.reaction.read(locs)
 
-    assert tra == ref_tra
-
-    ref_gra = ({0: ('C', 0, None), 1: ('C', 0, None), 2: ('C', 0, None),
-                3: ('C', 0, None), 4: ('C', 0, None), 5: ('C', 0, None),
-                6: ('C', 0, None), 8: ('H', 0, None), 9: ('H', 0, None),
-                10: ('H', 0, None), 11: ('H', 0, None), 12: ('H', 0, None),
-                13: ('H', 0, None), 14: ('H', 0, None), 15: ('H', 0, None),
-                16: ('H', 0, None), 17: ('H', 0, None), 18: ('H', 0, None),
-                19: ('H', 0, None), 20: ('H', 0, None), 21: ('H', 0, None),
-                22: ('H', 0, None), 7: ('O', 0, None)},
-               {frozenset({4, 6}): (1, None), frozenset({21, 6}): (1, None),
-                frozenset({0, 2}): (1, None), frozenset({2, 4}): (1, None),
-                frozenset({5, 6}): (1, None), frozenset({17, 4}): (1, None),
-                frozenset({3, 5}): (1, None), frozenset({1, 3}): (1, None),
-                frozenset({20, 6}): (1, None), frozenset({0, 10}): (1, None),
-                frozenset({1, 12}): (1, None), frozenset({2, 14}): (1, None),
-                frozenset({18, 5}): (1, None), frozenset({1, 13}): (1, None),
-                frozenset({0, 8}): (1, None), frozenset({0, 9}): (1, None),
-                frozenset({3, 15}): (1, None), frozenset({1, 11}): (1, None),
-                frozenset({19, 5}): (1, None), frozenset({16, 3}): (1, None),
-                frozenset({22, 7}): (1, None)})
-
-    zma_fs[-1].file.reactant_graph.write(ref_gra, locs)
-    rct_gra = zma_fs[-1].file.reactant_graph.read(locs)
-
-    assert rct_gra == ref_gra
+    assert rxn == ref_rxn
 
 
 def test__scan():
@@ -433,11 +424,11 @@ if __name__ == '__main__':
     # test__high_spin()
     # test__energy_transfer()
     # test__json_io()
-    test__json_tau_save()
+    # test__json_tau_save()
     # test__vrctst()
     # test__instab()
     # test__scan()
     # test__run()
     # test__build()
     # test__cscan()
-    # test__zmatrix()
+    test__zmatrix()

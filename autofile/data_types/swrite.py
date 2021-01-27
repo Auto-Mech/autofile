@@ -324,33 +324,15 @@ def polarizability(polar):
     return polar_str
 
 
-def graph(gra):
-    """ write a molecular graph to a string
-    :param gra: molecular graph tuple (autochem format)
-    :type gra: tuple
-    :return: molecular graph string
+def reaction(rxn):
+    """ write a reaction to a string
+    :param rxn: an automol Reaction object
+    :type rxn: automol.reac.Reaction
+    :return: reaction string
     :rtype: str
     """
-    gra_str = automol.graph.string(gra)
-    return gra_str
-
-
-def transformation(tra):
-    """ write a chemical transformation to a string
-    :param tra: breaking and forming bonds
-    :type tra: tuple
-    :return: transformation string
-    :rtype: str
-    """
-    tra_str = automol.graph.trans.old_string(tra)
-    return tra_str
-
-
-def transformation_new(tra):
-    """ write a chemical transformation to a string
-    """
-    tra_str = automol.graph.trans.string(tra)
-    return tra_str
+    rxn_str = automol.reac.string(rxn)
+    return rxn_str
 
 
 def gradient_array(ndarray):

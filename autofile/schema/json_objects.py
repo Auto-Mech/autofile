@@ -267,8 +267,8 @@ def trajectory(file_prefix):
     return model.JSONObject(name=name)
 
 
-def graph(file_prefix):
-    """ generate graph JSONObject
+def reaction(file_prefix):
+    """ generate reaction JSONObject
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -277,21 +277,7 @@ def graph(file_prefix):
     :return: instance of JSONObject class
     :rtype: JSONObject
     """
-    name = autofile.data_types.name.graph(file_prefix)
-    return model.JSONObject(name=name)
-
-
-def transformation(file_prefix):
-    """ generate transformation JSONObject
-    :param file_prefix: path to file
-    :type file_prefix: str
-    :param json_prefix: top level keys
-        ex: ('energy', ['gaussian', 'b3lyp', 'cc-pvdz', 'RR'])
-    :type json_prefix: tuple
-    :return: instance of JSONObject class
-    :rtype: JSONObject
-    """
-    name = autofile.data_types.name.transformation(file_prefix)
+    name = autofile.data_types.name.reaction(file_prefix)
     return model.JSONObject(name=name)
 
 
