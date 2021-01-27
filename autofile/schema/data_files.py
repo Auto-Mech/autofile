@@ -258,42 +258,16 @@ def trajectory(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
-def graph(file_prefix):
-    """ generate graph DataFile
+def reaction(file_prefix):
+    """ generate reaction DataFile
     :param file_prefix: path to file
     :type file_prefix: str
     :return: instance of DataFile class
     :rtype: Datafile
     """
-    name = autofile.data_types.name.graph(file_prefix)
-    writer_ = autofile.data_types.swrite.graph
-    reader_ = autofile.data_types.sread.graph
-    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
-
-
-def transformation(file_prefix):
-    """ generate transformation DataFile
-    :param file_prefix: path to file
-    :type file_prefix: str
-    :return: instance of DataFile class
-    :rtype: Datafile
-    """
-    name = autofile.data_types.name.transformation(file_prefix)
-    writer_ = autofile.data_types.swrite.transformation
-    reader_ = autofile.data_types.sread.transformation
-    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
-
-
-def transformation_new(file_prefix):
-    """ generate transformation DataFile
-    :param file_prefix: path to file
-    :type file_prefix: str
-    :return: instance of DataFile class
-    :rtype: Datafile
-    """
-    name = autofile.data_types.name.transformation_new(file_prefix)
-    writer_ = autofile.data_types.swrite.transformation_new
-    reader_ = autofile.data_types.sread.transformation_new
+    name = autofile.data_types.name.reaction(file_prefix)
+    writer_ = autofile.data_types.swrite.reaction
+    reader_ = autofile.data_types.sread.reaction
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 

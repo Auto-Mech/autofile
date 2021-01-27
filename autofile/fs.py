@@ -100,9 +100,7 @@ class FileAttributeName():
     HESS = 'hessian'
     HFREQ = 'harmonic_frequencies'
     TRAJ = 'trajectory'
-    REACTANT_GRAPH = 'reactant_graph'
-    TRANS = 'transformation'
-    TRANS_NEW = 'transformation_new'
+    REAC = 'reaction'
     ANHFREQ = 'anharmonic_frequencies'
     ANHZPVE = 'anharmonic_zpve'
     XMAT = 'anharmonicity_matrix'
@@ -148,9 +146,8 @@ class _JSONAttributeName():
     GRAD = 'gradient'
     HESS = 'hessian'
     HFREQ = 'harmonic_frequencies'
+    REAC = 'reaction'
     TRAJ = 'trajectory'
-    REACTANT_GRAPH = 'reactant_graph'
-    TRANS = 'transformation'
     ANHFREQ = 'anharmonic_frequencies'
     ANHZPVE = 'anharmonic_zpve'
     XMAT = 'anharmonicity_matrix'
@@ -271,16 +268,14 @@ def theory(prefix):
     ene_dfile = data_files.energy(_FilePrefix.GEOM)
     zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
     hess_dfile = data_files.hessian(_FilePrefix.HESS)
-    graph_dfile = data_files.graph(_FilePrefix.INSTAB)
-    trans_dfile = data_files.transformation(_FilePrefix.INSTAB)
+    reac_dfile = data_files.reaction(_FilePrefix.INSTAB)
 
     leaf_ds.add_data_files({
         FileAttributeName.ENERGY: ene_dfile,
         FileAttributeName.GEOM: geom_dfile,
         FileAttributeName.HESS: hess_dfile,
         FileAttributeName.ZMAT: zmat_dfile,
-        FileAttributeName.REACTANT_GRAPH: graph_dfile,
-        FileAttributeName.TRANS: trans_dfile})
+        FileAttributeName.REAC: reac_dfile})
 
     return (leaf_ds,)
 
@@ -552,9 +547,7 @@ def zmatrix(prefix):
 
     zmat_dfile = data_files.zmatrix(_FilePrefix.ZMAT)
     vma_dfile = data_files.vmatrix(_FilePrefix.ZMAT)
-    graph_dfile = data_files.graph(_FilePrefix.ZMAT)
-    trans_dfile = data_files.transformation(_FilePrefix.ZMAT)
-    # trans_new_dfile = data_files.transformation_new(_FilePrefix.ZMAT)
+    reac_dfile = data_files.reaction(_FilePrefix.ZMAT)
 
     leaf_ds.add_data_files({
         FileAttributeName.GEOM_INFO:  zmat_inf_dfile,
@@ -562,9 +555,7 @@ def zmatrix(prefix):
         FileAttributeName.GEOM_INPUT: zmat_inp_dfile,
         FileAttributeName.ZMAT: zmat_dfile,
         FileAttributeName.VMATRIX: vma_dfile,
-        FileAttributeName.REACTANT_GRAPH: graph_dfile,
-        # FileAttributeName.TRANS_NEW: trans_new_dfile})
-        FileAttributeName.TRANS: trans_dfile})
+        FileAttributeName.REAC: reac_dfile})
 
     return (trunk_ds, leaf_ds)
 

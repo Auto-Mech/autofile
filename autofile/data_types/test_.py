@@ -4,7 +4,6 @@ import os
 import tempfile
 import numpy
 import automol
-from phydat import phycon
 import autofile.info
 import autofile.data_types
 
@@ -503,47 +502,42 @@ def test__dipole_moment():
     assert numpy.allclose(ref_dip_mom_vec, dip_mom_vec)
 
 
-def test__graph():
-    """ test the graph read/write functions
+def test__reaction():
+    """ test the reaction read/write functions
     """
-    ref_gra = ({0: ('C', 3, None), 1: ('C', 2, None), 2: ('C', 3, None),
-                3: ('C', 1, None), 4: ('C', 1, None), 5: ('C', 1, None),
-                6: ('C', 1, False), 7: ('C', 1, False), 8: ('O', 0, None)},
-               {frozenset({1, 4}): (1, None), frozenset({4, 6}): (1, None),
-                frozenset({0, 3}): (1, None), frozenset({2, 6}): (1, None),
-                frozenset({6, 7}): (1, None), frozenset({8, 7}): (1, None),
-                frozenset({3, 5}): (1, True), frozenset({5, 7}): (1, None)})
+    ref_rxn = automol.reac.Reaction(
+        rxn_cls=automol.par.ReactionClass.HYDROGEN_ABSTRACTION,
+        forw_tsg=(
+            {0: ('C', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
+             3: ('H', 0, None), 4: ('H', 0, None), 5: ('O', 0, None),
+             6: ('H', 0, None)},
+            {frozenset({5, 6}): (1, None), frozenset({0, 3}): (1, None),
+             frozenset({4, 5}): (0.1, None),
+             frozenset({0, 1}): (1, None), frozenset({0, 2}): (1, None),
+             frozenset({0, 4}): (0.9, None)}),
+        back_tsg=(
+            {0: ('O', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
+             3: ('C', 0, None), 4: ('H', 0, None), 5: ('H', 0, None),
+             6: ('H', 0, None)},
+            {frozenset({0, 2}): (0.9, None),
+             frozenset({2, 3}): (0.1, None),
+             frozenset({3, 6}): (1, None), frozenset({0, 1}): (1, None),
+             frozenset({3, 4}): (1, None), frozenset({3, 5}): (1, None)}),
+        rcts_keys=((0, 1, 2, 3, 4), (5, 6)),
+        prds_keys=((0, 1, 2), (3, 4, 5, 6)),
+    )
 
-    gra_file_name = autofile.data_types.name.graph('test')
-    gra_file_path = os.path.join(TMP_DIR, gra_file_name)
-    gra_str = autofile.data_types.swrite.graph(ref_gra)
+    rxn_file_name = autofile.data_types.name.reaction('test')
+    rxn_file_path = os.path.join(TMP_DIR, rxn_file_name)
+    rxn_str = autofile.data_types.swrite.reaction(ref_rxn)
 
-    assert not os.path.isfile(gra_file_path)
-    autofile.io_.write_file(gra_file_path, gra_str)
-    assert os.path.isfile(gra_file_path)
+    assert not os.path.isfile(rxn_file_path)
+    autofile.io_.write_file(rxn_file_path, rxn_str)
+    assert os.path.isfile(rxn_file_path)
 
-    gra_str = autofile.io_.read_file(gra_file_path)
-    gra = autofile.data_types.sread.graph(gra_str)
-    assert gra == ref_gra
-
-
-def test__transformation():
-    """ test the transformation read/write functions
-    """
-    ref_tra = (frozenset({frozenset({3, 6})}),
-               frozenset({frozenset({1, 3}), frozenset({0, 6})}))
-
-    tra_file_name = autofile.data_types.name.transformation('test')
-    tra_file_path = os.path.join(TMP_DIR, tra_file_name)
-    tra_str = autofile.data_types.swrite.transformation(ref_tra)
-
-    assert not os.path.isfile(tra_file_path)
-    autofile.io_.write_file(tra_file_path, tra_str)
-    assert os.path.isfile(tra_file_path)
-
-    tra_str = autofile.io_.read_file(tra_file_path)
-    tra = autofile.data_types.sread.transformation(tra_str)
-    assert tra == ref_tra
+    rxn_str = autofile.io_.read_file(rxn_file_path)
+    rxn = autofile.data_types.sread.reaction(rxn_str)
+    assert rxn == ref_rxn
 
 
 if __name__ == '__main__':
@@ -554,7 +548,7 @@ if __name__ == '__main__':
     # test__information()
     # test__gradient()
     # test__hessian()
-    test__trajectory()
+    # test__trajectory()
     # test__vmatrix()
     # test__torsional_names()
     # test__anharmonic_frequencies()
@@ -569,4 +563,4 @@ if __name__ == '__main__':
     # test__dipole_moment()
     # test__polarizability()
     # test__graph()
-    # test__transformation()
+    test__reaction()
