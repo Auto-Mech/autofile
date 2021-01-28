@@ -180,6 +180,7 @@ def test__data_files__zmatrix():
     assert zma_dfile.exists(PREFIX)
 
     zma = zma_dfile.read(PREFIX)
+    print(zma)
     assert automol.zmat.almost_equal(zma, ref_zma)
 
 
