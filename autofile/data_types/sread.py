@@ -4,11 +4,8 @@
 """
 
 from io import StringIO as _StringIO
-from numbers import Real as _Real
 import numpy
-import yaml
 import automol
-from phydat import phycon
 import autoparse.find as apf
 import autofile.info
 
@@ -102,24 +99,14 @@ def gradient_array(grad_list):
     return numpy.array(grad_list)
 
 
-def torsional_names(tors_str):
+def torsions(tors_str):
     """ Write the torsions and their ranges (radian) to a string (degree).
 
-        :param tors_str: names and angle ranges of torsional coordinates
+        :param tors_str: information for each torsion by Z-Matrx names
         :type tors_str: str
-        :rtype: dict[str: tuple(float)]
+        :rtype: tuple(automol torsion objects)
     """
-
-    tors_dct = yaml.load(tors_str, Loader=yaml.FullLoader)
-
-    assert all(isinstance(key, str) and len(rng) == 2
-               and all(isinstance(x, _Real) for x in rng)
-               for key, rng in tors_dct.items())
-
-    for name, rng in tors_dct.items():
-        tors_dct[name] = (rng[0] * phycon.DEG2RAD, rng[1] * phycon.DEG2RAD)
-
-    return tors_dct
+    return automol.rotor.from_string(tors_str)
 
 
 def hessian(hess_str):

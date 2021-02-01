@@ -180,36 +180,27 @@ def test__vmatrix():
     assert vma == ref_vma
 
 
-def test__torsional_names():
+def test__torsions():
     """ test the torsion names read/write functions
     """
-    ref_tors = {
-        'D4': (0.0, 3.14159),
-        'D11': (0.0, 6.28319),
-        'D2': (0.0, 3.14159),
-        'D18': (0.0, 3.14159)
-    }
-    sort_ref_tors = {
-        'D2': (0.0, 3.14159),
-        'D4': (0.0, 3.14159),
-        'D11': (0.0, 6.28319),
-        'D18': (0.0, 3.14159)
-    }
+
+    zma = automol.geom.zmatrix(automol.inchi.geometry(
+            automol.smiles.inchi('CCO')))
+    ref_tors_lst = automol.rotor.from_zma(zma)
 
     tors_file_name = autofile.data_types.name.torsional_names('test')
     tors_file_path = os.path.join(TMP_DIR, tors_file_name)
-    tors_str = autofile.data_types.swrite.torsional_names(ref_tors)
+    tors_str = autofile.data_types.swrite.torsional_names(ref_tors_lst)
 
     assert not os.path.isfile(tors_file_path)
     autofile.io_.write_file(tors_file_path, tors_str)
     assert os.path.isfile(tors_file_path)
 
     tors_str = autofile.io_.read_file(tors_file_path)
-    tors = autofile.data_types.sread.torsional_names(tors_str)
-    tors_info = zip(tors.items(), sort_ref_tors.items())
-    for (name1, rng1), (name2, rng2) in tors_info:
-        assert name1 == name2
-        assert numpy.allclose(rng1, rng2)
+    tors_lst = autofile.data_types.sread.torsional_names(tors_str)
+    for tors, tors_ref in zip(tors_lst, ref_tors_lst):
+        assert tors.name == tors_ref.name
+        assert tors.symmetry == tors_ref.symmetry
 
 
 def test__gradient():
@@ -550,7 +541,7 @@ if __name__ == '__main__':
     # test__hessian()
     # test__trajectory()
     # test__vmatrix()
-    # test__torsional_names()
+    # test__torsions()
     # test__anharmonic_frequencies()
     # test__anharmonic_zpve()
     # test__anharmonicity_matrix()
