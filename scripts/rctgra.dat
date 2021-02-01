@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "rxn_chk.py", line 38, in <module>
+    check_rct_gra()
+  File "rxn_chk.py", line 21, in check_rct_gra
+    for zma_fs in ZMA_MANAGERS:
+  File "/lcrc/project/CMRP/amech/autofile/autofile/fs.py", line 1193, in iterate_managers
+    for pth in iterate_paths(pfx, keys):
+  File "/lcrc/project/CMRP/amech/autofile/autofile/fs.py", line 1186, in iterate_paths
+    pfx = fs_[-1].path(locs)
+  File "/lcrc/project/CMRP/amech/autofile/autofile/model.py", line 129, in path
+    pth = self.map_(locs)
+  File "/lcrc/project/CMRP/amech/autofile/autofile/schema/data_series.py", line 576, in _function
+    return function(*args)
+  File "/lcrc/project/CMRP/amech/autofile/autofile/schema/loc_maps.py", line 66, in reaction_leaf
+    return os.path.join(_reactant_leaf(ichs1, chgs1, muls1),
+  File "/lcrc/project/CMRP/amech/autofile/autofile/schema/loc_maps.py", line 127, in _reactant_leaf
+    assert all(map(automol.inchi.is_complete, ichs))
+AssertionError

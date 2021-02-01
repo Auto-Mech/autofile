@@ -1,35 +1,26 @@
 """ Some examples of how to use the new autofile.fs functions
 """
 
-import os
+import itertools
+import automol
 from autofile import fs
 
 
 PFX = '/lcrc/project/PACC/AutoMech/data/save/'
 
+CNF_MANAGERS = itertools.chain(
+    fs.iterate_managers(PFX, ['SPECIES', 'THEORY'], 'CONFORMER'),
+    fs.iterate_managers(PFX, ['SPECIES', 'THEORY', 'TRANSITION_STATE'], 'CONFORMER'))
+# sca_fs[0].removable = True
+# sca_fs[0].remove()
+# print('removing...')
 
-def clean_theory():
+
+def fix_tors():
     """ Add the zma input files using geo inputs
     """
-    thy_managers = fs.iterate_managers(PFX, ['SPECIES'], 'THEORY')
-    # cnf_managers = fs.iterate_managers(PFX, ['REACTION', 'THEORY', 'TRANSITION STATE'],
-    #                                          'CONFORMER')
-    for thy_fs in thy_managers:
-        if thy_fs is not None:
-            thy_path = thy_fs[0].path()
-            print('thy_path', thy_path)
-            thy_dirs = os.listdir(thy_path)
-            print('dirs', thy_dirs)
 
-
-def add_tors_names():
-    """ Add the zma input files using geo inputs
-    """
-    cnf_managers = fs.iterate_managers(PFX, ['SPECIES', 'THEORY'],
-                                             'CONFORMER')
-    # cnf_managers = fs.iterate_managers(PFX, ['REACTION', 'THEORY', 'TRANSITION STATE'],
-    #                                          'CONFORMER')
-    for cnf_fs in cnf_managers:
+    for cnf_fs in CNF_MANAGERS:
         if cnf_fs is not None:
 
             # Read nsampd and tors range from the info file
@@ -43,23 +34,21 @@ def add_tors_names():
                 print('nsampd', nsampd)
                 print('tors', tors_ranges)
 
-            # # Loop over all the Z-Matrices and add the torsional ranges
-            # for locs in cnf_fs[-1].existing():
-            #     # Set up the ZMA filesys
-            #     cnf_path = cnf_fs[-1].path(locs)
-            #     zma_fs = fs.manager(cnf_path, 'ZMATRIX')
+                # Build zma obj
+                zma_fs = fs.zmatrix(cnf_path)
 
-            #     # Read the frm, brk keys from the transformation file
-            #     tra = zma_fs[-1].file.transformation.read([0])
+                # Read the zma and build the zma object
+                zma = zma_fs[-1].file.zmatrix.read([0])
+                rotors = automol.rotor.from_zma(zma)
 
-            #     # Write the transformation file with the keys and class
-            #     # Determine the reaction class
-            #     zma_fs[-1].file.transformation.write(trans)
+                new_names = automol.rotor.names(rotors, flat=True)
+                assert set(tors_ranges.keys()) == set(new_names)
 
-            #     # Write the tors names
-            #     zma_fs[-1].file.torsional_names.write(tors_ranges, [0])
+                # zma_fs[-1].file.torsions.write(rotors, [0])
+
+            else:
+                print('no cnf yaml')
 
 
 if __name__ == '__main__':
-    # clean_theory()
-    add_tors_names()
+    fix_tors()
