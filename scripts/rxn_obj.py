@@ -1,12 +1,56 @@
-""" add new TS files
+""" update the TS
 """
 
+import os
 import automol
 import autofile
 import trans
-import os
+
 
 PFX = '/lcrc/project/PACC/AutoMech/data/save/'
+
+
+def rewrite():
+    """ rewrite graph and TS files
+    """
+
+    bad_ts = []
+
+    cnf_managers = autofile.fs.manager(
+        PFX, ['REACTION', 'THEORY', 'TRANSITION STATE'], 'CONFORMER')
+
+    for cnf_fs in cnf_managers:
+        for locs in cnf_fs[-1].existing():
+            cnf_path = cnf_fs[-1].path(locs)
+            zma_fs = autofile.fs.zmatrix(cnf_path)
+            zma_path = zma_fs[-1].path((0,))
+
+            trans_exists = _exists(zma_path, 'trans')
+            rcts_gra_exists = _exists(zma_path, 'rctgra')
+            if trans_exists and rcts_gra_exists:
+                tra = _read(zma_path, 'trans')
+                rcts_gra = _read(zma_path, 'rctgra')
+                _build_new(zma_fs, tra, rcts_gra)
+            else:
+                bad_ts.append(cnf_path)
+
+
+def rewrite_test():
+    """ rewrite graph and TS files
+    """
+
+    zma_path = '/lcrc/project/PACC/AutoMech/data/save/RXN/C3H5.H2/ZJMQNRRDFSUTLJ/0_0/2_1/UHFFFAOYSA-N/C3H6.H/MULOCOKNWSNATD/0_0/1_2/UHFFFAOYSA-N/2/u-ulpJU/TS/CONFS/cLSJV7-VTOQLd/Z/00'
+
+    trans_exists = _exists(zma_path, 'trans')
+    rcts_gra_exists = _exists(zma_path, 'rctgra')
+    if trans_exists and rcts_gra_exists:
+        print('here')
+        trans = _read(zma_path, 'trans')
+        rcts_gra = _read(zma_path, 'rctgra')
+        _build_new('a', trans, rcts_gra)
+    else:
+        # bad_ts.append(cnf_path)
+        pass
 
 
 def _exists(zma_path, obj):
@@ -54,47 +98,6 @@ def _graph(gra_str):
     return gra
 
 
-def rewrite():
-    """ rewrite graph and TS files
-    """
-
-    bad_ts = []
-
-    cnf_managers = autofile.fs.manager(
-        PFX, ['REACTION', 'THEORY', 'TRANSITION STATE'], 'CONFORMER')
-
-    for cnf_fs in cnf_managers:
-        for locs in cnf_fs[-1].existing():
-            cnf_path = cnf_fs[-1].path(locs)
-            zma_fs = autofile.fs.zmatrix(cnf_path)
-            zma_path = zma_fs[-1].path((0,))
-
-            trans_exists = _exists(zma_path, 'trans')
-            rcts_gra_exists = _exists(zma_path, 'rctgra')
-            if trans_exists and rcts_gra_exists:
-                tra = _read(zma_path, 'trans')
-                rcts_gra = _read(zma_path, 'rctgra')
-                _build_new(zma_fs, tra, rcts_gra)
-            else:
-                bad_ts.append(cnf_path)
-
-
-def rewrite_test():
-    """ rewrite graph and TS files
-    """
-
-    zma_path = '/lcrc/project/PACC/AutoMech/data/save/RXN/C3H5.H2/ZJMQNRRDFSUTLJ/0_0/2_1/UHFFFAOYSA-N/C3H6.H/MULOCOKNWSNATD/0_0/1_2/UHFFFAOYSA-N/2/u-ulpJU/TS/CONFS/cLSJV7-VTOQLd/Z/00'
-
-    trans_exists = _exists(zma_path, 'trans')
-    rcts_gra_exists = _exists(zma_path, 'rctgra')
-    if trans_exists and rcts_gra_exists:
-        print('here')
-        trans = _read(zma_path, 'trans')
-        rcts_gra = _read(zma_path, 'rctgra')
-        _build_new('a', trans, rcts_gra)
-    else:
-        # bad_ts.append(cnf_path)
-        pass
 
 
 def _build_new(zma_fs, tra, rcts_gra):
