@@ -14,94 +14,6 @@ from autofile import fs
 PFX = '/lcrc/project/PACC/AutoMech/data/save/'
 
 
-def remove_empty_thy_spc_dirs():
-    """ Get rid of the empty theory directories
-    """
-    paths = fs.iterate_paths(
-        PFX, ['SPECIES', 'THEORY']
-    )
-
-    for path in paths:
-        print(path)
-        thy_dirs = os.listdir(path)
-        print(thy_dirs)
-        if 'hess.hess' in thy_dirs:
-            hess_path = os.path.join(path, 'hess.hess')
-            os.remove(hess_path)
-        if 'geom.zmat' in thy_dirs:
-            zma_path = os.path.join(path, 'geom.zmat')
-            os.remove(zma_path)
-        print()
-
-
-def remove_empty_thy_ts_dirs():
-    """ Get rid of the empty theory directories
-    """
-    # paths = fs.iterate_paths(
-    #     PFX, ['SPECIES', 'THEORY']
-    # )
-    paths = fs.iterate_paths(
-        PFX, ['REACTION', 'THEORY']
-    )
-
-    for path in paths:
-        # Get all paths
-        print(path)
-        thy_dirs = os.listdir(path)
-        print(thy_dirs)
-        if thy_dirs == ['dir.yaml']:
-            pass
-        # for dir1 in thy_dirs:
-        #     if dir1 == 'TS':
-        #         thy_dir = os.path.join(path, dir1)
-        #         dirs = os.listdir(thy_dir)
-        #         if 'CONFS' not in dirs:
-        #             print('\n\nNO CONFS, DELETE')
-        #             print(thy_dir)
-        #             print(dirs)
-        #             # shutil.rmtree(thy_dir)
-        #         else:
-        #             print('\n\nWITH CONFS, KEEP')
-        #             print(thy_dir)
-        #             print(dirs)
-        #             # bad_proj = os.path.join(thy_dir, 'PF')
-        #             # bad_pf = os.path.join(thy_dir, 'PROJ')
-        #             # if os.path.exists(bad_proj):
-        #             #     print('bad proj')
-        #             #     print(bad_proj)
-        #             #     shutil.rmtree(bad_proj)
-        #             # if os.path.exists(bad_pf):
-        #             #     print('bad pf')
-        #             #     print(bad_pf)
-        #             #     shutil.rmtree(bad_pf)
-        #             # print(thy_dir)
-        #             # print(dirs)
-        #             # put in a remove command for the path
-
-
-def remove_pf_dirs_from_save():
-    """ Get rid of the empty theory directories
-    """
-    spc_paths = fs.iterate_paths(
-        PFX, ['SPECIES', 'THEORY', 'CONFORMER']
-    )
-    # ts_paths = fs.iterate_paths(
-    #     PFX, ['REACTION', 'THEORY', 'TRANSITION STATE', 'CONFORMER']
-    # )
-    # paths = list(spc_paths) + list(ts_paths)
-
-    bad_dirs = ['PF', 'PROJ', 'NASA']
-
-    for path in spc_paths:
-        # print(path)
-        for bad_dir in bad_dirs:
-            bad_path = os.path.join(path, bad_dir)
-            if os.path.exists(bad_path):
-                print(bad_path)
-                # shutil.rmtree(bad_path)
-                # put in a remove command for the path
-
-
 def write_freqs():
     """ write the harm freqs using ProjRot
     """
@@ -180,7 +92,7 @@ def write_freqs():
                     cnf_fs[-1].file.harmonic_frequencies.write(sorted(wfreqs), locs)
 
 
-def add_zma_trans():
+def check_r():
     """ Add the zma input files using geo inputs
     """
     cnf_managers = fs.iterate_managers(PFX, ['REACTION', 'THEORY', 'TRANSITION STATE'],

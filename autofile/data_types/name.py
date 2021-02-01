@@ -105,8 +105,8 @@ def vmatrix(file_name):
     return _add_extension(file_name, Extension.VMATRIX)
 
 
-def torsional_names(file_name):
-    """ adds variable torsional names extension, if missing
+def torsions(file_name):
+    """ adds variable torsions extension, if missing
     """
     return _add_extension(file_name, Extension.TORS)
 

@@ -82,7 +82,7 @@ class FileAttributeName():
     INPUT = 'input'
     OUTPUT = 'output'
     VMATRIX = 'vmatrix'
-    TORS_NAMES = 'torsional_names'
+    TORS = 'torsions'
     GEOM_INFO = 'geometry_info'
     GRAD_INFO = 'gradient_info'
     HESS_INFO = 'hessian_info'
@@ -543,7 +543,7 @@ def zmatrix(prefix):
         _FilePrefix.ZMAT, function=info_objects.run)
     zmat_inp_dfile = data_files.input_file(_FilePrefix.ZMAT)
 
-    tors_dfile = data_files.torsional_names(_FilePrefix.ZMAT)
+    tors_dfile = data_files.torsions(_FilePrefix.ZMAT)
 
     zmat_dfile = data_files.zmatrix(_FilePrefix.ZMAT)
     vma_dfile = data_files.vmatrix(_FilePrefix.ZMAT)
@@ -551,7 +551,7 @@ def zmatrix(prefix):
 
     leaf_ds.add_data_files({
         FileAttributeName.GEOM_INFO:  zmat_inf_dfile,
-        FileAttributeName.TORS_NAMES: tors_dfile,
+        FileAttributeName.TORS: tors_dfile,
         FileAttributeName.GEOM_INPUT: zmat_inp_dfile,
         FileAttributeName.ZMAT: zmat_dfile,
         FileAttributeName.VMATRIX: vma_dfile,
