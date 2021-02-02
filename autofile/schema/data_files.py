@@ -236,12 +236,12 @@ def vmatrix(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
-def torsional_names(file_prefix):
-    """ generate torsional_names DataFile
+def torsions(file_prefix):
+    """ generate torsions DataFile
     """
-    name = autofile.data_types.name.torsional_names(file_prefix)
-    writer_ = autofile.data_types.swrite.torsional_names
-    reader_ = autofile.data_types.sread.torsional_names
+    name = autofile.data_types.name.torsions(file_prefix)
+    writer_ = autofile.data_types.swrite.torsions
+    reader_ = autofile.data_types.sread.torsions
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 

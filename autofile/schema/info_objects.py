@@ -77,8 +77,8 @@ def scan_branch(grids):
     # note:renormalization of angle ranges needs to be updated for 2D grids.
     for key, rng in grid_dct.items():
         if 'R' not in key:
-            print(rng)
-            grid_dct[key] = rng*180./numpy.pi
+            rng_deg = tuple(val*180./numpy.pi for val in rng)
+            grid_dct[key] = rng_deg
 
     for key, vals in grid_dct.items():
         assert isinstance(key, str), '{} is not a string'.format(key)

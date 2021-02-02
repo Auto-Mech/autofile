@@ -339,8 +339,8 @@ def conformer(prefix):
         _FilePrefix.SAMP, function=info_objects.conformer_trunk)
     traj_dfile = data_files.trajectory(_FilePrefix.CONF)
     trunk_ds.add_data_files({
-        FileAttributeName.INFO: old_inf_dfile,
-        FileAttributeName.INFO2: inf_dfile,
+        FileAttributeName.INFO2: old_inf_dfile,
+        FileAttributeName.INFO: inf_dfile,
         FileAttributeName.ENERGY: min_ene_dfile,
         FileAttributeName.TRAJ: traj_dfile})
 
@@ -1183,6 +1183,7 @@ def iterate_paths(pfx, keys):
 
         fs_ = _manager(pfx, key)
         for locs in fs_[-1].existing():
+            print('locs test', locs)
             pfx = fs_[-1].path(locs)
             yield from iterate_paths(pfx, keys)
 
