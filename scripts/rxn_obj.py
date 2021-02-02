@@ -39,15 +39,17 @@ def rewrite_test():
     """ rewrite graph and TS files
     """
 
+    conf_path = '/lcrc/project/PACC/AutoMech/data/save/RXN/C3H5.H2/ZJMQNRRDFSUTLJ/0_0/2_1/UHFFFAOYSA-N/C3H6.H/MULOCOKNWSNATD/0_0/1_2/UHFFFAOYSA-N/2/u-ulpJU/TS/CONFS/cLSJV7-VTOQLd/'
     zma_path = '/lcrc/project/PACC/AutoMech/data/save/RXN/C3H5.H2/ZJMQNRRDFSUTLJ/0_0/2_1/UHFFFAOYSA-N/C3H6.H/MULOCOKNWSNATD/0_0/1_2/UHFFFAOYSA-N/2/u-ulpJU/TS/CONFS/cLSJV7-VTOQLd/Z/00'
 
+    zma_fs = autofile.fs.zmatrix(conf_path)
     trans_exists = _exists(zma_path, 'trans')
     rcts_gra_exists = _exists(zma_path, 'rctgra')
     if trans_exists and rcts_gra_exists:
         print('here')
         trans = _read(zma_path, 'trans')
         rcts_gra = _read(zma_path, 'rctgra')
-        _build_new('a', trans, rcts_gra)
+        _build_new(zma_fs, trans, rcts_gra)
     else:
         # bad_ts.append(cnf_path)
         pass
@@ -72,6 +74,8 @@ def _read(zma_path, obj):
         name = 'zmat.t.yaml'
     elif obj == 'rctgra':
         name = 'zmat.g.yaml'
+    elif obj == 'zma':
+        name = 'zmat.zmat'
     fname = os.path.join(zma_path, name)
     with open(fname) as fobj:
         file_str = fobj.read()
@@ -98,8 +102,6 @@ def _graph(gra_str):
     return gra
 
 
-
-
 def _build_new(zma_fs, tra, rcts_gra):
     """ build new line
     """
@@ -111,7 +113,7 @@ def _build_new(zma_fs, tra, rcts_gra):
     tsg1 = automol.graph.ts.graph(rcts_gra, frm_bnd_keys, brk_bnd_keys)
 
     # 2. Reclassify the reaction and get a new forward graph
-    rxn = _reclassify(rcts_gra, tra)
+    rxn = _reclassify(tra, rcts_gra)
     tsg2 = rxn.forward_ts_graph
 
     # 3 Obtain isomorphism between the graphs
@@ -121,20 +123,23 @@ def _build_new(zma_fs, tra, rcts_gra):
     rxn = automol.reac.relabel(rxn, key_dct)
 
     # 5. write the new files
+    zma = zma_fs[-1].file.zmatrix.read([0])
+    print(automol.zmat.string(zma))
+    print(rxn)
     # zma_fs[-1].file.reac.write(rxn)
 
     return rxn
 
 
-def _reclassify(rcts_gra, tra):
+def _reclassify(tra, rcts_gra):
     """ reclassify the reaction
     """
 
     # 1. Get prd graph
-    prds_gra = trans.apply(rcts_gra, tra)
+    prds_gra = trans.apply(tra, rcts_gra)
 
-    rct_gras = automol.graph.disconnected_components(rcts_gra)
-    prd_gras = automol.graph.disconnected_components(prds_gra)
+    rct_gras = automol.graph.connected_components(rcts_gra)
+    prd_gras = automol.graph.connected_components(prds_gra)
 
     rct_geos = list(map(automol.graph.geometry, rct_gras))
     prd_geos = list(map(automol.graph.geometry, prd_gras))

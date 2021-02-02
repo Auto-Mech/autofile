@@ -339,8 +339,8 @@ def conformer(prefix):
         _FilePrefix.SAMP, function=info_objects.conformer_trunk)
     traj_dfile = data_files.trajectory(_FilePrefix.CONF)
     trunk_ds.add_data_files({
-        FileAttributeName.INFO: old_inf_dfile,
-        FileAttributeName.INFO2: inf_dfile,
+        FileAttributeName.INFO2: old_inf_dfile,
+        FileAttributeName.INFO: inf_dfile,
         FileAttributeName.ENERGY: min_ene_dfile,
         FileAttributeName.TRAJ: traj_dfile})
 
