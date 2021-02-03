@@ -1183,8 +1183,8 @@ def iterate_paths(pfx, keys):
 
         fs_ = _manager(pfx, key)
         for locs in fs_[-1].existing():
-            pfx = fs_[-1].path(locs)
-            yield from iterate_paths(pfx, keys)
+            pfx_ = fs_[-1].path(locs)
+            yield from iterate_paths(pfx_, keys)
 
 
 def iterate_managers(pfx, keys, key):
