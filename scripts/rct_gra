@@ -45,4 +45,4 @@ Traceback (most recent call last):
     return os.path.join(_reactant_leaf(ichs1, chgs1, muls1),
   File "/lcrc/project/CMRP/amech/autofile/autofile/schema/loc_maps.py", line 128, in _reactant_leaf
     assert all(map(automol.inchi.is_complete, ichs))
-AssertionError
+p ssertionError
