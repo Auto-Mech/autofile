@@ -199,6 +199,7 @@ class DataSeries():
                 pths = self._existing_paths(root_locs)
                 locs_lst = tuple(self.loc_dfile.read(pth) for pth in pths
                                  if self.loc_dfile.exists(pth))
+
                 if not relative:
                     locs_lst = tuple(map(list(root_locs).__add__, locs_lst))
 

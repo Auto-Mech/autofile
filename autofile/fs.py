@@ -1177,6 +1177,8 @@ def iterate_paths(pfx, keys):
 
         fs_ = _manager(pfx, key)
         for locs in fs_[-1].existing():
+            print('locs test 1', locs)
+            print('pfx 1', pfx)
             yield fs_[-1].path(locs)
     else:
         key, keys = keys[0], keys[1:]
