@@ -24,8 +24,6 @@ def information(file_prefix, function=None):
     def reader_(inf_str):
         inf_obj = autofile.data_types.sread.information(inf_str)
         if function is not None:
-            print(inf_obj)
-            print(function)
             assert autofile.info.matches_function_signature(inf_obj, function)
         return inf_obj
 
