@@ -57,7 +57,6 @@ def reaction_leaf(rxn_ichs, rxn_chgs, rxn_muls, ts_mul):
     rxn_ichs = tuple(map(tuple, rxn_ichs))
     rxn_chgs = tuple(map(tuple, rxn_chgs))
     rxn_muls = tuple(map(tuple, rxn_muls))
-    # print('sort together test:', rxn_ichs, rxn_chgs, rxn_muls)
     assert ((rxn_ichs, rxn_chgs, rxn_muls) ==
             sort_together(rxn_ichs, rxn_chgs, rxn_muls))
     ichs1, ichs2 = rxn_ichs
@@ -124,7 +123,6 @@ def _reactant_leaf(ichs, chgs, muls):
     """ reactant leaf directory name
     """
     assert all(map(automol.inchi.is_standard_form, ichs))
-    print('ichs', ichs)
     assert all(map(automol.inchi.is_complete, ichs))
     assert tuple(ichs) == automol.inchi.sorted_(ichs)
     assert len(ichs) == len(chgs) == len(muls)
