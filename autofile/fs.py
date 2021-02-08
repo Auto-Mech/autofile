@@ -82,7 +82,7 @@ class FileAttributeName():
     INPUT = 'input'
     OUTPUT = 'output'
     VMATRIX = 'vmatrix'
-    TORS_NAMES = 'torsional_names'
+    TORS = 'torsions'
     GEOM_INFO = 'geometry_info'
     GRAD_INFO = 'gradient_info'
     HESS_INFO = 'hessian_info'
@@ -339,8 +339,8 @@ def conformer(prefix):
         _FilePrefix.SAMP, function=info_objects.conformer_trunk)
     traj_dfile = data_files.trajectory(_FilePrefix.CONF)
     trunk_ds.add_data_files({
-        FileAttributeName.INFO: old_inf_dfile,
-        FileAttributeName.INFO2: inf_dfile,
+        FileAttributeName.INFO2: old_inf_dfile,
+        FileAttributeName.INFO: inf_dfile,
         FileAttributeName.ENERGY: min_ene_dfile,
         FileAttributeName.TRAJ: traj_dfile})
 
@@ -543,7 +543,7 @@ def zmatrix(prefix):
         _FilePrefix.ZMAT, function=info_objects.run)
     zmat_inp_dfile = data_files.input_file(_FilePrefix.ZMAT)
 
-    tors_dfile = data_files.torsional_names(_FilePrefix.ZMAT)
+    tors_dfile = data_files.torsions(_FilePrefix.ZMAT)
 
     zmat_dfile = data_files.zmatrix(_FilePrefix.ZMAT)
     vma_dfile = data_files.vmatrix(_FilePrefix.ZMAT)
@@ -551,7 +551,7 @@ def zmatrix(prefix):
 
     leaf_ds.add_data_files({
         FileAttributeName.GEOM_INFO:  zmat_inf_dfile,
-        FileAttributeName.TORS_NAMES: tors_dfile,
+        FileAttributeName.TORS: tors_dfile,
         FileAttributeName.GEOM_INPUT: zmat_inp_dfile,
         FileAttributeName.ZMAT: zmat_dfile,
         FileAttributeName.VMATRIX: vma_dfile,
@@ -1177,13 +1177,16 @@ def iterate_paths(pfx, keys):
 
         fs_ = _manager(pfx, key)
         for locs in fs_[-1].existing():
+            print('pfx 1', pfx)
             yield fs_[-1].path(locs)
     else:
         key, keys = keys[0], keys[1:]
 
         fs_ = _manager(pfx, key)
+        print('pfx 2', pfx)
         for locs in fs_[-1].existing():
             pfx_ = fs_[-1].path(locs)
+            print('pfx_ 2', pfx_)
             yield from iterate_paths(pfx_, keys)
 
 

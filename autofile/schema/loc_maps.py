@@ -124,6 +124,7 @@ def _reactant_leaf(ichs, chgs, muls):
     """ reactant leaf directory name
     """
     assert all(map(automol.inchi.is_standard_form, ichs))
+    print('ichs', ichs)
     assert all(map(automol.inchi.is_complete, ichs))
     assert tuple(ichs) == automol.inchi.sorted_(ichs)
     assert len(ichs) == len(chgs) == len(muls)

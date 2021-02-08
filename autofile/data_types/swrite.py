@@ -6,9 +6,7 @@
 from io import StringIO as _StringIO
 from numbers import Real as _Real
 import numpy
-import yaml
 import automol
-from phydat import phycon
 import autofile.info
 
 
@@ -89,28 +87,14 @@ def vmatrix(vma):
     return vma_str
 
 
-def torsional_names(tors_dct):
+def torsions(tors_lst):
     """ Write the torsions and their ranges (radian) to a string (degree).
 
-        :param tors_dct: names and angle ranges of torsional coordinates
-        :type tors_dct: dict[str: tuple(float)]
+        :param tors_lst: list of torsion objects
+        :type tors_lst: tuple(automol torsion objects)
         :rtype: str
     """
-
-    assert all(isinstance(key, str) and len(rng) == 2
-               and all(isinstance(x, _Real) for x in rng)
-               for key, rng in tors_dct.items())
-
-    tors_names = list(tors_dct.keys())
-    tors_names.sort(key=lambda x: int(x.split('D')[1]))
-    sorted_dct = {}
-    for name in tors_names:
-        sorted_dct[name] = (
-            tors_dct[name][0]*phycon.RAD2DEG, tors_dct[name][1]*phycon.RAD2DEG
-        )
-
-    tors_str = yaml.dump(sorted_dct, default_flow_style=True, sort_keys=False)
-
+    tors_str = automol.rotor.string(tors_lst)
     return tors_str
 
 
