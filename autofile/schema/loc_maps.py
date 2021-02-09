@@ -5,6 +5,7 @@ import string
 import numbers
 import elstruct
 import automol
+from autofile._safemode import safemode_is_on
 from autofile.schema._util import (is_valid_inchi_multiplicity as
                                    _is_valid_inchi_multiplicity)
 from autofile.schema._util import short_hash as _short_hash
@@ -24,8 +25,10 @@ def species_trunk():
 def species_leaf(ich, chg, mul):
     """ species leaf directory name
     """
-    assert automol.inchi.is_standard_form(ich)
-    assert automol.inchi.is_complete(ich)
+    if safemode_is_on():
+        assert automol.inchi.is_standard_form(ich)
+        assert automol.inchi.is_complete(ich)
+
     assert isinstance(chg, numbers.Integral)
     assert isinstance(mul, numbers.Integral), (
         'Multiplicity {} is not an integer'.format(mul))
@@ -57,8 +60,9 @@ def reaction_leaf(rxn_ichs, rxn_chgs, rxn_muls, ts_mul):
     rxn_ichs = tuple(map(tuple, rxn_ichs))
     rxn_chgs = tuple(map(tuple, rxn_chgs))
     rxn_muls = tuple(map(tuple, rxn_muls))
-    assert ((rxn_ichs, rxn_chgs, rxn_muls) ==
-            sort_together(rxn_ichs, rxn_chgs, rxn_muls))
+    if safemode_is_on():
+        assert ((rxn_ichs, rxn_chgs, rxn_muls) ==
+                sort_together(rxn_ichs, rxn_chgs, rxn_muls))
     ichs1, ichs2 = rxn_ichs
     chgs1, chgs2 = rxn_chgs
     muls1, muls2 = rxn_muls
@@ -122,9 +126,11 @@ def _sortable_representation(ichs, chgs, muls):
 def _reactant_leaf(ichs, chgs, muls):
     """ reactant leaf directory name
     """
-    assert all(map(automol.inchi.is_standard_form, ichs))
-    assert all(map(automol.inchi.is_complete, ichs))
-    assert tuple(ichs) == automol.inchi.sorted_(ichs)
+    if safemode_is_on():
+        assert all(map(automol.inchi.is_standard_form, ichs))
+        assert all(map(automol.inchi.is_complete, ichs))
+        assert tuple(ichs) == automol.inchi.sorted_(ichs)
+
     assert len(ichs) == len(chgs) == len(muls)
     assert all(isinstance(chg, numbers.Integral) for chg in chgs)
     assert all(isinstance(mul, numbers.Integral) for mul in muls)

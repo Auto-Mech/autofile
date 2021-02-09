@@ -90,9 +90,6 @@ class DataSeries():
         :param info_map_: maps `nlocs` locators to an information object, to
             be written in the data directory
         """
-        assert os.path.isdir(prefix), (
-            'Path is not a dir: {}'. format(prefix)
-        )
         self.prefix = os.path.abspath(prefix)
         self.map_ = map_
         self.nlocs = nlocs
@@ -217,7 +214,7 @@ class DataSeries():
         pths = filter(os.path.isdir, glob.glob(pth_pattern))
         pths = tuple(sorted(os.path.join(prefix, pth) for pth in pths))
         return pths
-    
+
     def json_path(self, json_layer=None):
         """ json file path
         """

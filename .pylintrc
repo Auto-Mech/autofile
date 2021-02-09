@@ -8,4 +8,5 @@ disable=
     superfluous-parens,
     deprecated-method,
     duplicate-code,
-    no-member
+    no-member,
+    global-statement

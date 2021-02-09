@@ -7,6 +7,10 @@ from autofile import info
 from autofile import data_types
 from autofile import schema
 from autofile import fs
+from autofile._safemode import turn_off_safemode
+from autofile._safemode import turn_on_safemode
+from autofile._safemode import safemode_is_on
+
 
 __all__ = [
     'io_',
