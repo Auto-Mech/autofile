@@ -1103,9 +1103,11 @@ FILE_SYSTEM_MANAGER_DCT = {
     'CSCAN': cscan,
     'TAU': tau,
     'ENERGY TRANSFER': energy_transfer,
+    'VRCTST': vrctst,
+    'INSTAB': instab,
     'RUN': run,
     'SRUN': subrun,
-    'BUILD': build,
+    'BUILD': build
 }
 
 
