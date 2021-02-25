@@ -180,28 +180,28 @@ def test__vmatrix():
     assert vma == ref_vma
 
 
-def test__torsions():
-    """ test the torsion names read/write functions
-    """
-
-    zma = automol.geom.zmatrix(automol.inchi.geometry(
-            automol.smiles.inchi('CCO')))
-    ref_tors_lst = automol.rotor.from_zma(zma)
-
-    tors_file_name = autofile.data_types.name.torsional_names('test')
-    tors_file_path = os.path.join(TMP_DIR, tors_file_name)
-    tors_str = autofile.data_types.swrite.torsional_names(ref_tors_lst)
-
-    assert not os.path.isfile(tors_file_path)
-    autofile.io_.write_file(tors_file_path, tors_str)
-    assert os.path.isfile(tors_file_path)
-
-    tors_str = autofile.io_.read_file(tors_file_path)
-    tors_lst = autofile.data_types.sread.torsional_names(tors_str)
-    for tors, tors_ref in zip(tors_lst, ref_tors_lst):
-        assert tors.name == tors_ref.name
-        assert tors.symmetry == tors_ref.symmetry
-
+# def test__torsions():
+#     """ test the torsion names read/write functions
+#     """
+# 
+#     zma = automol.geom.zmatrix(automol.inchi.geometry(
+#             automol.smiles.inchi('CCO')))
+#     ref_tors_lst = automol.rotor.from_zmatrix(zma)
+# 
+#     tors_file_name = autofile.data_types.name.torsions('test')
+#     tors_file_path = os.path.join(TMP_DIR, tors_file_name)
+#     tors_str = autofile.data_types.swrite.torsions(ref_tors_lst)
+# 
+#     assert not os.path.isfile(tors_file_path)
+#     autofile.io_.write_file(tors_file_path, tors_str)
+#     assert os.path.isfile(tors_file_path)
+# 
+#     tors_str = autofile.io_.read_file(tors_file_path)
+#     tors_lst = autofile.data_types.sread.torsions(tors_str)
+#     for tors, tors_ref in zip(tors_lst, ref_tors_lst):
+#         assert tors.name == tors_ref.name
+#         assert tors.symmetry == tors_ref.symmetry
+# 
 
 def test__gradient():
     """ test the gradient read/write functions
@@ -541,7 +541,7 @@ if __name__ == '__main__':
     # test__hessian()
     # test__trajectory()
     # test__vmatrix()
-    # test__torsions()
+    test__torsions()
     # test__anharmonic_frequencies()
     # test__anharmonic_zpve()
     # test__anharmonicity_matrix()
@@ -554,4 +554,4 @@ if __name__ == '__main__':
     # test__dipole_moment()
     # test__polarizability()
     # test__graph()
-    test__reaction()
+    # test__reaction()

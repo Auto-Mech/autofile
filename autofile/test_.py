@@ -86,7 +86,7 @@ def test__conformer():
     cnf_fs[-1].create(locs)
     assert cnf_fs[-1].exists(locs)
     inf_obj = autofile.schema.info_objects.conformer_trunk(0)
-    cnf_fs[0].file.info2.write(inf_obj)
+    cnf_fs[0].file.info.write(inf_obj)
 
 
 def test__single_point():
