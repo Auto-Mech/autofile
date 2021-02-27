@@ -19,9 +19,9 @@ dependencies:
     - future
     - flake8
     - pylint
-    - kevinmooreiii::automol
-    - kevinmooreiii::autoparse
-    - kevinmooreiii::elstruct
+    - auto-mech::automol
+    - auto-mech::autoparse
+    - auto-mech::elstruct
     - auto-mech::x2z
     - psi4::psi4
     - rdkit::rdkit
