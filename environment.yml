@@ -20,6 +20,7 @@ dependencies:
     - flake8
     - pylint
     - auto-mech::automol
+    - auto-mech::autoio
     - auto-mech::autoparse
     - auto-mech::elstruct
     - auto-mech::x2z
