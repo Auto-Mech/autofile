@@ -1,6 +1,6 @@
 """ string writers
     converts properties in internally used units and used data type
-    to properties formatted in strings of externally preferred units
+    to properties formatted in strings of externally preferred units dum
 """
 
 from io import StringIO as _StringIO
