@@ -18,6 +18,8 @@ class Extension():
     TORS = '.tors'
     GRADIENT = '.grad'
     HESSIAN = '.hess'
+    CUBIC_FC = '.cubic'
+    QUARTIC_FC = '.quartic'
     HARMONIC_ZPVE = '.hzpve'
     ANHARMONIC_ZPVE = '.azpve'
     HARMONIC_FREQUENCIES = '.hfrq'
@@ -151,6 +153,18 @@ def projected_frequencies(file_name):
     """ adds projected frequencies extension, if missing
     """
     return _add_extension(file_name, Extension.PROJECTED_FREQUENCIES)
+
+
+def cubic_force_constants(file_name):
+    """ adds cubic force constants extension, if missing
+    """
+    return _add_extension(file_name, Extension.CUBIC_FC)
+
+
+def quartic_force_constants(file_name):
+    """ adds quartic force constants extension, if missing
+    """
+    return _add_extension(file_name, Extension.QUARTIC_FC)
 
 
 def anharmonicity_matrix(file_name):
