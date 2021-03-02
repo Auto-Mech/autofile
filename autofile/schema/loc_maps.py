@@ -27,7 +27,7 @@ def species_leaf(ich, chg, mul):
     """
     if safemode_is_on():
         print('ich in locmaps', ich)
-        print('ich in locmaps', automol.smiles.inchi(automol.inchi.smiles(ich))
+        print('ich in locmaps', automol.smiles.inchi(automol.inchi.smiles(ich)))
         assert automol.inchi.is_standard_form(ich)
         assert automol.inchi.is_complete(ich)
 
