@@ -91,7 +91,7 @@ def information(file_prefix, function=None, json_prefix=(None, None)):
         writer_=writer_, reader_=reader_)
 
 
-def locator(file_prefix, map_dct_, loc_keys):
+def locator(file_prefix):
     """ locator JSONObject
 
     Specifiers are stored in information files according to `map_dct_` and read

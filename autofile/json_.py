@@ -25,7 +25,7 @@ def read_json(file_path):
     try:
         with open(file_path) as file_obj:
             json_dct = json.load(file_obj)
-    except:
+    except Exception:
         if os.path.exists('_'.join([file_path, 'backup'])):
             copyfile('_'.join([file_path, 'backup']), file_path)
             print(
@@ -61,7 +61,7 @@ def write_json(json_dct, file_path):
     try:
         with open(file_path, 'w') as file_obj:
             json.dump(json_dct, file_obj, ensure_ascii=False, indent=4)
-    except:
+    except Exception:
         if os.path.exists('_'.join([file_path, 'backup'])):
             copyfile('_'.join([file_path, 'backup']), file_path)
             print(
