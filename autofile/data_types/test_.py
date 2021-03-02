@@ -615,7 +615,7 @@ if __name__ == '__main__':
     # test__hessian()
     # test__trajectory()
     # test__vmatrix()
-    test__torsions()
+    # test__torsions()
     # test__anharmonic_frequencies()
     # test__anharmonic_zpve()
     # test__anharmonicity_matrix()
