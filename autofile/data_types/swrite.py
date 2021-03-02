@@ -54,8 +54,8 @@ def trajectory(traj):
     :return: trajectory
     :rtype: str
     """
-    # geo_lst, comments = zip(*traj)
-    comments, geo_lst = zip(*traj)
+    geo_lst, comments = zip(*traj)
+    
     assert all(isinstance(comment, str) and len(comment.splitlines()) == 1
                for comment in comments)
     assert all(map(automol.geom.is_valid, geo_lst))
