@@ -5,8 +5,8 @@ import tempfile
 import numpy
 import pytest
 
-import autofile.fs
 import automol
+import autofile.fs
 
 PREFIX = tempfile.mkdtemp()
 print(PREFIX)
