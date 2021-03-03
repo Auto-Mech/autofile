@@ -11,7 +11,7 @@ File system schema and interface for AutoMech
 
 ## Installation
 ```python
-conda install autofile -c auto-mech
+>>> conda install autofile -c auto-mech
 ```
 
 ## Description
