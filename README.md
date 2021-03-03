@@ -10,7 +10,9 @@ Andreas V. Copan, Kevin B. Moore III, Sarah N. Elliott, and Stephen J. Klippenst
 File system schema and interface for AutoMech
 
 ## Installation
+```python
 conda install autofile -c auto-mech
+```
 
 ## Description
 The dual run/save filesystem is designed to distinguish species by their inchi, multiplicity, and charge. Similarly it houses unique transition states by the inchi, multipliciy, and charge of the reactants and products for the reaction that passes through it.  Each of these branches will further branch off into theory specifiers and then into specific types of tasks (single points, projections, etc). 
