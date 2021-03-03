@@ -174,7 +174,7 @@ def cubic_force_constants(cfcs):
         :type cfcs: numpy.ndarray
         :rtype: str
     """
-    return automol.util.highd_mat.string(cfcs)
+    return automol.util.highd_mat.string(cfcs, val_format='{0:>14.6f}')
 
 
 def quartic_force_constants(qfcs):
@@ -184,7 +184,7 @@ def quartic_force_constants(qfcs):
         :type cfcs: numpy.ndarray
         :rtype: str
     """
-    return automol.util.highd_mat.string(qfcs)
+    return automol.util.highd_mat.string(qfcs, val_format='{0:>14.6f}')
 
 
 def anharmonic_zpve(zpve):
