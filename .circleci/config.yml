@@ -24,7 +24,8 @@ jobs:
                     pytest -v --disable-pytest-warnings --cov=autofile --pyargs autofile
                     flake8 --exit-zero ../autofile
                     pylint --rcfile=../.pylintrc autofile
-                    store_test_results
+            - store_test_results
+                    path: docs
 workflows:
     version: 2
     build-all:
