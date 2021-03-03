@@ -1,11 +1,13 @@
 """ test the autofile.file module
 """
+
 import os
 import tempfile
 import numpy
 import automol
 import autofile.info
 import autofile.data_types
+
 
 TMP_DIR = tempfile.mkdtemp()
 print(TMP_DIR)
@@ -373,6 +375,77 @@ def test__quartic_centrifugal_distortion_constants():
     assert numpy.isclose(ref_qcds[2][1], qcds[2][1])
 
 
+def test__force_constants():
+    """ test the cubic and quartic force constant functions
+    """
+
+    def _compare_strings(str1, str2):
+        """ See if two force-constant data strings match
+        """
+        similar = True
+        for line1, line2 in zip(str1.splitlines(), str2.splitlines()):
+            tmp1, tmp2 = line1.strip().split(), line2.strip().split()
+            similar = (
+                tmp1[:-1] == tmp2[:-1] and
+                numpy.isclose(float(tmp1[-1]), float(tmp2[-1]))
+            )
+
+        return similar
+
+    ref_cfc_str = (
+        '1     1     2          -1.550200\n'
+        '1     1     3          -0.149100\n'
+        '2     2     2          -1.486810\n'
+        '2     2     3          -0.046980\n'
+        '2     3     3           0.113240\n'
+        '3     3     3           0.070450'
+    )
+
+    cfc = autofile.data_types.sread.cubic_force_constants(ref_cfc_str)
+    cfc_str1 = autofile.data_types.swrite.cubic_force_constants(cfc)
+
+    cfc_file_name = autofile.data_types.name.cubic_force_constants('test')
+    cfc_file_path = os.path.join(TMP_DIR, cfc_file_name)
+    assert not os.path.isfile(cfc_file_path)
+    autofile.io_.write_file(cfc_file_path, ref_cfc_str)
+    assert os.path.isfile(cfc_file_path)
+
+    cfc_str2 = autofile.io_.read_file(cfc_file_path)
+    cfc = autofile.data_types.sread.cubic_force_constants(cfc_str2)
+    cfc_str3 = autofile.data_types.swrite.cubic_force_constants(cfc)
+
+    assert _compare_strings(ref_cfc_str, cfc_str1)
+    assert _compare_strings(ref_cfc_str, cfc_str3)
+
+    ref_qfc_str = (
+        '1     1     1     1           3.361350\n'
+        '1     1     2     2           3.244500\n'
+        '1     1     2     3           0.388010\n'
+        '1     1     3     3          -0.871550\n'
+        '2     2     2     2           3.114170\n'
+        '2     2     2     3           0.227450\n'
+        '2     2     3     3          -0.719880\n'
+        '2     3     3     3          -0.253270\n'
+        '3     3     3     3          -0.062810\n'
+    )
+
+    qfc = autofile.data_types.sread.quartic_force_constants(ref_qfc_str)
+    qfc_str1 = autofile.data_types.swrite.quartic_force_constants(qfc)
+
+    qfc_file_name = autofile.data_types.name.quartic_force_constants('test')
+    qfc_file_path = os.path.join(TMP_DIR, qfc_file_name)
+    assert not os.path.isfile(qfc_file_path)
+    autofile.io_.write_file(qfc_file_path, ref_qfc_str)
+    assert os.path.isfile(qfc_file_path)
+
+    qfc_str2 = autofile.io_.read_file(qfc_file_path)
+    qfc = autofile.data_types.sread.quartic_force_constants(qfc_str2)
+    qfc_str3 = autofile.data_types.swrite.quartic_force_constants(qfc)
+
+    assert _compare_strings(ref_qfc_str, qfc_str1)
+    assert _compare_strings(ref_qfc_str, qfc_str3)
+
+
 def test__lennard_jones_epsilon():
     """ test the epsilon read/write functions
     """
@@ -547,6 +620,7 @@ if __name__ == '__main__':
     # test__anharmonicity_matrix()
     # test__vibro_rot_alpha_matrix()
     # test__quartic_centrifugal_distortion_constants()
+    test__force_constants()
     # test__lennard_jones_epsilon()
     # test__lennard_jones_sigma()
     # test__external_symmetry_number()
@@ -554,4 +628,4 @@ if __name__ == '__main__':
     # test__dipole_moment()
     # test__polarizability()
     # test__graph()
-    test__reaction()
+    # test__reaction()
