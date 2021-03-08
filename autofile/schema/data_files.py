@@ -168,6 +168,32 @@ def anharmonic_zpve(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
+def cubic_force_constants(file_prefix):
+    """ generate cubic_force_constants DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
+    """
+    name = autofile.data_types.name.cubic_force_constants(file_prefix)
+    writer_ = autofile.data_types.swrite.cubic_force_constants
+    reader_ = autofile.data_types.sread.cubic_force_constants
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def quartic_force_constants(file_prefix):
+    """ generate quartic_force_constants DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
+    """
+    name = autofile.data_types.name.quartic_force_constants(file_prefix)
+    writer_ = autofile.data_types.swrite.quartic_force_constants
+    reader_ = autofile.data_types.sread.quartic_force_constants
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
 def anharmonicity_matrix(file_prefix):
     """ generate anharmonicity matrix DataFile
     :param file_prefix: path to file
