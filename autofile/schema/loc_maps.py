@@ -380,7 +380,7 @@ def build_trunk(head):
 def build_leaf(num):
     """ build leaf directory name
     """
-    assert isinstance(num, numbers.Integral) and 0 <= num <= 9
+    assert isinstance(num, numbers.Integral) and num >= 0
     return str(num)
 
 

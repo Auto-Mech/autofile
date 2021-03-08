@@ -55,7 +55,7 @@ def trajectory(traj):
     :rtype: str
     """
     geo_lst, comments = zip(*traj)
-    
+
     assert all(isinstance(comment, str) and len(comment.splitlines()) == 1
                for comment in comments)
     assert all(map(automol.geom.is_valid, geo_lst))
@@ -165,6 +165,26 @@ def projected_frequencies(freq):
     """
     assert list(freq) == sorted(freq)
     return _frequencies(freq)
+
+
+def cubic_force_constants(cfcs):
+    """ Writes cubic force constants () to a string ().
+
+        :param cfcs: cubic force constants
+        :type cfcs: numpy.ndarray
+        :rtype: str
+    """
+    return automol.util.highd_mat.string(cfcs, val_format='{0:>14.6f}')
+
+
+def quartic_force_constants(qfcs):
+    """ Writes quartic force constants () to a string ().
+
+        :param cfcs: quartic force constants
+        :type cfcs: numpy.ndarray
+        :rtype: str
+    """
+    return automol.util.highd_mat.string(qfcs, val_format='{0:>14.6f}')
 
 
 def anharmonic_zpve(zpve):

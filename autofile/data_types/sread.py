@@ -153,6 +153,26 @@ def projected_frequencies(freq_str):
     return _frequencies(freq_str)
 
 
+def cubic_force_constants(cfc_str):
+    """ Writes cubic force constants () to a string ().
+
+        :param cfc_str: string with cubic force constants
+        :type cfc_str: str
+        :rtype: numpy.ndarray
+    """
+    return automol.util.highd_mat.from_string(cfc_str, fill_perms=True)
+
+
+def quartic_force_constants(qfc_str):
+    """ Writes quartic force constants () to a string ().
+
+        :param qfc_str: quartic force constants
+        :type qfc_str: numpy.ndarray
+        :rtype: numpy.ndarray
+    """
+    return automol.util.highd_mat.from_string(qfc_str, fill_perms=True)
+
+
 def anharmonic_zpve(anh_zpve_str):
     """ read the anharmonic zpve (hartree) from a string (hartree)
     :param anh_zpve_str: zpve string
