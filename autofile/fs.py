@@ -373,8 +373,8 @@ def conformer(prefix):
     vibrot_mat_dfile = data_files.vibro_rot_alpha_matrix(_FilePrefix.VPT2)
     centrif_dist_dfile = data_files.quartic_centrifugal_dist_consts(
         _FilePrefix.VPT2)
-    # cubic_fc_dfile = data_files.cubic_force_constants(_FilePrefix.FC)
-    # quartic_fc_dfile = data_files.quartic_force_constants(_FilePrefix.FC)
+    cubic_fc_dfile = data_files.cubic_force_constants(_FilePrefix.FC)
+    quartic_fc_dfile = data_files.quartic_force_constants(_FilePrefix.FC)
     dip_mom_dfile = data_files.dipole_moment(_FilePrefix.GEOM)
     polar_dfile = data_files.polarizability(_FilePrefix.GEOM)
 
@@ -397,8 +397,8 @@ def conformer(prefix):
         FileAttributeName.XMAT: xmat_dfile,
         FileAttributeName.VIBROT_MAX: vibrot_mat_dfile,
         FileAttributeName.CENTIF_DIST: centrif_dist_dfile,
-        # FileAttributeName.CUBIC_FC: cubic_fc_dfile,
-        # FileAttributeName.QUARTIC_FC: quartic_fc_dfile,
+        FileAttributeName.CUBIC_FC: cubic_fc_dfile,
+        FileAttributeName.QUARTIC_FC: quartic_fc_dfile,
         FileAttributeName.DIP_MOM: dip_mom_dfile,
         FileAttributeName.POLAR: polar_dfile})
 
