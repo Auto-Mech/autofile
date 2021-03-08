@@ -38,7 +38,8 @@ def conformer_trunk_old(nsamp, tors_ranges):
     tors_ranges = autofile.info.Info(**tors_range_dct)
     assert isinstance(nsamp, numbers.Integral)
     inf_obj = autofile.info.Info(nsamp=nsamp, tors_ranges=tors_ranges)
-    assert autofile.info.matches_function_signature(inf_obj, conformer_trunk_old)
+    assert autofile.info.matches_function_signature(
+        inf_obj, conformer_trunk_old)
     return inf_obj
 
 

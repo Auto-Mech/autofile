@@ -19,5 +19,8 @@ __all__ = [
     'info',
     'data_types',
     'schema',
-    'fs'
+    'fs',
+    'turn_off_safemode',
+    'turn_on_safemode',
+    'safemode_is_on'
 ]

@@ -98,7 +98,7 @@ class DataSeries():
         self.root = root_ds
         self.removable = removable
         self.file = types.SimpleNamespace()
-        self.JSON = 'db.json'
+        self.json_file = 'db.json'
         self.json = types.SimpleNamespace()
 
     def add_data_files(self, dfile_dct):
@@ -223,8 +223,8 @@ class DataSeries():
         else:
             prefix = self.root.path()
         if json_layer:
-            prefix = self._remove_layer_from_path(prefix, json_layer)
-        return os.path.join(prefix, self.JSON)
+            prefix = _remove_layer_from_path(prefix, json_layer)
+        return os.path.join(prefix, self.json_file)
 
     def json_exists(self, json_layer=None):
         """ does this file exist?
@@ -271,7 +271,7 @@ class DataSeries():
         for name, obj in entry_dct.items():
             assert isinstance(name, str)
             assert isinstance(obj, JSONObject)
-            jsentry = JSONEntry(js=self, jobject=obj)
+            jsentry = JSONEntry(jseries=self, jobject=obj)
             setattr(self.json, name, jsentry)
 
     def json_create(self, json_layer=None):
@@ -280,12 +280,6 @@ class DataSeries():
         if not self.json_exists():
             autofile.json_.write_json(
                 {}, self.json_path(json_layer=json_layer))
-
-    def _remove_layer_from_path(self, path, json_layer):
-        head, tail = os.path.split(path)
-        if tail == json_layer:
-            path = head
-        return path
 
     def root_locator_count(self):
         """ count the number of root locator values recursively
@@ -388,20 +382,11 @@ class JSONObject():
         """
         self.name = name
         self.json_prefix, self.json_layer = json_prefix
-        self.removable = False
+        self.removable = removable
         self.writer_ = writer_
         self.reader_ = reader_
 
-    def items(self, path):
-        """ what are the parent keys in this json file
-        """
-        keys = []
-        entries = []
-        if os.path.isfile(path):
-            keys, entries = zip(*self.read_json(path).items())
-        return keys, entries
-
-    def _add_layer(self, key):
+    def add_layer(self, key):
         """ add a key to the json loc list
         """
         layered_key = key
@@ -411,34 +396,12 @@ class JSONObject():
             layered_key.extend(key)
         return layered_key
 
-    def keys(self, path):
-        """ return the keys of a json
-        """
-        keys, _ = self.items(path)
-        return keys
-
-    def entries(self, path):
-        """ return the entries of a json
-        """
-        _, entries = self.items(path)
-        return entries
-
-    def read_json(self, path):
-        """ read a json
-        """
-        return autofile.json_.read_json(path)
-
-    def write_json(self, json_data, path):
-        """ write a json
-        """
-        autofile.json_.write_json(json_data, path)
-
     def exists(self, key, path):
         """ check existance of a json
         """
         exists = True
-        key = self._add_layer(key)
-        json_data = self.read_json(path)
+        key = self.add_layer(key)
+        json_data = read_json(path)
         keys = json_data.keys()
         dct = json_data
         for nested_key in key:
@@ -455,14 +418,14 @@ class JSONObject():
     def read(self, key, path):
         """ read a key out of a json file
         """
-        json_data = self.read_json(path)
+        json_data = read_json(path)
         return self._read(key, json_data)
 
     def _read(self, key, json_data):
         """ read a key out of a json file
         """
         exists = True
-        key = self._add_layer(key)
+        key = self.add_layer(key)
         keys = json_data.keys()
         dct = json_data
         for nested_key in key:
@@ -480,7 +443,7 @@ class JSONObject():
         """ read a key out of a json file for
             many keys
         """
-        json_data = self.read_json(path)
+        json_data = read_json(path)
         ret = []
         for key in keys:
             ret.append(self._read(key, json_data))
@@ -489,8 +452,8 @@ class JSONObject():
     def write(self, val, key, path):
         """ write a value for a key in a json
         """
-        key = self._add_layer(key)
-        current_json = self.read_json(path)
+        key = self.add_layer(key)
+        current_json = read_json(path)
         keys = current_json.keys()
         dct = current_json
         for nested_key in key:
@@ -500,14 +463,14 @@ class JSONObject():
             keys = dct.keys()
         val = self.writer_(val)
         dct[self.name] = val
-        self.write_json(current_json, path)
+        write_json(current_json, path)
 
     def write_all(self, vals, all_keys, path):
         """ write values for multiple keys in a json
         """
-        current_json = self.read_json(path)
+        current_json = read_json(path)
         for key, val in zip(all_keys, vals):
-            key = self._add_layer(key)
+            key = self.add_layer(key)
             keys = current_json.keys()
             dct = current_json
             for nested_key in key:
@@ -517,16 +480,16 @@ class JSONObject():
                 keys = dct.keys()
             val = self.writer_(val)
             dct[self.name] = val
-        self.write_json(current_json, path)
+        write_json(current_json, path)
 
 
 class JSONEntry():
     """ json manager for a given datatype
     """
-    def __init__(self, js, jobject):
+    def __init__(self, jseries, jobject):
         """ json manager mapping locator values to objects in a json file
         """
-        self.js = js
+        self.jseries = jseries
         self.json = jobject
         self.removable = False
 
@@ -536,42 +499,42 @@ class JSONEntry():
         ret = False
         if mapping:
             ret = self.json.exists(
-                self.js.map(key), self.js.json_path(
+                self.jseries.map(key), self.jseries.json_path(
                     json_layer=self.json.json_layer))
         else:
-            ret = self.json.exists(key, self.js.json_path(
+            ret = self.json.exists(key, self.jseries.json_path(
                 json_layer=self.json.json_layer))
         return ret
 
     def existing(self, key=()):
         """ returns the keys nested under this key
         """
-        return self.js.json_existing(
-            locs=self.json._add_layer(key),
+        return self.jseries.json_existing(
+            locs=self.json.add_layer(key),
             json_layer=self.json.json_layer)
 
     def write(self, val, key=('database_entry'), mapping=True):
         """ write data to this file
         """
-        if not self.js.json_exists(json_layer=self.json.json_layer):
-            self.js.json_create(json_layer=self.json.json_layer)
+        if not self.jseries.json_exists(json_layer=self.json.json_layer):
+            self.jseries.json_create(json_layer=self.json.json_layer)
         if mapping:
-            key = self.js.map(key)
-        self.json.write(val, key, self.js.json_path(
+            key = self.jseries.map(key)
+        self.json.write(val, key, self.jseries.json_path(
             json_layer=self.json.json_layer))
 
     def write_all(self, vals, keys=(('database_entry')), mapping=True):
         """ write data to this file
         """
-        if not self.js.json_exists(json_layer=self.json.json_layer):
-            self.js.json_create(json_layer=self.json.json_layer)
+        if not self.jseries.json_exists(json_layer=self.json.json_layer):
+            self.jseries.json_create(json_layer=self.json.json_layer)
         if mapping:
             new_keys = []
             for key in keys:
-                new_keys.append(self.js.map(key))
+                new_keys.append(self.jseries.map(key))
         else:
             new_keys = keys
-        self.json.write_all(vals, new_keys, self.js.json_path(
+        self.json.write_all(vals, new_keys, self.jseries.json_path(
             json_layer=self.json.json_layer))
 
     def read(self, key=('database_entry'), mapping=True):
@@ -580,10 +543,11 @@ class JSONEntry():
         ret = None
         if self.exists(key, mapping=mapping):
             if mapping:
-                ret = self.json.read(self.js.map(key), self.js.json_path(
-                    json_layer=self.json.json_layer))
+                ret = self.json.read(
+                    self.jseries.map(key),
+                    self.jseries.json_path(json_layer=self.json.json_layer))
             else:
-                ret = self.json.read(key, self.js.json_path(
+                ret = self.json.read(key, self.jseries.json_path(
                     json_layer=self.json.json_layer))
         return ret
 
@@ -595,11 +559,11 @@ class JSONEntry():
         for key in keys:
             if self.exists(key, mapping=mapping):
                 if mapping:
-                    new_keys.append(self.js.map(key))
+                    new_keys.append(self.jseries.map(key))
                 else:
                     new_keys.append(key)
         if new_keys:
-            ret = self.json.read_all(new_keys, self.js.json_path(
+            ret = self.json.read_all(new_keys, self.jseries.json_path(
                 json_layer=self.json.json_layer))
         return ret
 
@@ -630,3 +594,46 @@ def _os_path_split_all(pth):
         pth = parts[0]
         allparts.insert(0, parts[1])
     return allparts
+
+
+def _remove_layer_from_path(path, json_layer):
+    head, tail = os.path.split(path)
+    if tail == json_layer:
+        path = head
+    return path
+
+
+def read_json(path):
+    """ read a json
+    """
+    return autofile.json_.read_json(path)
+
+
+def write_json(json_data, path):
+    """ write a json
+    """
+    autofile.json_.write_json(json_data, path)
+
+
+def items(path):
+    """ what are the parent keys in this json file
+    """
+    keys = []
+    entries = []
+    if os.path.isfile(path):
+        keys, entries = zip(*read_json(path).items())
+    return keys, entries
+
+
+def _keys(path):
+    """ return the keys of a json
+    """
+    keys_, _ = items(path)
+    return keys_
+
+
+def _entries(path):
+    """ return the entries of a json
+    """
+    _, entries_ = items(path)
+    return entries_

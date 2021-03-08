@@ -85,7 +85,7 @@ class Info(SimpleNamespace):
         kwargs = {key: (_normalized_nonstring_sequence(val) if
                         _is_nonstring_sequence(val) else val)
                   for key, val in kwargs.items()}
-        super(Info, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self._freeze()
 
     def keys_(self):
