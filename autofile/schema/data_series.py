@@ -102,6 +102,24 @@ def transition_state_trunk(prefix, root_ds=None):
                             root_ds=root_ds)
 
 
+def transition_state_leaf(prefix, root_ds=None):
+    """ transition state leaf DataSeries
+    :param prefix: path to leaf
+    :type prefix: string
+    :return: dataseries filesystem object for leaf
+    :type: DataSeries
+    """
+    loc_dfile = data_files.locator(
+        file_prefix=SPEC_FILE_PREFIX,
+        map_dct_={'num': lambda locs: locs[0]},
+        loc_keys=['num'])
+
+    _map = _pack_arguments(loc_maps.transition_state_leaf)
+    nlocs = _count_arguments(loc_maps.transition_state_leaf)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            loc_dfile=loc_dfile, root_ds=root_ds)
+
+
 # DataSeries for layers used by both species and reaction file systems
 def theory_leaf(prefix, root_ds=None):
     """ theory leaf DataSeries
@@ -544,6 +562,24 @@ def build_trunk(prefix, root_ds=None):
 
     _map = _pack_arguments(loc_maps.build_trunk)
     nlocs = _count_arguments(loc_maps.build_trunk)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            loc_dfile=loc_dfile, root_ds=root_ds)
+
+    
+def build_branch(prefix, root_ds=None):
+    """ build trunk DataSeries
+    :param prefix: path to trunk
+    :type prefix: string
+    :return: dataseries filesystem object for trunk
+    :type: DataSeries
+    """
+    loc_dfile = data_files.locator(
+        file_prefix=SPEC_FILE_PREFIX,
+        map_dct_={'fml_str': lambda locs: locs[0]},
+        loc_keys=['fml_str'])
+
+    _map = _pack_arguments(loc_maps.build_branch)
+    nlocs = _count_arguments(loc_maps.build_branch)
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 

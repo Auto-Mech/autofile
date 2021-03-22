@@ -156,6 +156,15 @@ def transition_state_trunk():
     return 'TS'
 
 
+def transition_state_leaf(num):
+    """ transition state leaf directory name
+    """
+    assert isinstance(num, numbers.Integral) and 0 <= num <= 99, (
+        'Num {} must be integer between 0 and 99'.format(num)
+    )
+    return '{:02d}'.format(int(num))
+
+
 # Specifier mappings for layers used by both species and reaction file systems
 def theory_leaf(method, basis, orb_type):
     """ theory leaf directory name
@@ -375,6 +384,13 @@ def build_trunk(head):
     """
     assert isinstance(head, str)
     return head.upper()[:4]
+
+
+def build_branch(fml_str):
+    """ build branch directory name
+    """
+    assert isinstance(fml_str, str)
+    return fml_str.upper()
 
 
 def build_leaf(num):
