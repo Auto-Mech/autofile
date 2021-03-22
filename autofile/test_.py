@@ -46,6 +46,19 @@ def test__reaction():
     assert rxn_fs[-1].exists(locs)
 
 
+# def test__transition_state():
+#     """ test autofile.fs.transition_state
+#     """
+#     prefix = os.path.join(PREFIX, 'ts')
+#     os.mkdir(prefix)
+#
+#     ts_fs = autofile.fs.transition_state(prefix)
+#
+#     assert not ts_fs[0].exists()
+#     ts_fs[0].create()
+#     assert ts_fs[0].exists()
+
+
 def test__transition_state():
     """ test autofile.fs.transition_state
     """
@@ -54,9 +67,15 @@ def test__transition_state():
 
     ts_fs = autofile.fs.transition_state(prefix)
 
-    assert not ts_fs[0].exists()
-    ts_fs[0].create()
-    assert ts_fs[0].exists()
+    locs = [0]
+
+    assert not ts_fs[-1].exists(locs)
+    ts_fs[-1].create(locs)
+    assert ts_fs[-1].exists(locs)
+
+    # ref_vma = ()
+    # ts_fs[-1].file.vmatrix.write(ref_vma, locs)
+    # assert ts_fs[-1].file.vmatrix.read(locs) == ref_vma
 
 
 def test__theory():
@@ -346,9 +365,9 @@ def test__build():
     build_fs = autofile.fs.build(prefix)
 
     ref_inp_str = '<input string>'
-    build_fs[-1].create(['MESS', 0])
-    build_fs[-1].file.input.write(ref_inp_str, ['MESS', 0])
-    assert build_fs[-1].file.input.read(['MESS', 0]) == ref_inp_str
+    build_fs[-1].create(['MESS', 'C2H5O', 0])
+    build_fs[-1].file.input.write(ref_inp_str, ['MESS', 'C2H5O', 0])
+    assert build_fs[-1].file.input.read(['MESS', 'C2H5O', 0]) == ref_inp_str
 
 
 def test__json_io():
@@ -429,6 +448,6 @@ if __name__ == '__main__':
     # test__instab()
     # test__scan()
     # test__run()
-    # test__build()
+    test__build()
     # test__cscan()
-    test__zmatrix()
+    # test__zmatrix()

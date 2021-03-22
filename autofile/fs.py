@@ -229,16 +229,19 @@ def transition_state(prefix):
                 - energy
                 - geometry
                 - zmatrix
+        1 - [TS Number]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
     trunk_ds = data_series.transition_state_trunk(prefix)
+    # leaf_ds = data_series.transition_state_leaf(prefix, root_ds=trunk_ds)
 
     geom_dfile = data_files.geometry(_FilePrefix.GEOM)
     ene_dfile = data_files.energy(_FilePrefix.GEOM)
     zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
     vmat_dfile = data_files.vmatrix(_FilePrefix.GEOM)
+    # leaf_ds.add_data_files({
     trunk_ds.add_data_files({
         FileAttributeName.ENERGY: ene_dfile,
         FileAttributeName.GEOM: geom_dfile,
@@ -246,6 +249,7 @@ def transition_state(prefix):
         FileAttributeName.VMATRIX: vmat_dfile})
 
     return (trunk_ds,)
+    # return (trunk_ds, leaf_ds)
 
 
 # Managers for layers used by both species and reaction file systems
@@ -1065,9 +1069,11 @@ def build(prefix):
     """ construct the build filesystem (2 layers)
 
     locators:
-        0 - [head]
+        0 - [job]
                 (no files)
-        1 - [head, num]
+        2 - [job, formula]
+                (no files)
+        2 - [job, formula, num]
                 files:
                 - input
                 - output
@@ -1076,7 +1082,8 @@ def build(prefix):
     :type prefix: str
     """
     trunk_ds = data_series.build_trunk(prefix)
-    leaf_ds = data_series.build_leaf(prefix, root_ds=trunk_ds)
+    branch_ds = data_series.build_branch(prefix, root_ds=trunk_ds)
+    leaf_ds = data_series.build_leaf(prefix, root_ds=branch_ds)
 
     inp_dfile = data_files.input_file(_FilePrefix.BUILD)
     out_dfile = data_files.output_file(_FilePrefix.BUILD)
@@ -1084,7 +1091,7 @@ def build(prefix):
         FileAttributeName.INPUT: inp_dfile,
         FileAttributeName.OUTPUT: out_dfile})
 
-    return (trunk_ds, leaf_ds)
+    return (trunk_ds, branch_ds, leaf_ds)
 
 
 def _process_root_args(root_fs=None, top_ds_name=None):
