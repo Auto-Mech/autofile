@@ -191,19 +191,19 @@ def theory_leaf(method, basis, orb_type):
     return dir_name
 
 
-def ring_conformer_trunk():
-    """ ring conformer trunk directory name
-    """
-    return 'RINGS'
-
-
-def ring_conformer_leaf(rid):
-    """ ring conformer leaf directory name
-    """
-    assert rid[0] == 'r', (
-        'rid {} does not start with r'.format(rid))
-    assert _is_random_string_identifier(rid[1:])
-    return rid
+# def ring_conformer_trunk():
+#     """ ring conformer trunk directory name
+#     """
+#     return 'RINGS'
+#
+#
+# def ring_conformer_leaf(rid):
+#     """ ring conformer leaf directory name
+#     """
+#     assert rid[0] == 'r', (
+#         'rid {} does not start with r'.format(rid))
+#     assert _is_random_string_identifier(rid[1:])
+#     return rid
 
 
 def conformer_trunk():
@@ -212,12 +212,26 @@ def conformer_trunk():
     return 'CONFS'
 
 
-def conformer_leaf(cid):
-    """ conformer leaf directory name
+def conformer_branch(rid):
+    """ ring conformer leaf directory name
     """
+    assert rid[0] == 'r', (
+        'rid {} does not start with r'.format(rid))
+    assert _is_random_string_identifier(rid[1:])
+    return rid
+
+
+def conformer_leaf(cid):
+    """ torsion conformer leaf directory name
+    """
+    # assert rid[0] == 'r', (
+    #     'rid {} does not start with r'.format(rid))
+    # assert _is_random_string_identifier(rid[1:])
     assert cid[0] == 'c', (
         'cid {} does not start with c'.format(cid))
     assert _is_random_string_identifier(cid[1:])
+
+    # return os.path.join(rid, cid)
     return cid
 
 
