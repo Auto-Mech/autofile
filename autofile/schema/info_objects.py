@@ -18,6 +18,18 @@ def conformer_trunk(nsamp):
     return inf_obj
 
 
+def ring_conformer_trunk(nsamp):
+    """ conformer trunk information
+
+    :param nsamp: the number of samples
+    :type nsamp: int
+    """
+    assert isinstance(nsamp, numbers.Integral)
+    inf_obj = autofile.info.Info(nsamp=nsamp)
+    assert autofile.info.matches_function_signature(inf_obj, ring_conformer_trunk)
+    return inf_obj
+
+
 def conformer_trunk_old(nsamp, tors_ranges):
     """ conformer trunk information
 
