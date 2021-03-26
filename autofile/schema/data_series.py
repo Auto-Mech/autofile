@@ -143,37 +143,6 @@ def theory_leaf(prefix, root_ds=None):
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
 
-def ring_conformer_trunk(prefix, root_ds=None):
-    """ ring conformer trunk DataSeries
-    :param prefix: path to trunk
-    :type prefix: string
-    :return: dataseries filesystem object for trunk
-    :type: DataSeries
-    """
-    _map = _pack_arguments(loc_maps.ring_conformer_trunk)
-    nlocs = _count_arguments(loc_maps.ring_conformer_trunk)
-    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
-                            root_ds=root_ds)
-
-
-def ring_conformer_leaf(prefix, root_ds=None):
-    """ ring conformer leaf DataSeries
-    :param prefix: path to leaf
-    :type prefix: string
-    :return: dataseries filesystem object for leaf
-    :type: DataSeries
-    """
-    loc_dfile = data_files.locator(
-        file_prefix=SPEC_FILE_PREFIX,
-        map_dct_={'conformer_id': lambda locs: locs[0]},
-        loc_keys=['conformer_id'])
-
-    _map = _pack_arguments(loc_maps.ring_conformer_leaf)
-    nlocs = _count_arguments(loc_maps.ring_conformer_leaf)
-    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
-                            loc_dfile=loc_dfile, root_ds=root_ds)
-
-
 def conformer_trunk(prefix, root_ds=None):
     """ conformer trunk DataSeries
     :param prefix: path to trunk
@@ -187,6 +156,24 @@ def conformer_trunk(prefix, root_ds=None):
                             root_ds=root_ds)
 
 
+def conformer_branch(prefix, root_ds=None):
+    """ conformer branch DataSeries
+    :param prefix: path to branch
+    :type prefix: string
+    :return: dataseries filesystem object for branch
+    :type: DataSeries
+    """
+    loc_dfile = data_files.locator(
+        file_prefix=SPEC_FILE_PREFIX,
+        map_dct_={'ring_id': lambda locs: locs[0]},
+        loc_keys=['ring_id'])
+
+    _map = _pack_arguments(loc_maps.conformer_branch)
+    nlocs = _count_arguments(loc_maps.conformer_branch)
+    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
+                            loc_dfile=loc_dfile, root_ds=root_ds)
+
+
 def conformer_leaf(prefix, root_ds=None):
     """ conformer leaf DataSeries
     :param prefix: path to leaf
@@ -196,7 +183,9 @@ def conformer_leaf(prefix, root_ds=None):
     """
     loc_dfile = data_files.locator(
         file_prefix=SPEC_FILE_PREFIX,
-        map_dct_={'conformer_id': lambda locs: locs[0]},
+        map_dct_={
+            'conformer_id': lambda locs: locs[0]
+        },
         loc_keys=['conformer_id'])
 
     _map = _pack_arguments(loc_maps.conformer_leaf)
@@ -596,7 +585,7 @@ def build_trunk(prefix, root_ds=None):
     return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
-    
+
 def build_branch(prefix, root_ds=None):
     """ build trunk DataSeries
     :param prefix: path to trunk

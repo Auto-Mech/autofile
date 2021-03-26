@@ -100,14 +100,28 @@ def test__conformer():
     os.mkdir(prefix)
 
     locs = [
-        autofile.schema.generate_new_conformer_id(),
+        autofile.schema.generate_new_ring_id(),
         autofile.schema.generate_new_conformer_id()]
+
     cnf_fs = autofile.fs.conformer(prefix)
     assert not cnf_fs[-1].exists(locs)
     cnf_fs[-1].create(locs)
     assert cnf_fs[-1].exists(locs)
-    inf_obj = autofile.schema.info_objects.conformer_trunk(0)
-    cnf_fs[0].file.info.write(inf_obj)
+
+    ref_inf_obj1 = autofile.schema.info_objects.conformer_trunk(1)
+    ref_inf_obj2 = autofile.schema.info_objects.conformer_branch(1)
+    cnf_fs[0].file.info.write(ref_inf_obj1)
+    cnf_fs[1].file.info.write(ref_inf_obj2, [locs[0]])
+
+    inf_obj1 = cnf_fs[0].file.info.read()
+    inf_obj2 = cnf_fs[1].file.info.read([locs[0]])
+    assert inf_obj1 == ref_inf_obj1
+    assert inf_obj2 == ref_inf_obj2
+
+    ref_ene = 5.7
+    cnf_fs[-1].file.energy.write(ref_ene, locs)
+    ene = cnf_fs[-1].file.energy.read(locs)
+    assert numpy.isclose(ene, ref_ene)
 
 
 def test__single_point():
@@ -439,7 +453,7 @@ if __name__ == '__main__':
     # test__reaction()
     # test__transition_state()
     # test__theory()
-    # test__conformer()
+    test__conformer()
     # test__tau()
     # test__single_point()
     # test__high_spin()
@@ -450,6 +464,6 @@ if __name__ == '__main__':
     # test__instab()
     # test__scan()
     # test__run()
-    test__build()
+    # test__build()
     # test__cscan()
     # test__zmatrix()

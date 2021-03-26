@@ -18,7 +18,7 @@ def conformer_trunk(nsamp):
     return inf_obj
 
 
-def ring_conformer_trunk(nsamp):
+def conformer_branch(nsamp):
     """ conformer trunk information
 
     :param nsamp: the number of samples
@@ -26,32 +26,7 @@ def ring_conformer_trunk(nsamp):
     """
     assert isinstance(nsamp, numbers.Integral)
     inf_obj = autofile.info.Info(nsamp=nsamp)
-    assert autofile.info.matches_function_signature(inf_obj, ring_conformer_trunk)
-    return inf_obj
-
-
-def conformer_trunk_old(nsamp, tors_ranges):
-    """ conformer trunk information
-
-    :param nsamp: the number of samples
-    :type nsamp: int
-    :param tors_ranges: sampling ranges [(start, end)] for each torsional
-        coordinate, by z-matrix coordinate name
-    :type tors_ranges: dict[str: (float, float)]
-    """
-    tors_range_dct = dict(tors_ranges)
-    for key, rng in tors_range_dct.items():
-        tors_range_dct[key] = (rng[0]*180./numpy.pi, rng[1]*180./numpy.pi)
-
-    assert all(isinstance(key, str) and len(rng) == 2
-               and all(isinstance(x, numbers.Real) for x in rng)
-               for key, rng in tors_range_dct.items())
-
-    tors_ranges = autofile.info.Info(**tors_range_dct)
-    assert isinstance(nsamp, numbers.Integral)
-    inf_obj = autofile.info.Info(nsamp=nsamp, tors_ranges=tors_ranges)
-    assert autofile.info.matches_function_signature(
-        inf_obj, conformer_trunk_old)
+    assert autofile.info.matches_function_signature(inf_obj, conformer_branch)
     return inf_obj
 
 
