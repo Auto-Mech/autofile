@@ -99,7 +99,9 @@ def test__conformer():
     prefix = os.path.join(PREFIX, 'conformer')
     os.mkdir(prefix)
 
-    locs = [autofile.schema.generate_new_conformer_id()]
+    locs = [
+        autofile.schema.generate_new_conformer_id(),
+        autofile.schema.generate_new_conformer_id()]
     cnf_fs = autofile.fs.conformer(prefix)
     assert not cnf_fs[-1].exists(locs)
     cnf_fs[-1].create(locs)
