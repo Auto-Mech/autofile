@@ -16,6 +16,7 @@ class Extension():
     ZMATRIX = '.zmat'
     VMATRIX = '.vmat'
     TORS = '.tors'
+    RTORS = '.rtors'
     GRADIENT = '.grad'
     HESSIAN = '.hess'
     CUBIC_FC = '.cubic'
@@ -112,6 +113,11 @@ def torsions(file_name):
     """
     return _add_extension(file_name, Extension.TORS)
 
+
+def ring_torsions(file_name):
+    """ adds variable torsions extension, if missing
+    """
+    return _add_extension(file_name, Extension.RTORS)
 
 def gradient(file_name):
     """ adds gradient extension, if missing
