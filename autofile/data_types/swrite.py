@@ -6,8 +6,12 @@
 from io import StringIO as _StringIO
 from numbers import Real as _Real
 import numpy
+import os
+import yaml
+
 import automol
 import autofile.info
+from phydat import phycon
 
 
 def information(inf_obj):
@@ -86,6 +90,39 @@ def vmatrix(vma):
     assert automol.vmat.is_valid(vma)
     vma_str = automol.vmat.string(vma)
     return vma_str
+
+
+def ring_torsions(ring_tors_dct):
+    """ Write the torsions and their ranges (radian) to a string (degree).
+
+        :param tors_lst: list of torsion objects
+        :type tors_lst: tuple(automol torsion objects)
+        :rtype: str
+    """
+    ring_tors_str = []
+    for ring, tors_dct in ring_tors_dct.items():
+        assert all(isinstance(key, str) and len(rng) == 2
+                   and all(isinstance(x, _Real) for x in rng)
+                   for key, rng in tors_dct.items())
+
+        tors_names = list(tors_dct.keys())
+        tors_names.sort(key=lambda x: int(x.split('D')[1]))
+        sorted_dct = {}
+        for name in tors_names:
+            sorted_dct[name] = (
+                tors_dct[name][0]*phycon.RAD2DEG, tors_dct[name][1]*phycon.RAD2DEG
+            )
+
+        tors_str = yaml.dump(sorted_dct, default_flow_style=True, sort_keys=False)
+        ring_tors_str.append('ring: {}\n{}'.format(ring, tors_str))
+    return os.linesep.join(ring_tors_str)
+
+ #   """ Write the ring torsions with their idxs
+ #       :param tors_dct:
+ #   """
+ #   tors_str = os.linesep.join(['{}: {}'.format(
+ #       key, ','.join([str(idx) for idx in value])) for key, value in tors_dct.items()])
+ #   return tors_str
 
 
 def torsions(tors_lst):
