@@ -645,7 +645,7 @@ def symmetry(prefix):
     trunk_ds = data_series.symmetry_trunk(prefix)
     leaf_ds = data_series.conformer_leaf(prefix, root_ds=trunk_ds)
 
-    traj_dfile = data_files.trajectory(_FilePrefix.RING)
+    traj_dfile = data_files.trajectory(_FilePrefix.CONF)
     geom_dfile = data_files.geometry(_FilePrefix.GEOM)
 
     trunk_ds.add_data_files({

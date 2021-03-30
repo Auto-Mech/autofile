@@ -4,10 +4,15 @@
 """
 
 from io import StringIO as _StringIO
+from numbers import Real as _Real
 import numpy
 import automol
+import yaml
+import os
+
 import autoparse.find as apf
 import autofile.info
+from phydat import phycon
 
 
 def information(inf_str):
@@ -97,6 +102,32 @@ def gradient_array(grad_list):
     :rtype: numpy array
     """
     return numpy.array(grad_list)
+
+
+def ring_torsions(tors_str):
+    """ Write the torsions and their ranges (radian) to a string (degree).
+
+        :param tors_str: information for each torsion by Z-Matrx names
+        :type tors_str: str
+        :rtype: tuple(automol torsion objects)
+    """
+    ring_tors_dct = {}
+    rings = tors_str.split('ring: ')
+    if len(rings) > 0:
+       for ring in rings[1:]:
+           ring = ring.splitlines()
+           ring_idxs = ring[0]
+           tors_str = os.linesep.join(ring[1:])
+           tors_dct = yaml.load(tors_str, Loader=yaml.FullLoader)
+
+           assert all(isinstance(key, str) and len(rng) == 2
+                      and all(isinstance(x, _Real) for x in rng)
+                      for key, rng in tors_dct.items())
+
+           for name, rng in tors_dct.items():
+               tors_dct[name] = (rng[0] * phycon.DEG2RAD, rng[1] * phycon.DEG2RAD)
+           ring_tors_dct[ring_idxs] = tors_dct
+    return ring_tors_dct
 
 
 def torsions(tors_str):

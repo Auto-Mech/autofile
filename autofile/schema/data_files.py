@@ -264,8 +264,8 @@ def ring_torsions(file_prefix):
     """ generate ring torsions DataFile
     """
     name = autofile.data_types.name.ring_torsions(file_prefix)
-    writer_ = autofile.data_types.swrite.torsions
-    reader_ = autofile.data_types.sread.torsions
+    writer_ = autofile.data_types.swrite.ring_torsions
+    reader_ = autofile.data_types.sread.ring_torsions
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
