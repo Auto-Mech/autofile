@@ -1268,7 +1268,6 @@ def path(pfx, key_locs_lst):
     """ Get the path through a file system hierarchy
     """
     pth = pfx
-
     for key_locs in key_locs_lst:
         assert len(key_locs) == 2
         key, locs = key_locs
@@ -1336,7 +1335,6 @@ def iterate_paths(pfx, keys):
             yield fs_[-1].path(locs)
     else:
         key, keys = keys[0], keys[1:]
-
         fs_ = _manager(pfx, key)
         for locs in fs_[-1].existing():
             pfx_ = fs_[-1].path(locs)
@@ -1353,7 +1351,7 @@ def iterate_managers(pfx, keys, key):
 if __name__ == '__main__':
     PFX = '/lcrc/project/PACC/AutoMech/data/run/'
 
-    for PTH in iterate_paths(PFX, keys=['SPECIES', 'THEORY', 'RING_CONFORMER', 'CONFORMER']):
+    for PTH in iterate_paths(PFX, keys=['SPECIES', 'THEORY', 'CONFORMER']):
         print(PTH)
 
     # for CNF_FS in iterate_managers('CONFORMER', PFX,
