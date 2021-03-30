@@ -238,21 +238,19 @@ def transition_state(prefix):
     :type prefix: str
     """
     trunk_ds = data_series.transition_state_trunk(prefix)
-    # leaf_ds = data_series.transition_state_leaf(prefix, root_ds=trunk_ds)
+    leaf_ds = data_series.transition_state_leaf(prefix, root_ds=trunk_ds)
 
     geom_dfile = data_files.geometry(_FilePrefix.GEOM)
     ene_dfile = data_files.energy(_FilePrefix.GEOM)
     zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
     vmat_dfile = data_files.vmatrix(_FilePrefix.GEOM)
-    # leaf_ds.add_data_files({
-    trunk_ds.add_data_files({
+    leaf_ds.add_data_files({
         FileAttributeName.ENERGY: ene_dfile,
         FileAttributeName.GEOM: geom_dfile,
         FileAttributeName.ZMAT: zmat_dfile,
         FileAttributeName.VMATRIX: vmat_dfile})
 
-    return (trunk_ds,)
-    # return (trunk_ds, leaf_ds)
+    return (trunk_ds, leaf_ds)
 
 
 # Managers for layers used by both species and reaction file systems
@@ -1278,7 +1276,8 @@ def path(pfx, key_locs_lst):
         assert key in FILE_SYSTEM_MANAGER_DCT
 
         fs_ = FILE_SYSTEM_MANAGER_DCT[key](pth)
-
+        # run the create command for now
+        fs_[-1].create(locs)
         pth = os.path.join(pth, fs_[-1].path(locs))
 
     return pth
