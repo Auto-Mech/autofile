@@ -451,9 +451,9 @@ def test__json_tau_save():
 if __name__ == '__main__':
     # test__species()
     # test__reaction()
-    # test__transition_state()
+    test__transition_state()
     # test__theory()
-    test__conformer()
+    # test__conformer()
     # test__tau()
     # test__single_point()
     # test__high_spin()

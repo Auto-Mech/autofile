@@ -191,21 +191,6 @@ def theory_leaf(method, basis, orb_type):
     return dir_name
 
 
-# def ring_conformer_trunk():
-#     """ ring conformer trunk directory name
-#     """
-#     return 'RINGS'
-#
-#
-# def ring_conformer_leaf(rid):
-#     """ ring conformer leaf directory name
-#     """
-#     assert rid[0] == 'r', (
-#         'rid {} does not start with r'.format(rid))
-#     assert _is_random_string_identifier(rid[1:])
-#     return rid
-
-
 def conformer_trunk():
     """ conformer trunk directory name
     """
