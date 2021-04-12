@@ -122,7 +122,6 @@ class DataSeries():
             locs = self._self_locators(locs)
             prefix = self.root.path(root_locs)
         assert len(locs) == self.nlocs
-
         pth = self.map_(locs)
         assert _path_is_relative(pth)
         assert _path_has_depth(pth, self.depth)
