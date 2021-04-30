@@ -1,7 +1,6 @@
 name: autofile-env
 
 channels:
-    - kevinmooreiii
     - auto-mech
     - psi4
     - rdkit

@@ -109,9 +109,9 @@ def ring_torsions(ring_tors_dct):
         tors_names.sort(key=lambda x: int(x.split('D')[1]))
         sorted_dct = {}
         for name in tors_names:
-            sorted_dct[name] = (
+            sorted_dct[name] = [
                 tors_dct[name][0]*phycon.RAD2DEG, tors_dct[name][1]*phycon.RAD2DEG
-            )
+            ]
 
         tors_str = yaml.dump(sorted_dct, default_flow_style=True, sort_keys=False)
         ring_tors_str.append('ring: {}\n{}'.format(ring, tors_str))
