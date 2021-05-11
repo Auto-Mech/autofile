@@ -1,11 +1,13 @@
 """ test the autofile.file module
 """
+
 import os
 import tempfile
 import numpy
 import automol
 import autofile.info
 import autofile.data_types
+
 
 TMP_DIR = tempfile.mkdtemp()
 print(TMP_DIR)
@@ -115,7 +117,7 @@ def test__trajectory():
     ref_comments = [
         'energy: -187.38941054878092',
         'energy: -187.3850624381528']
-    traj = tuple(zip(ref_comments, ref_geo_lst))
+    traj = tuple(zip(ref_geo_lst, ref_comments))
 
     traj_file_name = autofile.data_types.name.trajectory('test')
     traj_file_path = os.path.join(TMP_DIR, traj_file_name)
@@ -130,17 +132,19 @@ def test__zmatrix():
     """ test the zmatrix read/write functions
     """
     ref_zma = (
-        (('C', (None, None, None), (None, None, None)),
-         ('O', (0, None, None), ('r1', None, None)),
-         ('H', (0, 1, None), ('r2', 'a1', None)),
-         ('H', (0, 1, 2), ('r3', 'a2', 'd1')),
-         ('H', (0, 1, 2), ('r4', 'a3', 'd2')),
-         ('H', (1, 0, 2), ('r5', 'a4', 'd3'))),
-        {'r1': 2.67535,
-         'r2': 2.06501, 'a1': 1.9116242,
-         'r3': 2.06501, 'a2': 1.9116242, 'd1': 2.108497362,
-         'r4': 2.06458, 'a3': 1.9020947, 'd2': 4.195841334,
-         'r5': 1.83748, 'a4': 1.8690905, 'd3': 5.228936625})
+        ('C', (None, None, None), (None, None, None),
+         (None, None, None)),
+        ('O', (0, None, None), ('r1', None, None),
+         (2.67535, None, None)),
+        ('H', (0, 1, None), ('r2', 'a1', None),
+         (2.06501, 1.9116242, None)),
+        ('H', (0, 1, 2), ('r3', 'a2', 'd1'),
+         (2.06501, 1.9116242, 2.108497362)),
+        ('H', (0, 1, 2), ('r4', 'a3', 'd2'),
+         (2.06458, 1.9020947, 4.195841334)),
+        ('H', (1, 0, 2), ('r5', 'a4', 'd3'),
+         (1.83748, 1.8690905, 5.228936625))
+    )
 
     zma_file_name = autofile.data_types.name.zmatrix('test')
     zma_file_path = os.path.join(TMP_DIR, zma_file_name)
@@ -152,7 +156,7 @@ def test__zmatrix():
 
     zma_str = autofile.io_.read_file(zma_file_path)
     zma = autofile.data_types.sread.zmatrix(zma_str)
-    assert automol.zmatrix.almost_equal(ref_zma, zma)
+    assert automol.zmat.almost_equal(ref_zma, zma)
 
 
 def test__vmatrix():
@@ -177,6 +181,30 @@ def test__vmatrix():
     vma = autofile.data_types.sread.vmatrix(vma_str)
     assert vma == ref_vma
 
+
+# def test__torsions():
+#     """ test the torsion names read/write functions
+#     """
+#
+#     zma = automol.geom.zmatrix(automol.inchi.geometry(
+#             automol.smiles.inchi('CCO')))
+#     ref_tors_lst = automol.rotor.from_zmatrix(zma)
+#
+#     tors_file_name = autofile.data_types.name.torsions('test')
+#     tors_file_path = os.path.join(TMP_DIR, tors_file_name)
+#     tors_str = autofile.data_types.swrite.torsions(ref_tors_lst)
+#
+#     assert not os.path.isfile(tors_file_path)
+#     autofile.io_.write_file(tors_file_path, tors_str)
+#     assert os.path.isfile(tors_file_path)
+#
+#     tors_str = autofile.io_.read_file(tors_file_path)
+#     tors_lst = autofile.data_types.sread.torsions(tors_str)
+#     for tors, tors_ref in zip(tors_lst, ref_tors_lst):
+#         assert tors.name == tors_ref.name
+#         assert tors.symmetry == tors_ref.symmetry
+#
+# 
 
 def test__gradient():
     """ test the gradient read/write functions
@@ -348,6 +376,77 @@ def test__quartic_centrifugal_distortion_constants():
     assert numpy.isclose(ref_qcds[2][1], qcds[2][1])
 
 
+def test__force_constants():
+    """ test the cubic and quartic force constant functions
+    """
+
+    def _compare_strings(str1, str2):
+        """ See if two force-constant data strings match
+        """
+        similar = True
+        for line1, line2 in zip(str1.splitlines(), str2.splitlines()):
+            tmp1, tmp2 = line1.strip().split(), line2.strip().split()
+            similar = (
+                tmp1[:-1] == tmp2[:-1] and
+                numpy.isclose(float(tmp1[-1]), float(tmp2[-1]))
+            )
+
+        return similar
+
+    ref_cfc_str = (
+        '1     1     2          -1.550200\n'
+        '1     1     3          -0.149100\n'
+        '2     2     2          -1.486810\n'
+        '2     2     3          -0.046980\n'
+        '2     3     3           0.113240\n'
+        '3     3     3           0.070450'
+    )
+
+    cfc = autofile.data_types.sread.cubic_force_constants(ref_cfc_str)
+    cfc_str1 = autofile.data_types.swrite.cubic_force_constants(cfc)
+
+    cfc_file_name = autofile.data_types.name.cubic_force_constants('test')
+    cfc_file_path = os.path.join(TMP_DIR, cfc_file_name)
+    assert not os.path.isfile(cfc_file_path)
+    autofile.io_.write_file(cfc_file_path, ref_cfc_str)
+    assert os.path.isfile(cfc_file_path)
+
+    cfc_str2 = autofile.io_.read_file(cfc_file_path)
+    cfc = autofile.data_types.sread.cubic_force_constants(cfc_str2)
+    cfc_str3 = autofile.data_types.swrite.cubic_force_constants(cfc)
+
+    assert _compare_strings(ref_cfc_str, cfc_str1)
+    assert _compare_strings(ref_cfc_str, cfc_str3)
+
+    ref_qfc_str = (
+        '1     1     1     1           3.361350\n'
+        '1     1     2     2           3.244500\n'
+        '1     1     2     3           0.388010\n'
+        '1     1     3     3          -0.871550\n'
+        '2     2     2     2           3.114170\n'
+        '2     2     2     3           0.227450\n'
+        '2     2     3     3          -0.719880\n'
+        '2     3     3     3          -0.253270\n'
+        '3     3     3     3          -0.062810\n'
+    )
+
+    qfc = autofile.data_types.sread.quartic_force_constants(ref_qfc_str)
+    qfc_str1 = autofile.data_types.swrite.quartic_force_constants(qfc)
+
+    qfc_file_name = autofile.data_types.name.quartic_force_constants('test')
+    qfc_file_path = os.path.join(TMP_DIR, qfc_file_name)
+    assert not os.path.isfile(qfc_file_path)
+    autofile.io_.write_file(qfc_file_path, ref_qfc_str)
+    assert os.path.isfile(qfc_file_path)
+
+    qfc_str2 = autofile.io_.read_file(qfc_file_path)
+    qfc = autofile.data_types.sread.quartic_force_constants(qfc_str2)
+    qfc_str3 = autofile.data_types.swrite.quartic_force_constants(qfc)
+
+    assert _compare_strings(ref_qfc_str, qfc_str1)
+    assert _compare_strings(ref_qfc_str, qfc_str3)
+
+
 def test__lennard_jones_epsilon():
     """ test the epsilon read/write functions
     """
@@ -389,16 +488,16 @@ def test__external_symmetry_number():
     """
     ref_num = 1.500
 
-    num_file_name = autofile.data_types.name.external_symmetry_number('test')
+    num_file_name = autofile.data_types.name.external_symmetry_factor('test')
     num_file_path = os.path.join(TMP_DIR, num_file_name)
-    num_str = autofile.data_types.swrite.external_symmetry_number(ref_num)
+    num_str = autofile.data_types.swrite.external_symmetry_factor(ref_num)
 
     assert not os.path.isfile(num_file_path)
     autofile.io_.write_file(num_file_path, num_str)
     assert os.path.isfile(num_file_path)
 
     num_str = autofile.io_.read_file(num_file_path)
-    num = autofile.data_types.sread.external_symmetry_number(num_str)
+    num = autofile.data_types.sread.external_symmetry_factor(num_str)
     assert numpy.isclose(ref_num, num)
 
 
@@ -407,16 +506,16 @@ def test__internal_symmetry_number():
     """
     ref_num = 1.500
 
-    num_file_name = autofile.data_types.name.internal_symmetry_number('test')
+    num_file_name = autofile.data_types.name.internal_symmetry_factor('test')
     num_file_path = os.path.join(TMP_DIR, num_file_name)
-    num_str = autofile.data_types.swrite.internal_symmetry_number(ref_num)
+    num_str = autofile.data_types.swrite.internal_symmetry_factor(ref_num)
 
     assert not os.path.isfile(num_file_path)
     autofile.io_.write_file(num_file_path, num_str)
     assert os.path.isfile(num_file_path)
 
     num_str = autofile.io_.read_file(num_file_path)
-    num = autofile.data_types.sread.internal_symmetry_number(num_str)
+    num = autofile.data_types.sread.internal_symmetry_factor(num_str)
     assert numpy.isclose(ref_num, num)
 
 
@@ -468,51 +567,46 @@ def test__dipole_moment():
     assert numpy.allclose(ref_dip_mom_vec, dip_mom_vec)
 
 
-def test__graph():
-    """ test the graph read/write functions
+def test__reaction():
+    """ test the reaction read/write functions
     """
-    ref_gra = ({0: ('C', 3, None), 1: ('C', 2, None), 2: ('C', 3, None),
-                3: ('C', 1, None), 4: ('C', 1, None), 5: ('C', 1, None),
-                6: ('C', 1, False), 7: ('C', 1, False), 8: ('O', 0, None)},
-               {frozenset({1, 4}): (1, None), frozenset({4, 6}): (1, None),
-                frozenset({0, 3}): (1, None), frozenset({2, 6}): (1, None),
-                frozenset({6, 7}): (1, None), frozenset({8, 7}): (1, None),
-                frozenset({3, 5}): (1, True), frozenset({5, 7}): (1, None)})
+    ref_rxn = automol.reac.Reaction(
+        rxn_cls=automol.par.ReactionClass.HYDROGEN_ABSTRACTION,
+        forw_tsg=(
+            {0: ('C', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
+             3: ('H', 0, None), 4: ('H', 0, None), 5: ('O', 0, None),
+             6: ('H', 0, None)},
+            {frozenset({5, 6}): (1, None), frozenset({0, 3}): (1, None),
+             frozenset({4, 5}): (0.1, None),
+             frozenset({0, 1}): (1, None), frozenset({0, 2}): (1, None),
+             frozenset({0, 4}): (0.9, None)}),
+        back_tsg=(
+            {0: ('O', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
+             3: ('C', 0, None), 4: ('H', 0, None), 5: ('H', 0, None),
+             6: ('H', 0, None)},
+            {frozenset({0, 2}): (0.9, None),
+             frozenset({2, 3}): (0.1, None),
+             frozenset({3, 6}): (1, None), frozenset({0, 1}): (1, None),
+             frozenset({3, 4}): (1, None), frozenset({3, 5}): (1, None)}),
+        rcts_keys=((0, 1, 2, 3, 4), (5, 6)),
+        prds_keys=((0, 1, 2), (3, 4, 5, 6)),
+    )
 
-    gra_file_name = autofile.data_types.name.graph('test')
-    gra_file_path = os.path.join(TMP_DIR, gra_file_name)
-    gra_str = autofile.data_types.swrite.graph(ref_gra)
+    rxn_file_name = autofile.data_types.name.reaction('test')
+    rxn_file_path = os.path.join(TMP_DIR, rxn_file_name)
+    rxn_str = autofile.data_types.swrite.reaction(ref_rxn)
 
-    assert not os.path.isfile(gra_file_path)
-    autofile.io_.write_file(gra_file_path, gra_str)
-    assert os.path.isfile(gra_file_path)
+    assert not os.path.isfile(rxn_file_path)
+    autofile.io_.write_file(rxn_file_path, rxn_str)
+    assert os.path.isfile(rxn_file_path)
 
-    gra_str = autofile.io_.read_file(gra_file_path)
-    gra = autofile.data_types.sread.graph(gra_str)
-    assert gra == ref_gra
-
-
-def test__transformation():
-    """ test the transformation read/write functions
-    """
-    ref_tra = (frozenset({frozenset({3, 6})}),
-               frozenset({frozenset({1, 3}), frozenset({0, 6})}))
-
-    tra_file_name = autofile.data_types.name.transformation('test')
-    tra_file_path = os.path.join(TMP_DIR, tra_file_name)
-    tra_str = autofile.data_types.swrite.transformation(ref_tra)
-
-    assert not os.path.isfile(tra_file_path)
-    autofile.io_.write_file(tra_file_path, tra_str)
-    assert os.path.isfile(tra_file_path)
-
-    tra_str = autofile.io_.read_file(tra_file_path)
-    tra = autofile.data_types.sread.transformation(tra_str)
-    assert tra == ref_tra
+    rxn_str = autofile.io_.read_file(rxn_file_path)
+    rxn = autofile.data_types.sread.reaction(rxn_str)
+    assert rxn == ref_rxn
 
 
 if __name__ == '__main__':
-    # test__energy()
+    test__energy()
     # test__geometry()
     # test__zmatrix()
     # test__file()
@@ -521,16 +615,18 @@ if __name__ == '__main__':
     # test__hessian()
     # test__trajectory()
     # test__vmatrix()
+    # test__torsions()
     # test__anharmonic_frequencies()
     # test__anharmonic_zpve()
     # test__anharmonicity_matrix()
     # test__vibro_rot_alpha_matrix()
     # test__quartic_centrifugal_distortion_constants()
+    test__force_constants()
     # test__lennard_jones_epsilon()
     # test__lennard_jones_sigma()
-    test__external_symmetry_number()
-    test__internal_symmetry_number()
-    test__dipole_moment()
-    test__polarizability()
+    # test__external_symmetry_number()
+    # test__internal_symmetry_number()
+    # test__dipole_moment()
+    # test__polarizability()
     # test__graph()
-    # test__transformation()
+    # test__reaction()

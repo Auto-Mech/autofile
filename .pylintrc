@@ -1,4 +1,5 @@
 [MASTER]
+max-module-lines=1500
 disable=
     too-few-public-methods,
     too-many-arguments,
@@ -8,4 +9,5 @@ disable=
     superfluous-parens,
     deprecated-method,
     duplicate-code,
-    no-member
+    no-member,
+    global-statement,

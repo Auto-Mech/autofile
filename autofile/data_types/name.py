@@ -15,8 +15,12 @@ class Extension():
     TRAJECTORY = '.t.xyz'
     ZMATRIX = '.zmat'
     VMATRIX = '.vmat'
+    TORS = '.tors'
+    RTORS = '.rtors'
     GRADIENT = '.grad'
     HESSIAN = '.hess'
+    CUBIC_FC = '.cubic'
+    QUARTIC_FC = '.quartic'
     HARMONIC_ZPVE = '.hzpve'
     ANHARMONIC_ZPVE = '.azpve'
     HARMONIC_FREQUENCIES = '.hfrq'
@@ -32,8 +36,7 @@ class Extension():
     DIPOLE_MOMENT = '.dmom'
     POLARIZABILITY = '.polar'
     # Transformation files
-    GRAPH = '.g.yaml'
-    TRANSFORMATION = '.t.yaml'
+    REACTION = '.r.yaml'
     # Various VaReCoF files
     VRC_TST = '.tst'
     VRC_DIVSUR = '.divsur'
@@ -105,6 +108,17 @@ def vmatrix(file_name):
     return _add_extension(file_name, Extension.VMATRIX)
 
 
+def torsions(file_name):
+    """ adds variable torsions extension, if missing
+    """
+    return _add_extension(file_name, Extension.TORS)
+
+
+def ring_torsions(file_name):
+    """ adds variable torsions extension, if missing
+    """
+    return _add_extension(file_name, Extension.RTORS)
+
 def gradient(file_name):
     """ adds gradient extension, if missing
     """
@@ -145,6 +159,18 @@ def projected_frequencies(file_name):
     """ adds projected frequencies extension, if missing
     """
     return _add_extension(file_name, Extension.PROJECTED_FREQUENCIES)
+
+
+def cubic_force_constants(file_name):
+    """ adds cubic force constants extension, if missing
+    """
+    return _add_extension(file_name, Extension.CUBIC_FC)
+
+
+def quartic_force_constants(file_name):
+    """ adds quartic force constants extension, if missing
+    """
+    return _add_extension(file_name, Extension.QUARTIC_FC)
 
 
 def anharmonicity_matrix(file_name):
@@ -213,22 +239,10 @@ def polarizability(file_name):
     return _add_extension(file_name, Extension.POLARIZABILITY)
 
 
-def graph(file_name):
-    """ adds graph extension, if missing
+def reaction(file_name):
+    """ adds reaction extension, if missing
     """
-    return _add_extension(file_name, Extension.GRAPH)
-
-
-def transformation(file_name):
-    """ adds transformation extension, if missing
-    """
-    return _add_extension(file_name, Extension.TRANSFORMATION)
-
-
-def transformation_old(file_name):
-    """ adds transformation extension, if missing
-    """
-    return _add_extension(file_name, Extension.TRANSFORMATION)
+    return _add_extension(file_name, Extension.REACTION)
 
 
 def vrctst_tst(file_name):

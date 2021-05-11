@@ -8,6 +8,7 @@ import automol
 import autofile.info
 import autofile.schema
 
+
 PREFIX = tempfile.mkdtemp()
 print(PREFIX)
 
@@ -25,7 +26,6 @@ def test__data_files__input_file():
 
     inp_str = inp_dfile.read(PREFIX)
     assert inp_str == ref_inp_str
-    print(inp_str)
 
 
 def test__data_files__output_file():
@@ -41,7 +41,6 @@ def test__data_files__output_file():
 
     out_str = out_dfile.read(PREFIX)
     assert out_str == ref_out_str
-    print(out_str)
 
 
 def test__data_files__information():
@@ -68,7 +67,6 @@ def test__data_files__information():
 
     inf_obj = inf_dfile.read(PREFIX)
     assert inf_obj == ref_inf_obj
-    print(inf_obj)
 
 
 def test__data_files__energy():
@@ -84,7 +82,6 @@ def test__data_files__energy():
 
     ene = ene_dfile.read(PREFIX)
     assert numpy.isclose(ene, ref_ene)
-    print(ene)
 
 
 def test__data_files__geometry():
@@ -106,7 +103,6 @@ def test__data_files__geometry():
 
     geo = geo_dfile.read(PREFIX)
     assert automol.geom.almost_equal(geo, ref_geo)
-    print(geo)
 
 
 def test__data_files__gradient():
@@ -128,7 +124,6 @@ def test__data_files__gradient():
 
     grad = grad_dfile.read(PREFIX)
     assert numpy.allclose(grad, ref_grad)
-    print(grad)
 
 
 def test__data_files__hessian():
@@ -157,26 +152,26 @@ def test__data_files__hessian():
 
     hess = hess_dfile.read(PREFIX)
     assert numpy.allclose(hess, ref_hess)
-    print(hess)
 
 
 def test__data_files__zmatrix():
     """ test autofile.schema.data_files.zmatrix
     """
     ref_zma = (
-        (('C', (None, None, None), (None, None, None)),
-         ('O', (0, None, None), ('r1', None, None)),
-         ('O', (0, 1, None), ('r2', 'a1', None)),
-         ('H', (0, 1, 2), ('r3', 'a2', 'd1')),
-         ('H', (0, 1, 2), ('r4', 'a3', 'd2')),
-         ('H', (1, 0, 2), ('r5', 'a4', 'd3')),
-         ('H', (2, 0, 1), ('r6', 'a5', 'd4'))),
-        {'r1': 2.65933,
-         'r2': 2.65933, 'a1': 1.90743,
-         'r3': 2.06844, 'a2': 1.93366, 'd1': 4.1477,
-         'r4': 2.06548, 'a3': 1.89469, 'd2': 2.06369,
-         'r5': 1.83126, 'a4': 1.86751, 'd3': 1.44253,
-         'r6': 1.83126, 'a5': 1.86751, 'd4': 4.84065})
+        ('C', (None, None, None), (None, None, None),
+         (None, None, None)),
+        ('O', (0, None, None), ('r1', None, None),
+         (2.65933, None, None)),
+        ('O', (0, 1, None), ('r2', 'a1', None),
+         (2.65933, 1.90743, None)),
+        ('H', (0, 1, 2), ('r3', 'a2', 'd1'),
+         (2.06844, 1.93366, 4.1477)),
+        ('H', (0, 1, 2), ('r4', 'a3', 'd2'),
+         (2.06548, 1.89469, 2.06369)),
+        ('H', (1, 0, 2), ('r5', 'a4', 'd3'),
+         (1.83126, 1.86751, 1.44253)),
+        ('H', (2, 0, 1), ('r6', 'a5', 'd4'),
+         (1.83126, 1.86751, 4.84065)))
 
     zma_dfile = autofile.schema.data_files.zmatrix('test')
 
@@ -185,8 +180,8 @@ def test__data_files__zmatrix():
     assert zma_dfile.exists(PREFIX)
 
     zma = zma_dfile.read(PREFIX)
-    assert automol.zmatrix.almost_equal(zma, ref_zma)
     print(zma)
+    assert automol.zmat.almost_equal(zma, ref_zma)
 
 
 def test__data_files__vmatrix():
@@ -208,7 +203,28 @@ def test__data_files__vmatrix():
 
     vma = vma_dfile.read(PREFIX)
     assert vma == ref_vma
-    print(vma)
+
+
+# def test__data_files__torsional_names():
+#     """ test autofile.schema.data_files.torsional_names
+#     """
+#
+# 
+#     ref_tors = ({
+#         'D2': (0.0, 3.14159),
+#         'D4': (0.0, 3.14159),
+#         'D11': (0.0, 6.28319),
+#         'D18': (0.0, 3.14159)
+#     },)
+#
+#     tors_dfile = autofile.schema.data_files.torsions('test')
+#
+#     assert not tors_dfile.exists(PREFIX)
+#     tors_dfile.write(ref_tors, PREFIX)
+#     assert tors_dfile.exists(PREFIX)
+#
+#     tors = tors_dfile.read(PREFIX)
+#     assert tors == ref_tors
 
 
 def test__data_files__trajectory():
@@ -232,7 +248,7 @@ def test__data_files__trajectory():
     ref_comments = ['energy: -187.3894105487809',
                     'energy: -187.3850624381528']
 
-    ref_traj = list(zip(ref_comments, ref_geos))
+    ref_traj = list(zip(ref_geos, ref_comments))
 
     traj_dfile = autofile.schema.data_files.trajectory('test')
 
@@ -257,7 +273,6 @@ def test__data_files__lennard_jones_epsilon():
 
     eps = eps_dfile.read(PREFIX)
     assert numpy.isclose(eps, ref_eps)
-    print(eps)
 
 
 def test__data_files__lennard_jones_sigma():
@@ -273,7 +288,6 @@ def test__data_files__lennard_jones_sigma():
 
     sig = sig_dfile.read(PREFIX)
     assert numpy.isclose(sig, ref_sig)
-    print(sig)
 
 
 def test__data_files__external_symmetry_number():
@@ -289,7 +303,6 @@ def test__data_files__external_symmetry_number():
 
     num = num_dfile.read(PREFIX)
     assert numpy.isclose(num, ref_num)
-    print(num)
 
 
 def test__data_files__internal_symmetry_number():
@@ -305,7 +318,6 @@ def test__data_files__internal_symmetry_number():
 
     num = num_dfile.read(PREFIX)
     assert numpy.isclose(num, ref_num)
-    print(num)
 
 
 def test__data_files__dipole_moment():
@@ -321,7 +333,6 @@ def test__data_files__dipole_moment():
 
     vec = vec_dfile.read(PREFIX)
     assert numpy.allclose(vec, ref_vec)
-    print(vec)
 
 
 def test__data_files__polarizability():
@@ -340,21 +351,21 @@ def test__data_files__polarizability():
 
     tensor = tensor_dfile.read(PREFIX)
     assert numpy.allclose(tensor, ref_tensor)
-    print(tensor)
 
 
 if __name__ == '__main__':
-    # test__data_files__input_file()
-    # test__data_files__information()
-    # test__data_files__energy()
-    # test__data_files__geometry()
-    # test__data_files__gradient()
-    # test__data_files__hessian()
-    # test__data_files__zmatrix()
-    # test__data_files__vmatrix()
-    # test__data_files__trajectory()
-    # test__data_files__lennard_jones_epsilon()
-    # test__data_files__lennard_jones_sigma()
+    test__data_files__input_file()
+    test__data_files__information()
+    test__data_files__energy()
+    test__data_files__geometry()
+    test__data_files__gradient()
+    test__data_files__hessian()
+    # test__data_files__torsional_names()
+    test__data_files__zmatrix()
+    test__data_files__vmatrix()
+    test__data_files__trajectory()
+    test__data_files__lennard_jones_epsilon()
+    test__data_files__lennard_jones_sigma()
     test__data_files__external_symmetry_number()
     test__data_files__internal_symmetry_number()
     test__data_files__dipole_moment()

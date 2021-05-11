@@ -18,27 +18,15 @@ def conformer_trunk(nsamp):
     return inf_obj
 
 
-def conformer_trunk_old(nsamp, tors_ranges):
+def conformer_branch(nsamp):
     """ conformer trunk information
 
     :param nsamp: the number of samples
     :type nsamp: int
-    :param tors_ranges: sampling ranges [(start, end)] for each torsional
-        coordinate, by z-matrix coordinate name
-    :type tors_ranges: dict[str: (float, float)]
     """
-    tors_range_dct = dict(tors_ranges)
-    for key, rng in tors_range_dct.items():
-        tors_range_dct[key] = (rng[0]*180./numpy.pi, rng[1]*180./numpy.pi)
-
-    assert all(isinstance(key, str) and len(rng) == 2
-               and all(isinstance(x, numbers.Real) for x in rng)
-               for key, rng in tors_range_dct.items())
-
-    tors_ranges = autofile.info.Info(**tors_range_dct)
     assert isinstance(nsamp, numbers.Integral)
-    inf_obj = autofile.info.Info(nsamp=nsamp, tors_ranges=tors_ranges)
-    assert autofile.info.matches_function_signature(inf_obj, conformer_trunk_old)
+    inf_obj = autofile.info.Info(nsamp=nsamp)
+    assert autofile.info.matches_function_signature(inf_obj, conformer_branch)
     return inf_obj
 
 
@@ -77,8 +65,8 @@ def scan_branch(grids):
     # note:renormalization of angle ranges needs to be updated for 2D grids.
     for key, rng in grid_dct.items():
         if 'R' not in key:
-            print(rng)
-            grid_dct[key] = rng*180./numpy.pi
+            rng_deg = tuple(val*180./numpy.pi for val in rng)
+            grid_dct[key] = rng_deg
 
     for key, vals in grid_dct.items():
         assert isinstance(key, str), '{} is not a string'.format(key)

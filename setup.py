@@ -4,8 +4,8 @@ from distutils.core import setup
 
 
 setup(name="autofile",
-      version="0.2.0",
+      version="0.2.3",
       packages=["autofile",
-                "autofile.system",
-                "autofile.file",
+                "autofile.data_types",
+                "autofile.schema",
                 "autofile.info"])

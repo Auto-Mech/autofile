@@ -5,6 +5,7 @@ from autofile.schema import json_objects
 from autofile.schema import data_series
 from autofile.schema import loc_maps
 from autofile.schema.loc_maps import generate_new_conformer_id
+from autofile.schema.loc_maps import generate_new_ring_id
 from autofile.schema.loc_maps import generate_new_tau_id
 from autofile.schema.loc_maps import sort_together
 from autofile.schema.loc_maps import reaction_is_reversed
@@ -17,6 +18,7 @@ __all__ = [
     'data_files',
     'loc_maps',
     'generate_new_conformer_id',
+    'generate_new_ring_id',
     'generate_new_tau_id',
     'sort_together',
     'reaction_is_reversed',

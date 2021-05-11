@@ -5,6 +5,7 @@ import string
 import numbers
 import elstruct
 import automol
+from autofile._safemode import safemode_is_on
 from autofile.schema._util import (is_valid_inchi_multiplicity as
                                    _is_valid_inchi_multiplicity)
 from autofile.schema._util import short_hash as _short_hash
@@ -24,8 +25,10 @@ def species_trunk():
 def species_leaf(ich, chg, mul):
     """ species leaf directory name
     """
-    assert automol.inchi.is_standard_form(ich)
-    assert automol.inchi.is_complete(ich)
+    if safemode_is_on():
+        assert automol.inchi.is_standard_form(ich)
+        assert automol.inchi.is_complete(ich)
+
     assert isinstance(chg, numbers.Integral)
     assert isinstance(mul, numbers.Integral), (
         'Multiplicity {} is not an integer'.format(mul))
@@ -57,9 +60,9 @@ def reaction_leaf(rxn_ichs, rxn_chgs, rxn_muls, ts_mul):
     rxn_ichs = tuple(map(tuple, rxn_ichs))
     rxn_chgs = tuple(map(tuple, rxn_chgs))
     rxn_muls = tuple(map(tuple, rxn_muls))
-    # print('sort together test:', rxn_ichs, rxn_chgs, rxn_muls)
-    assert ((rxn_ichs, rxn_chgs, rxn_muls) ==
-            sort_together(rxn_ichs, rxn_chgs, rxn_muls))
+    if safemode_is_on():
+        assert ((rxn_ichs, rxn_chgs, rxn_muls) ==
+                sort_together(rxn_ichs, rxn_chgs, rxn_muls))
     ichs1, ichs2 = rxn_ichs
     chgs1, chgs2 = rxn_chgs
     muls1, muls2 = rxn_muls
@@ -123,9 +126,11 @@ def _sortable_representation(ichs, chgs, muls):
 def _reactant_leaf(ichs, chgs, muls):
     """ reactant leaf directory name
     """
-    assert all(map(automol.inchi.is_standard_form, ichs))
-    assert all(map(automol.inchi.is_complete, ichs))
-    assert tuple(ichs) == automol.inchi.sorted_(ichs)
+    if safemode_is_on():
+        assert all(map(automol.inchi.is_standard_form, ichs))
+        assert all(map(automol.inchi.is_complete, ichs))
+        assert tuple(ichs) == automol.inchi.sorted_(ichs)
+
     assert len(ichs) == len(chgs) == len(muls)
     assert all(isinstance(chg, numbers.Integral) for chg in chgs)
     assert all(isinstance(mul, numbers.Integral) for mul in muls)
@@ -149,6 +154,15 @@ def transition_state_trunk():
     """ transition state trunk directory name
     """
     return 'TS'
+
+
+def transition_state_leaf(num):
+    """ transition state leaf directory name
+    """
+    assert isinstance(num, numbers.Integral) and 0 <= num <= 99, (
+        'Num {} must be integer between 0 and 99'.format(num)
+    )
+    return '{:02d}'.format(int(num))
 
 
 # Specifier mappings for layers used by both species and reaction file systems
@@ -183,12 +197,26 @@ def conformer_trunk():
     return 'CONFS'
 
 
-def conformer_leaf(cid):
-    """ conformer leaf directory name
+def conformer_branch(rid):
+    """ ring conformer leaf directory name
     """
+    assert rid[0] == 'r', (
+        'rid {} does not start with r'.format(rid))
+    assert _is_random_string_identifier(rid[1:])
+    return rid
+
+
+def conformer_leaf(cid):
+    """ torsion conformer leaf directory name
+    """
+    # assert rid[0] == 'r', (
+    #     'rid {} does not start with r'.format(rid))
+    # assert _is_random_string_identifier(rid[1:])
     assert cid[0] == 'c', (
-            'cid {} does not start with c'.format(cid))
+        'cid {} does not start with c'.format(cid))
     assert _is_random_string_identifier(cid[1:])
+
+    # return os.path.join(rid, cid)
     return cid
 
 
@@ -196,6 +224,12 @@ def generate_new_conformer_id():
     """ generate a new conformer identifier
     """
     return 'c'+_random_string_identifier()
+
+
+def generate_new_ring_id():
+    """ generate a new conformer identifier
+    """
+    return 'r'+_random_string_identifier()
 
 
 def single_point_trunk():
@@ -372,10 +406,17 @@ def build_trunk(head):
     return head.upper()[:4]
 
 
+def build_branch(fml_str):
+    """ build branch directory name
+    """
+    assert isinstance(fml_str, str)
+    return fml_str.upper()
+
+
 def build_leaf(num):
     """ build leaf directory name
     """
-    assert isinstance(num, numbers.Integral) and 0 <= num <= 9
+    assert isinstance(num, numbers.Integral) and num >= 0
     return str(num)
 
 

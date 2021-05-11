@@ -7,10 +7,13 @@ import autofile.info
 
 def information(file_prefix, function=None):
     """ information DataFile
-
+    :param file_prefix: path to file
+    :type file_prefix: str
     :param function: optional information-generator function, for checking the
         function signature against the information object
     :type function: callable
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     def writer_(inf_obj):
         if function is not None:
@@ -21,8 +24,6 @@ def information(file_prefix, function=None):
     def reader_(inf_str):
         inf_obj = autofile.data_types.sread.information(inf_str)
         if function is not None:
-            print(inf_obj)
-            print(function)
             assert autofile.info.matches_function_signature(inf_obj, function)
         return inf_obj
 
@@ -67,6 +68,10 @@ def input_file(file_prefix):
 
 def output_file(file_prefix):
     """ generate output file DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.output_file(file_prefix)
     return model.DataFile(name=name)
@@ -74,6 +79,10 @@ def output_file(file_prefix):
 
 def energy(file_prefix):
     """ generate energy DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.energy(file_prefix)
     writer_ = autofile.data_types.swrite.energy
@@ -83,6 +92,10 @@ def energy(file_prefix):
 
 def geometry(file_prefix):
     """ generate geometry DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.geometry(file_prefix)
     writer_ = autofile.data_types.swrite.geometry
@@ -92,6 +105,10 @@ def geometry(file_prefix):
 
 def gradient(file_prefix):
     """ generate gradient DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.gradient(file_prefix)
     writer_ = autofile.data_types.swrite.gradient
@@ -101,6 +118,10 @@ def gradient(file_prefix):
 
 def hessian(file_prefix):
     """ generate hessian DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.hessian(file_prefix)
     writer_ = autofile.data_types.swrite.hessian
@@ -110,6 +131,10 @@ def hessian(file_prefix):
 
 def harmonic_frequencies(file_prefix):
     """ generate harmonic_frequencies DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.harmonic_frequencies(file_prefix)
     writer_ = autofile.data_types.swrite.harmonic_frequencies
@@ -119,6 +144,10 @@ def harmonic_frequencies(file_prefix):
 
 def anharmonic_frequencies(file_prefix):
     """ generate anharmonic_frequencies DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.anharmonic_frequencies(file_prefix)
     writer_ = autofile.data_types.swrite.anharmonic_frequencies
@@ -128,6 +157,10 @@ def anharmonic_frequencies(file_prefix):
 
 def anharmonic_zpve(file_prefix):
     """ generate anharmonic_zpve DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.anharmonic_zpve(file_prefix)
     writer_ = autofile.data_types.swrite.anharmonic_zpve
@@ -135,8 +168,38 @@ def anharmonic_zpve(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
+def cubic_force_constants(file_prefix):
+    """ generate cubic_force_constants DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
+    """
+    name = autofile.data_types.name.cubic_force_constants(file_prefix)
+    writer_ = autofile.data_types.swrite.cubic_force_constants
+    reader_ = autofile.data_types.sread.cubic_force_constants
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def quartic_force_constants(file_prefix):
+    """ generate quartic_force_constants DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
+    """
+    name = autofile.data_types.name.quartic_force_constants(file_prefix)
+    writer_ = autofile.data_types.swrite.quartic_force_constants
+    reader_ = autofile.data_types.sread.quartic_force_constants
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
 def anharmonicity_matrix(file_prefix):
     """ generate anharmonicity matrix DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.anharmonicity_matrix(file_prefix)
     writer_ = autofile.data_types.swrite.anharmonicity_matrix
@@ -146,6 +209,10 @@ def anharmonicity_matrix(file_prefix):
 
 def vibro_rot_alpha_matrix(file_prefix):
     """ generate vibro_rot_alpha matrix DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.vibro_rot_alpha_matrix(file_prefix)
     writer_ = autofile.data_types.swrite.vibro_rot_alpha_matrix
@@ -155,6 +222,10 @@ def vibro_rot_alpha_matrix(file_prefix):
 
 def quartic_centrifugal_dist_consts(file_prefix):
     """ generate vibro_rot_alpha matrix DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = (
         autofile.data_types.name.quartic_centrifugal_dist_consts(file_prefix))
@@ -165,6 +236,10 @@ def quartic_centrifugal_dist_consts(file_prefix):
 
 def zmatrix(file_prefix):
     """ generate zmatrix DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.zmatrix(file_prefix)
     writer_ = autofile.data_types.swrite.zmatrix
@@ -174,6 +249,10 @@ def zmatrix(file_prefix):
 
 def vmatrix(file_prefix):
     """ generate vmatrix DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.vmatrix(file_prefix)
     writer_ = autofile.data_types.swrite.vmatrix
@@ -181,44 +260,56 @@ def vmatrix(file_prefix):
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
+def ring_torsions(file_prefix):
+    """ generate ring torsions DataFile
+    """
+    name = autofile.data_types.name.ring_torsions(file_prefix)
+    writer_ = autofile.data_types.swrite.ring_torsions
+    reader_ = autofile.data_types.sread.ring_torsions
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
+def torsions(file_prefix):
+    """ generate torsions DataFile
+    """
+    name = autofile.data_types.name.torsions(file_prefix)
+    writer_ = autofile.data_types.swrite.torsions
+    reader_ = autofile.data_types.sread.torsions
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
 def trajectory(file_prefix):
     """ generate trajectory DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.trajectory(file_prefix)
     writer_ = autofile.data_types.swrite.trajectory
-    reader_ = _not_implemented
+    reader_ = autofile.data_types.sread.trajectory
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
-def graph(file_prefix):
-    """ generate graph DataFile
+def reaction(file_prefix):
+    """ generate reaction DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
-    name = autofile.data_types.name.graph(file_prefix)
-    writer_ = autofile.data_types.swrite.graph
-    reader_ = autofile.data_types.sread.graph
-    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
-
-
-def transformation(file_prefix):
-    """ generate transformation DataFile
-    """
-    name = autofile.data_types.name.transformation(file_prefix)
-    writer_ = autofile.data_types.swrite.transformation
-    reader_ = autofile.data_types.sread.transformation
-    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
-
-
-def transformation_old(file_prefix):
-    """ generate transformation DataFile
-    """
-    name = autofile.data_types.name.transformation_old(file_prefix)
-    writer_ = autofile.data_types.swrite.transformation_old
-    reader_ = autofile.data_types.sread.transformation_old
+    name = autofile.data_types.name.reaction(file_prefix)
+    writer_ = autofile.data_types.swrite.reaction
+    reader_ = autofile.data_types.sread.reaction
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
 def lennard_jones_epsilon(file_prefix):
     """ generate lennard_jones_epsilon DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.lennard_jones_epsilon(file_prefix)
     writer_ = autofile.data_types.swrite.lennard_jones_epsilon
@@ -228,6 +319,10 @@ def lennard_jones_epsilon(file_prefix):
 
 def lennard_jones_sigma(file_prefix):
     """ generate lennard_jones_sigma DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.lennard_jones_sigma(file_prefix)
     writer_ = autofile.data_types.swrite.lennard_jones_sigma
@@ -237,24 +332,36 @@ def lennard_jones_sigma(file_prefix):
 
 def external_symmetry_number(file_prefix):
     """ generate external_symmetry_number DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
-    name = autofile.data_types.name.external_symmetry_number(file_prefix)
-    writer_ = autofile.data_types.swrite.external_symmetry_number
-    reader_ = autofile.data_types.sread.external_symmetry_number
+    name = autofile.data_types.name.external_symmetry_factor(file_prefix)
+    writer_ = autofile.data_types.swrite.external_symmetry_factor
+    reader_ = autofile.data_types.sread.external_symmetry_factor
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
 def internal_symmetry_number(file_prefix):
     """ generate internal_symmetry_number DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
-    name = autofile.data_types.name.internal_symmetry_number(file_prefix)
-    writer_ = autofile.data_types.swrite.internal_symmetry_number
-    reader_ = autofile.data_types.sread.internal_symmetry_number
+    name = autofile.data_types.name.internal_symmetry_factor(file_prefix)
+    writer_ = autofile.data_types.swrite.internal_symmetry_factor
+    reader_ = autofile.data_types.sread.internal_symmetry_factor
     return model.DataFile(name=name, writer_=writer_, reader_=reader_)
 
 
 def lennard_jones_input(file_prefix):
     """ generate input file for the LJ params program
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.lennard_jones_input(file_prefix)
     return model.DataFile(name=name)
@@ -262,6 +369,10 @@ def lennard_jones_input(file_prefix):
 
 def lennard_jones_elstruct(file_prefix):
     """ generate elec struct template file for the LJ params program
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.lennard_jones_elstruct(file_prefix)
     return model.DataFile(name=name)
@@ -269,6 +380,10 @@ def lennard_jones_elstruct(file_prefix):
 
 def dipole_moment(file_prefix):
     """ generate dipole_moment DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.dipole_moment(file_prefix)
     writer_ = autofile.data_types.swrite.dipole_moment
@@ -278,6 +393,10 @@ def dipole_moment(file_prefix):
 
 def polarizability(file_prefix):
     """ generate polarizability DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.polarizability(file_prefix)
     writer_ = autofile.data_types.swrite.polarizability
@@ -288,6 +407,10 @@ def polarizability(file_prefix):
 #  vrctst
 def vrctst_tst(file_prefix):
     """ generate vrcttst_tst DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.vrctst_tst(file_prefix)
     return model.DataFile(name=name)
@@ -296,6 +419,10 @@ def vrctst_tst(file_prefix):
 
 def vrctst_divsur(file_prefix):
     """ generate vrctst_divsur DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.vrctst_divsur(file_prefix)
     return model.DataFile(name=name)
@@ -304,6 +431,10 @@ def vrctst_divsur(file_prefix):
 
 def vrctst_molpro(file_prefix):
     """ generate vrctst_molpro DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.vrctst_molpro(file_prefix)
     return model.DataFile(name=name)
@@ -312,6 +443,10 @@ def vrctst_molpro(file_prefix):
 
 def vrctst_tml(file_prefix):
     """ generate vrctst_tml DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.vrctst_tml(file_prefix)
     return model.DataFile(name=name)
@@ -320,6 +455,10 @@ def vrctst_tml(file_prefix):
 
 def vrctst_struct(file_prefix):
     """ generate vrctst_struct DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.vrctst_struct(file_prefix)
     return model.DataFile(name=name)
@@ -328,6 +467,10 @@ def vrctst_struct(file_prefix):
 
 def vrctst_pot(file_prefix):
     """ generate vrctst_pot DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.vrctst_pot(file_prefix)
     return model.DataFile(name=name)
@@ -336,6 +479,10 @@ def vrctst_pot(file_prefix):
 
 def vrctst_flux(file_prefix):
     """ generate vrctst_flux DataFile
+    :param file_prefix: path to file
+    :type file_prefix: str
+    :return: instance of DataFile class
+    :rtype: Datafile
     """
     name = autofile.data_types.name.vrctst_flux(file_prefix)
     return model.DataFile(name=name)
