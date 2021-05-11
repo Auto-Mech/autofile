@@ -123,6 +123,9 @@ def test__conformer():
     ene = cnf_fs[-1].file.energy.read(locs)
     assert numpy.isclose(ene, ref_ene)
 
+    print(cnf_fs[-1].existing())
+    
+
 
 def test__single_point():
     """ test autofile.fs.single_point
@@ -451,9 +454,9 @@ def test__json_tau_save():
 if __name__ == '__main__':
     # test__species()
     # test__reaction()
-    test__transition_state()
+    # test__transition_state()
     # test__theory()
-    # test__conformer()
+    test__conformer()
     # test__tau()
     # test__single_point()
     # test__high_spin()
