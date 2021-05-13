@@ -824,25 +824,3 @@ def test__data_series__build_trunk():
     for root_alocs in root_alocs_lst:
         assert (sorted(ds_.existing(root_alocs, relative=True)) ==
                 sorted(rlocs_lst))
-
-
-if __name__ == '__main__':
-    test__data_series__species_trunk()
-    test__data_series__species_leaf()
-    test__data_series__reaction_trunk()
-    test__data_series__reaction_leaf()
-    test__data_series__theory_leaf()
-    test__data_series__conformer_trunk()
-    test__data_series__conformer_leaf()
-    test__data_series__zmatrix_trunk()
-    test__data_series__zmatrix_leaf()
-    test__data_series__single_point_trunk()
-    test__data_series__scan_trunk()
-    test__data_series__scan_branch()
-    test__data_series__scan_leaf()
-    test__data_series__tau_trunk()
-    test__data_series__tau_leaf()
-    test__data_series__run_trunk()
-    test__data_series__run_leaf()
-    test__data_series__subrun_leaf()
-    test__data_series__build_trunk()
