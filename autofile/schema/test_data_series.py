@@ -69,7 +69,7 @@ def test__data_series__species_trunk():
     assert sorted(root_ds.existing()) == sorted(root_locs_lst)
 
 
-def test__data_series__species_leaf():
+def __data_series__species_leaf():
     """ test data_series.species_leaf
     """
     prefix = os.path.join(PREFIX, 'species_leaf')
