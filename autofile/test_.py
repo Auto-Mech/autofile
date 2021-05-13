@@ -123,9 +123,6 @@ def test__conformer():
     ene = cnf_fs[-1].file.energy.read(locs)
     assert numpy.isclose(ene, ref_ene)
 
-    print(cnf_fs[-1].existing())
-    
-
 
 def test__single_point():
     """ test autofile.fs.single_point
