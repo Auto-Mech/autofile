@@ -3,7 +3,7 @@
 import os
 import string
 import numbers
-import elstruct
+# import elstruct
 import automol
 from autofile._safemode import safemode_is_on
 from autofile.schema._util import (is_valid_inchi_multiplicity as
@@ -179,8 +179,8 @@ def theory_leaf(method, basis, orb_type):
         unrestricted orbitals
     :type orb_type: str
     """
-    assert elstruct.Method.contains(method)
-    assert elstruct.Basis.contains(basis)
+    # assert elstruct.Method.contains(method)
+    # assert elstruct.Basis.contains(basis)
     assert orb_type in ('R', 'U'), (
         'orb_type {} is not R or U'.format(orb_type)
     )
