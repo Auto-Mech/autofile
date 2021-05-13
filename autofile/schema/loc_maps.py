@@ -383,7 +383,7 @@ def run_trunk():
 def run_leaf(job):
     """ run leaf directory name
     """
-    assert elstruct.Job.contains(job)
+    # assert elstruct.Job.contains(job)
     dir_name = job[:4].upper()
     return dir_name
 
