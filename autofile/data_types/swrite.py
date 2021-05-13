@@ -3,15 +3,14 @@
     to properties formatted in strings of externally preferred units dum
 """
 
+import os
 from io import StringIO as _StringIO
 from numbers import Real as _Real
 import numpy
-import os
 import yaml
-
 import automol
-import autofile.info
 from phydat import phycon
+import autofile.info
 
 
 def information(inf_obj):
@@ -99,8 +98,10 @@ def ring_torsions(ring_tors_dct):
         :type tors_lst: tuple(automol torsion objects)
         :rtype: str
     """
+
     ring_tors_str = []
     for ring, tors_dct in ring_tors_dct.items():
+
         assert all(isinstance(key, str) and len(rng) == 2
                    and all(isinstance(x, _Real) for x in rng)
                    for key, rng in tors_dct.items())
@@ -110,19 +111,16 @@ def ring_torsions(ring_tors_dct):
         sorted_dct = {}
         for name in tors_names:
             sorted_dct[name] = [
-                tors_dct[name][0]*phycon.RAD2DEG, tors_dct[name][1]*phycon.RAD2DEG
+                tors_dct[name][0]*phycon.RAD2DEG,
+                tors_dct[name][1]*phycon.RAD2DEG
             ]
 
-        tors_str = yaml.dump(sorted_dct, default_flow_style=True, sort_keys=False)
-        ring_tors_str.append('ring: {}\n{}'.format(ring, tors_str))
-    return os.linesep.join(ring_tors_str)
+        tors_str = yaml.dump(
+            sorted_dct, default_flow_style=True, sort_keys=False)
 
- #   """ Write the ring torsions with their idxs
- #       :param tors_dct:
- #   """
- #   tors_str = os.linesep.join(['{}: {}'.format(
- #       key, ','.join([str(idx) for idx in value])) for key, value in tors_dct.items()])
- #   return tors_str
+        ring_tors_str.append('ring: {}\n{}'.format(ring, tors_str))
+
+    return os.linesep.join(ring_tors_str)
 
 
 def torsions(tors_lst):

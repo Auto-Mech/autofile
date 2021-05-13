@@ -119,6 +119,7 @@ def ring_torsions(file_name):
     """
     return _add_extension(file_name, Extension.RTORS)
 
+
 def gradient(file_name):
     """ adds gradient extension, if missing
     """

@@ -205,26 +205,10 @@ def test__data_files__vmatrix():
     assert vma == ref_vma
 
 
-# def test__data_files__torsional_names():
-#     """ test autofile.schema.data_files.torsional_names
-#     """
-#
-# 
-#     ref_tors = ({
-#         'D2': (0.0, 3.14159),
-#         'D4': (0.0, 3.14159),
-#         'D11': (0.0, 6.28319),
-#         'D18': (0.0, 3.14159)
-#     },)
-#
-#     tors_dfile = autofile.schema.data_files.torsions('test')
-#
-#     assert not tors_dfile.exists(PREFIX)
-#     tors_dfile.write(ref_tors, PREFIX)
-#     assert tors_dfile.exists(PREFIX)
-#
-#     tors = tors_dfile.read(PREFIX)
-#     assert tors == ref_tors
+def __data_files__torsional_names():
+    """ test autofile.schema.data_files.torsional_names
+    """
+    return NotImplementedError
 
 
 def test__data_files__trajectory():
@@ -351,22 +335,3 @@ def test__data_files__polarizability():
 
     tensor = tensor_dfile.read(PREFIX)
     assert numpy.allclose(tensor, ref_tensor)
-
-
-if __name__ == '__main__':
-    test__data_files__input_file()
-    test__data_files__information()
-    test__data_files__energy()
-    test__data_files__geometry()
-    test__data_files__gradient()
-    test__data_files__hessian()
-    # test__data_files__torsional_names()
-    test__data_files__zmatrix()
-    test__data_files__vmatrix()
-    test__data_files__trajectory()
-    test__data_files__lennard_jones_epsilon()
-    test__data_files__lennard_jones_sigma()
-    test__data_files__external_symmetry_number()
-    test__data_files__internal_symmetry_number()
-    test__data_files__dipole_moment()
-    test__data_files__polarizability()

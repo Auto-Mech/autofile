@@ -3,16 +3,15 @@
     to properties in internally used units and used data type
 """
 
+import os
 from io import StringIO as _StringIO
 from numbers import Real as _Real
 import numpy
-import automol
 import yaml
-import os
-
+import automol
 import autoparse.find as apf
-import autofile.info
 from phydat import phycon
+import autofile.info
 
 
 def information(inf_str):
@@ -111,22 +110,25 @@ def ring_torsions(tors_str):
         :type tors_str: str
         :rtype: tuple(automol torsion objects)
     """
+
     ring_tors_dct = {}
     rings = tors_str.split('ring: ')
     if len(rings) > 0:
-       for ring in rings[1:]:
-           ring = ring.splitlines()
-           ring_idxs = ring[0]
-           tors_str = os.linesep.join(ring[1:])
-           tors_dct = yaml.load(tors_str, Loader=yaml.FullLoader)
+        for ring in rings[1:]:
+            ring_lines = ring.splitlines()
+            ring_idxs = ring_lines[0]
+            tors_str = os.linesep.join(ring_lines[1:])
+            tors_dct = yaml.load(tors_str, Loader=yaml.FullLoader)
 
-           assert all(isinstance(key, str) and len(rng) == 2
-                      and all(isinstance(x, _Real) for x in rng)
-                      for key, rng in tors_dct.items())
+            assert all(isinstance(key, str) and len(rng) == 2
+                       and all(isinstance(x, _Real) for x in rng)
+                       for key, rng in tors_dct.items())
 
-           for name, rng in tors_dct.items():
-               tors_dct[name] = (rng[0] * phycon.DEG2RAD, rng[1] * phycon.DEG2RAD)
-           ring_tors_dct[ring_idxs] = tors_dct
+            for name, rng in tors_dct.items():
+                tors_dct[name] = (rng[0] * phycon.DEG2RAD,
+                                  rng[1] * phycon.DEG2RAD)
+            ring_tors_dct[ring_idxs] = tors_dct
+
     return ring_tors_dct
 
 
