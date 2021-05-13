@@ -16,7 +16,6 @@ def write_freqs():
     """ write the harm freqs using ProjRot
     """
 
-    # Build tmp dir to run ProjRot
     prefix = tempfile.mkdtemp()
     print(prefix)
     start_path = os.getcwd()
