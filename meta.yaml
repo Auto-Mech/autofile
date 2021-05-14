@@ -30,7 +30,7 @@ requirements:
         - conda-forge::python-igraph
         - auto-mech::autochem
         - auto-mech::autoio-base
-        # - auto-mech::autoio-interfaces
+        - auto-mech::autoio-interfaces
         # - auto-mech::mechanalyzer
         - auto-mech::x2z
         # - auto-mech::mess
