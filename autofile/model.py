@@ -204,7 +204,7 @@ class DataSeries():
                             try:
                                 pth_loc = self.loc_dfile.read(pth)
                                 locs_lst.append(pth_loc)
-                            except Exception as exception:
+                            except ValueError() as exception:
                                 print(
                                     'currently allowing '
                                     + 'exception {}'.format(exception) +
