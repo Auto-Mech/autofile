@@ -204,8 +204,12 @@ class DataSeries():
                             try:
                                 pth_loc = self.loc_dfile.read(pth)
                                 locs_lst.append(pth_loc)
-                            except:
-                                pass
+                            except ValueError() as exception:
+                                print(
+                                    'currently allowing '
+                                    + 'exception {}'.format(exception) +
+                                    ' in existing to avoid crashes from' +
+                                    '  CONF/cid in RUN')
                 else:
                     locs_lst = tuple(self.loc_dfile.read(pth) for pth in pths
                                      if self.loc_dfile.exists(pth))
