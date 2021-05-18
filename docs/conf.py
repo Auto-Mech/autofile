@@ -32,7 +32,7 @@ release = '0.1.0'
 # ones.
 extensions = ['sphinx.ext.autodoc']
 master_doc = 'index'
-autodoc_mock_imports = ['numpy', 'automol', 'yaml', 'autoparse', 'elstruct']
+autodoc_mock_imports = ['numpy', 'autochem', 'yaml', 'autoio-base', 'autoio-interfaces']
 autodoc_member_order = 'bysource'
 
 # Add any paths that contain templates here, relative to this directory.
