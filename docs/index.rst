@@ -12,13 +12,19 @@
 .. role:: bgblue
 
 
-==================
 :salmon:`Autofile`
-==================
+
 *A Package of the AutoMech Suite*
 
 Andreas V. Copan, Kevin B. Moore III, Sarah N. Elliott, and Stephen J. Klippenstein
 
+--------------------------------------------------------------------------------------
+
+.. toctree::
+    :glob:
+    :maxdepth: 1
+
+    index
 --------------------------------------------------------------------------------------
 
 Overview
@@ -59,29 +65,18 @@ Then we can move on to using the autofile module:
 * Reaction filesystem\: :ref:`rxn-tutorial-doc`
 * TS filesystem\: :ref:`ts-tutorial-doc`
 
-Submodule Documentation
-~~~~~~~~~~~~~~~~~~~~~~~
 
-.. toctree::
-    :caption: Schema Submodules:
-    :maxdepth: 4
-
-    submodule_fs
-    submodule_schema
-    submodule_data_types
-
-.. toctree::
-    :caption: Generic Submodules:
-    :maxdepth: 2
-
-    submodule_model
-    submodule_info
+Documentation
+~~~~~~~~~~~~~
+    .. toctree::
+        :maxdepth: 4
+    
+        submodule_fs
+        submodule_model
+        submodule_schema
+        submodule_data_types
+        submodule_info
+        submodule_io
+        submodule_json
 
 
-
-.. toctree::
-   :caption: Contents:
-   Getting Started
-        Installation
-        Tutorial
-   Submodule Documentation

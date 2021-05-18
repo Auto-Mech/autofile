@@ -6,6 +6,7 @@ import autofile.data_types
 
 def input_file(file_prefix, json_prefix=(None, None)):
     """ generate input entry in json file
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -20,6 +21,7 @@ def input_file(file_prefix, json_prefix=(None, None)):
 
 def output_file(file_prefix):
     """ generate output entry in json file
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -34,6 +36,7 @@ def output_file(file_prefix):
 
 def energy(file_prefix, json_prefix=(None, None)):
     """ generate energy  entry in json file
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -48,6 +51,7 @@ def energy(file_prefix, json_prefix=(None, None)):
 
 def geometry(file_prefix):
     """ generate geometry entry in json file
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -62,6 +66,7 @@ def geometry(file_prefix):
 
 def information(file_prefix, function=None, json_prefix=(None, None)):
     """ information JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -94,6 +99,7 @@ def information(file_prefix, function=None, json_prefix=(None, None)):
 def locator(file_prefix):
     """ locator JSONObject
 
+
     Specifiers are stored in information files according to `map_dct_` and read
     back out according to `loc_keys_`. The file may contain auxiliary
     information (such as SMILES along with InChI), but for the read to work it
@@ -111,6 +117,7 @@ def locator(file_prefix):
 
 def gradient(file_prefix):
     """ generate gradient JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -128,6 +135,7 @@ def gradient(file_prefix):
 
 def hessian(file_prefix):
     """ generate hessian JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -142,6 +150,7 @@ def hessian(file_prefix):
 
 def harmonic_frequencies(file_prefix):
     """ generate harmonic_frequencies JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -156,6 +165,7 @@ def harmonic_frequencies(file_prefix):
 
 def anharmonic_frequencies(file_prefix):
     """ generate anharmonic_frequencies JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -170,6 +180,7 @@ def anharmonic_frequencies(file_prefix):
 
 def anharmonic_zpve(file_prefix):
     """ generate anharmonic_zpve JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -184,6 +195,7 @@ def anharmonic_zpve(file_prefix):
 
 def anharmonicity_matrix(file_prefix):
     """ generate anharmonicity matrix JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -198,6 +210,7 @@ def anharmonicity_matrix(file_prefix):
 
 def vibro_rot_alpha_matrix(file_prefix):
     """ generate vibro_rot_alpha matrix JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -212,6 +225,7 @@ def vibro_rot_alpha_matrix(file_prefix):
 
 def quartic_centrifugal_dist_consts(file_prefix):
     """ generate vibro_rot_alpha matrix JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -227,6 +241,7 @@ def quartic_centrifugal_dist_consts(file_prefix):
 
 def zmatrix(file_prefix):
     """ generate zmatrix JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -241,6 +256,7 @@ def zmatrix(file_prefix):
 
 def vmatrix(file_prefix):
     """ generate vmatrix JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -255,6 +271,7 @@ def vmatrix(file_prefix):
 
 def trajectory(file_prefix):
     """ generate trajectory JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -269,6 +286,7 @@ def trajectory(file_prefix):
 
 def reaction(file_prefix):
     """ generate reaction JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -283,6 +301,7 @@ def reaction(file_prefix):
 
 def lennard_jones_epsilon(file_prefix):
     """ generate lennard_jones_epsilon JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys
@@ -297,6 +316,7 @@ def lennard_jones_epsilon(file_prefix):
 
 def lennard_jones_sigma(file_prefix):
     """ generate lennard_jones_sigma JSONObject
+
     :param file_prefix: path to file
     :type file_prefix: str
     :param json_prefix: top level keys

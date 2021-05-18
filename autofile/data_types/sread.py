@@ -16,6 +16,7 @@ import autofile.info
 
 def information(inf_str):
     """ read information (any dict/list combination) from a string
+
     :param inf_str: info yaml information
     :type inf_str: str
     :return: info object class instance
@@ -27,6 +28,7 @@ def information(inf_str):
 
 def energy(ene_str):
     """ read an energy (hartree) from a string (hartree)
+
     :param ene_str: energy
     :type inf_str: str
     :return: energy
@@ -38,6 +40,7 @@ def energy(ene_str):
 
 def geometry(xyz_str):
     """ read a geometry (bohr) from a string (angstrom)
+
     :param xyz_str: geometry in xyz format
     :type xyz_str: str
     :return: goemetry as internally used tuple object
@@ -49,6 +52,7 @@ def geometry(xyz_str):
 
 def trajectory(traj_str):
     """ read a trajectory of geometries (bohr) from a string (angstrom)
+
     :param traj_str: traj string
     :type traj_str: str
     :return: trajectory as internally used tuple object
@@ -60,6 +64,7 @@ def trajectory(traj_str):
 
 def zmatrix(zma_str):
     """ read a zmatrix (bohr/radian) from a string (angstrom/degree)
+
     :param zma_str: zmatrix string
     :type zma_str: str
     :return: zmatrix as internally used tuple object
@@ -71,6 +76,7 @@ def zmatrix(zma_str):
 
 def vmatrix(vma_str):
     """ read a variable zmatrix (bohr/radian) from a string (angstrom/degree)
+
     :param vma_str: vmatrix string
     :type vma_str: str
     :return: vmatrix as internally used tuple object
@@ -82,6 +88,7 @@ def vmatrix(vma_str):
 
 def gradient(grad_str):
     """ read a gradient (hartree bohr^-1) from a string (hartree bohr^-1)
+
     :param grad_str: gradient string
     :type grad_str: str
     :return: gradient as internally used tuple object
@@ -95,6 +102,7 @@ def gradient(grad_str):
 
 def gradient_array(grad_list):
     """convert gradient python list to gradient numpy ndarray
+
     :param grad_list: gradient list
     :type grad_list: str
     :return: gradient list
@@ -105,6 +113,7 @@ def gradient_array(grad_list):
 
 def ring_torsions(tors_str):
     """ Write the torsions and their ranges (radian) to a string (degree).
+
 
         :param tors_str: information for each torsion by Z-Matrx names
         :type tors_str: str
@@ -135,6 +144,7 @@ def ring_torsions(tors_str):
 def torsions(tors_str):
     """ Write the torsions and their ranges (radian) to a string (degree).
 
+
         :param tors_str: information for each torsion by Z-Matrx names
         :type tors_str: str
         :rtype: tuple(automol torsion objects)
@@ -144,6 +154,7 @@ def torsions(tors_str):
 
 def hessian(hess_str):
     """ read a hessian (hartree bohr^-2) from a string (hartree bohr^-2)
+
     :param hess_str: hessian string
     :type hess_str: str
     :return: hessian as 3nx3n tuple
@@ -158,6 +169,7 @@ def hessian(hess_str):
 
 def harmonic_frequencies(freq_str):
     """ read harmonic frequencies (cm^-1) from a string (cm^-1)
+
     :param freq_str: freq string
     :type freq_str: str
     :return: tuple of float frequencies
@@ -168,6 +180,7 @@ def harmonic_frequencies(freq_str):
 
 def anharmonic_frequencies(freq_str):
     """ read anharmonic frequencies (cm^-1) from a string (cm^-1)
+
     :param freq_str: freq string
     :type freq_str: str
     :return: tuple of float frequencies
@@ -178,6 +191,7 @@ def anharmonic_frequencies(freq_str):
 
 def projected_frequencies(freq_str):
     """ read projected frequencies (cm^-1) from a string (cm^-1)
+
     :param freq_str: freq string
     :type freq_str: str
     :return: tuple of float frequencies
@@ -189,9 +203,9 @@ def projected_frequencies(freq_str):
 def cubic_force_constants(cfc_str):
     """ Writes cubic force constants () to a string ().
 
-        :param cfc_str: string with cubic force constants
-        :type cfc_str: str
-        :rtype: numpy.ndarray
+    :param cfc_str: string with cubic force constants
+    :type cfc_str: str
+    :rtype: numpy.ndarray
     """
     return automol.util.highd_mat.from_string(cfc_str, fill_perms=True)
 
@@ -199,15 +213,16 @@ def cubic_force_constants(cfc_str):
 def quartic_force_constants(qfc_str):
     """ Writes quartic force constants () to a string ().
 
-        :param qfc_str: quartic force constants
-        :type qfc_str: numpy.ndarray
-        :rtype: numpy.ndarray
+    :param qfc_str: quartic force constants
+    :type qfc_str: numpy.ndarray
+    :rtype: numpy.ndarray
     """
     return automol.util.highd_mat.from_string(qfc_str, fill_perms=True)
 
 
 def anharmonic_zpve(anh_zpve_str):
     """ read the anharmonic zpve (hartree) from a string (hartree)
+
     :param anh_zpve_str: zpve string
     :type anh_zpve_str: str
     :return: zpve as float
@@ -220,6 +235,7 @@ def anharmonic_zpve(anh_zpve_str):
 def anharmonicity_matrix(xmat_str):
     """ read an anharmonicity matrix (cm^-1)
         from a string (cm^-1)
+
     :param xmat_str: xmat string
     :type xmat_str: str
     :return: anharmonicity xmatrix as nfreqxnfreq tuple
@@ -239,6 +255,7 @@ def anharmonicity_matrix(xmat_str):
 def vibro_rot_alpha_matrix(vibro_rot_str):
     """ read an vibro-rot alpha matrix (cm^-1)
         from a string (cm^-1)
+
     :param vibro_rot_str: vibro-rot alpha matrix string
     :type vibro_rot_str: str
     :return: matrix as tuple
@@ -255,6 +272,7 @@ def vibro_rot_alpha_matrix(vibro_rot_str):
 def quartic_centrifugal_dist_consts(qcd_consts_str):
     """ write the quartic centrifugal distortion constant
         labels and values (cm^-1) to a string (cm^-1)
+
     :param qcd_consts_str: quartic centrifugal dist const string
     :type qcd_consts_str: str
     :return: constants in a tuple
@@ -271,6 +289,7 @@ def quartic_centrifugal_dist_consts(qcd_consts_str):
 
 def lennard_jones_epsilon(eps_str):
     """ read a lennard-jones epsilon (waveunmbers) from a string (wavenumbers)
+
     :param eps_str: epsilon string
     :type eps_consts_str: str
     :return: epsilon float
@@ -282,6 +301,7 @@ def lennard_jones_epsilon(eps_str):
 
 def lennard_jones_sigma(sig_str):
     """ read a lennard-jones sigma (angstrom) from a string (angstrom)
+
     :param sig_str: sigma string
     :type sig_consts_str: str
     :return: sigma float
@@ -293,6 +313,7 @@ def lennard_jones_sigma(sig_str):
 
 def external_symmetry_factor(esf_str):
     """ read an external symmetry factor from a string (dimensionless)
+
     :param esf_str: external symmetry factor string
     :type esf_consts_str: str
     :return: external symmetry factor float
@@ -304,6 +325,7 @@ def external_symmetry_factor(esf_str):
 
 def internal_symmetry_factor(isf_str):
     """ read an internal symmetry factor from a string (dimensionless)
+
     :param isf_str: internal symmetry factor string
     :type isf_consts_str: str
     :return: internal symmetry factor float
@@ -315,6 +337,7 @@ def internal_symmetry_factor(isf_str):
 
 def dipole_moment(dip_mom_str):
     """ reads the x,y,z dipole moment vector from a string
+
     :param dip_mom_str: x,y,z dipole moment vector
     :type dip_mom_str: str
     :return: x, y, z dipole moment tuple
@@ -329,6 +352,7 @@ def dipole_moment(dip_mom_str):
 
 def polarizability(polar_str):
     """ read a polarizability tensor () from a string
+
     :param polar_str: polarizability tensor
     :type polar_str: str
     :return: polarizability tensor
@@ -343,6 +367,7 @@ def polarizability(polar_str):
 
 def reaction(rxn_str):
     """ read a reaction object from a string
+
     :param rxn_str: reaction string
     :type rxn_str: str
     :return: an automol Reaction object

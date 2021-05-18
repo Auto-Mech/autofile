@@ -15,6 +15,7 @@ import autofile.info
 
 def information(inf_obj):
     """ write information (any dict/list combination) to a string
+
     :param inf: info yaml information
     :type inf: Info
     :return: info object as a string
@@ -27,6 +28,7 @@ def information(inf_obj):
 
 def energy(ene):
     """ write an energy (hartree) to a string (hartree)
+
     :param ene: energy
     :type inf: float
     :return: energy
@@ -38,6 +40,7 @@ def energy(ene):
 
 def geometry(geo):
     """ write a geometry (bohr) to a string (angstrom)
+
     :param geo: geometry in autochem tuple format
     :type geo: tuple
     :return: goemetry as xyz format
@@ -50,6 +53,7 @@ def geometry(geo):
 
 def trajectory(traj):
     """ write a series of geometries (bohr) to a string (angstrom)
+
 
     (trajectory is given by a sequence of comment-line, geometry pairs)
     :param traj: traj object
@@ -69,6 +73,7 @@ def trajectory(traj):
 
 def zmatrix(zma):
     """ write a zmatrix (bohr/radian) to a string (angstroms/degree)
+
     :param zma: zmatrix in autochem tuple format
     :type zma: tuple
     :return: zmatrix as string
@@ -81,6 +86,7 @@ def zmatrix(zma):
 
 def vmatrix(vma):
     """ write a variable zmatrix (bohr/radian) to a string (angstroms/degree)
+
     :param vma: vmatrix in autochem tuple format
     :type vma: tuple
     :return: vmatrix string
@@ -93,6 +99,7 @@ def vmatrix(vma):
 
 def ring_torsions(ring_tors_dct):
     """ Write the torsions and their ranges (radian) to a string (degree).
+
 
         :param tors_lst: list of torsion objects
         :type tors_lst: tuple(automol torsion objects)
@@ -126,6 +133,7 @@ def ring_torsions(ring_tors_dct):
 def torsions(tors_lst):
     """ Write the torsions and their ranges (radian) to a string (degree).
 
+
         :param tors_lst: list of torsion objects
         :type tors_lst: tuple(automol torsion objects)
         :rtype: str
@@ -136,6 +144,7 @@ def torsions(tors_lst):
 
 def gradient(grad):
     """ write a gradient (hartree bohr^-1) to a string (hartree bohr^-1)
+
     :param grad: gradient tuple
     :type grad: tuple
     :return: gradient string
@@ -153,6 +162,7 @@ def gradient(grad):
 
 def hessian(hess):
     """ write a hessian (hartree bohr^-2) to a string (hartree bohr^-2)
+
     :param hess: hessian 3nx3n tuple of floats
     :type hess: tuple
     :return: hessian string
@@ -171,6 +181,7 @@ def hessian(hess):
 
 def harmonic_frequencies(freqs):
     """ write harmonic frequencies (cm^-1) to a string (cm^-1)
+
     :param freqs: freq tuple of floats
     :type freqs: tuple
     :return: frequencies as string
@@ -182,6 +193,7 @@ def harmonic_frequencies(freqs):
 
 def anharmonic_frequencies(freqs):
     """ write anharmonic frequencies (cm^-1) to a string (cm^-1)
+
     :param freqs: freq tuple of floats
     :type freqs: tuple
     :return: frequencies as string
@@ -193,6 +205,7 @@ def anharmonic_frequencies(freqs):
 
 def projected_frequencies(freq):
     """ write projected frequencies (cm^-1) to a string (cm^-1)
+
     :param freqs: freq tuple of floats
     :type freqs: tuple
     :return: frequencies as string
@@ -205,6 +218,7 @@ def projected_frequencies(freq):
 def cubic_force_constants(cfcs):
     """ Writes cubic force constants () to a string ().
 
+
         :param cfcs: cubic force constants
         :type cfcs: numpy.ndarray
         :rtype: str
@@ -215,6 +229,7 @@ def cubic_force_constants(cfcs):
 def quartic_force_constants(qfcs):
     """ Writes quartic force constants () to a string ().
 
+
         :param cfcs: quartic force constants
         :type cfcs: numpy.ndarray
         :rtype: str
@@ -224,6 +239,7 @@ def quartic_force_constants(qfcs):
 
 def anharmonic_zpve(zpve):
     """ write the anharmonic ZPVE (hartree) to a string (hartree)
+
     :param anh_zpve: zpve float
     :type anh_zpve: float
     :return: zpve as string
@@ -235,6 +251,7 @@ def anharmonic_zpve(zpve):
 
 def anharmonicity_matrix(xmat):
     """ write anharmonicity matrix (cm^-1) to a string (cm^-1)
+
     :param xmat: anharmonicity xmatrix as nfreqxnfreq tuple
     :type xmat: tuple
     :return: xmat string
@@ -254,6 +271,7 @@ def anharmonicity_matrix(xmat):
 
 def vibro_rot_alpha_matrix(vibro_rot_mat):
     """ write vibro-rot alph matrix (cm^-1) to a string (cm^-1)
+
     :param vibro_rot: matrix as tuple
     :type vibro_rot: tuple
     :return: vibro-rot alpha matrix string
@@ -271,6 +289,7 @@ def vibro_rot_alpha_matrix(vibro_rot_mat):
 
 def quartic_centrifugal_dist_consts(qcd_consts):
     """ write the quartic centrifugal distortion constant
+
         labels and values (cm^-1) to a string (cm^-1)
     :param qcd_consts: constants in a tuple
     :type qcd_consts: tuple
@@ -286,6 +305,7 @@ def quartic_centrifugal_dist_consts(qcd_consts):
 
 def lennard_jones_epsilon(eps):
     """ write a lennard-jones epsilon (waveunmbers) to a string (wavenumbers)
+
     :param eps: epsilon float
     :type eps_consts: float
     :return: epsilon string
@@ -297,6 +317,7 @@ def lennard_jones_epsilon(eps):
 
 def lennard_jones_sigma(sig):
     """ write a lennard-jones sigma (angstrom) to a string (angstrom)
+
     :param sig: sigma float
     :type sig_consts: float
     :return: sigma string
@@ -308,6 +329,7 @@ def lennard_jones_sigma(sig):
 
 def external_symmetry_factor(esf):
     """ write an external symmetry factor to a string
+
     :param esf: external symmetry factor float
     :type esf_consts: float
     :return: external symmetry factor string
@@ -319,6 +341,7 @@ def external_symmetry_factor(esf):
 
 def internal_symmetry_factor(isf):
     """ write an internal symmetry factor to a string
+
     :param isf: internal symmetry factor float
     :type isf_consts: float
     :return: internal symmetry factor string
@@ -330,6 +353,7 @@ def internal_symmetry_factor(isf):
 
 def dipole_moment(dip_mom):
     """ write a dipole moment vector to a string
+
     :param dip_mom: x,y,z dipole moment tuple
     :type dip_mom: tuple
     :return: x, y, z dipole moment vector string
@@ -348,6 +372,7 @@ def dipole_moment(dip_mom):
 
 def polarizability(polar):
     """ write a polarizability tensor to a string
+
     :param polar: polarizability tensor
     :type polar: tuple
     :return: polarizability tensor
@@ -366,6 +391,7 @@ def polarizability(polar):
 
 def reaction(rxn):
     """ write a reaction to a string
+
     :param rxn: an automol Reaction object
     :type rxn: automol.reac.Reaction
     :return: reaction string

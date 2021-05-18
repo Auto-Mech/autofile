@@ -1,8 +1,4 @@
-"""
-autofile.fs
-===========
-
-This module generates managers for the various layers in the file system.
+""" This module generates managers for the various layers in the file system.
 
 The overall file system layout is as follows::
 

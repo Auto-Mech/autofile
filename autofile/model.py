@@ -9,10 +9,8 @@ import autofile.io_
 
 
 class DataFile():
-    """ file manager for a given datatype """
+    """ file manager for a given datatype
 
-    def __init__(self, name, writer_=(lambda _: _), reader_=(lambda _: _)):
-        """
         :param name: the file name
         :type name: str
         :param writer_: writes data to a string
@@ -21,7 +19,9 @@ class DataFile():
         :type reader_: callable[str->object]
         :param removable: Is this file removable?
         :type removable: bool
-        """
+
+    """
+    def __init__(self, name, writer_=(lambda _: _), reader_=(lambda _: _)):
         self.name = name
         self.writer_ = writer_
         self.reader_ = reader_
@@ -29,17 +29,32 @@ class DataFile():
 
     def path(self, dir_pth):
         """ file path
+
+        :param dir_pth: directory path
+        :type dir_pth: str
+        :returns: datafile path
+        :return type: str
         """
         return os.path.join(dir_pth, self.name)
 
     def exists(self, dir_pth):
         """ does this file exist?
+
+        :param dir_pth: directory path
+        :type dir_pth: str
+        :returns: existance of datafile
+        :return type: bool
         """
         pth = self.path(dir_pth)
         return os.path.isfile(pth)
 
     def write(self, val, dir_pth):
         """ write data to this file
+
+        :param val: value to be written
+        :type val: int/float/str/tuple
+        :param dir_pth: directory path
+        :type dir_pth: str
         """
         assert os.path.exists(dir_pth), (
             'No path exists: {}'.format(dir_pth)
@@ -50,6 +65,11 @@ class DataFile():
 
     def read(self, dir_pth):
         """ read data from this file
+
+        :param dir_pth: directory path
+        :type dir_pth: str
+        :returns: datafile contents
+        :return type: int/float/str/tuple
         """
         assert self.exists(dir_pth), (
             'Either requested file {}'.format(self),
@@ -65,6 +85,9 @@ class DataFile():
         """ remove this file
 
         (only possible if `removable` attribute is set to `True`)
+
+        :param dir_pth: directory path
+        :type dir_pth: str
         """
         if self.removable:
             pth = self.path(dir_pth)
@@ -74,22 +97,23 @@ class DataFile():
 
     def __repr__(self):
         """ represent this object as a string
+
         """
         return "DataFile('{}')".format(self.name)
 
 
 class DataSeries():
     """ directory manager mapping locator values to a directory series
-    """
 
-    def __init__(self, prefix, map_, nlocs, depth, loc_dfile=None,
-                 root_ds=None, removable=False):
-        """
+
         :param map_: maps `nlocs` locators to a segment path consisting of
             `depth` directories
         :param info_map_: maps `nlocs` locators to an information object, to
             be written in the data directory
-        """
+    """
+
+    def __init__(self, prefix, map_, nlocs, depth, loc_dfile=None,
+                 root_ds=None, removable=False):
         self.prefix = os.path.abspath(prefix)
         self.map_ = map_
         self.nlocs = nlocs
@@ -103,6 +127,7 @@ class DataSeries():
 
     def add_data_files(self, dfile_dct):
         """ add DataFiles to the DataSeries
+
         """
         dfile_dct = {} if dfile_dct is None else dfile_dct
 
@@ -114,6 +139,7 @@ class DataSeries():
 
     def path(self, locs=()):
         """ absolute directory path
+
         """
         if self.root is None:
             prefix = self.prefix
@@ -129,12 +155,14 @@ class DataSeries():
 
     def exists(self, locs=()):
         """ does this directory exist?
+
         """
         pth = self.path(locs)
         return os.path.isdir(pth)
 
     def remove(self, locs=()):
         """ remove this directory
+
 
         (only possible if `removable` attribute is set to `True`)
         """
@@ -147,6 +175,7 @@ class DataSeries():
 
     def create(self, locs=()):
         """ create a directory at this prefix
+
         """
         # recursively create starting from the first root directory
         if self.root is not None:
@@ -168,6 +197,7 @@ class DataSeries():
 
     def existing(self, root_locs=(), relative=False, ignore_bad_formats=True):
         """ return the list of locators for existing paths
+
         """
         if self.nlocs == 0:
             # If there are no locators, this DataSeries only produces one
@@ -221,6 +251,7 @@ class DataSeries():
 
     def _existing_paths(self, root_locs=()):
         """ existing paths at this prefix/root directory
+
         """
         if self.root is None:
             prefix = self.prefix
@@ -234,6 +265,7 @@ class DataSeries():
 
     def json_path(self, json_layer=None):
         """ json file path
+
         """
         if self.root is None:
             prefix = self.prefix
@@ -245,12 +277,14 @@ class DataSeries():
 
     def json_exists(self, json_layer=None):
         """ does this file exist?
+
         """
         pth = self.json_path(json_layer=json_layer)
         return os.path.isfile(pth)
 
     def json_existing(self, locs=(), json_layer=None):
         """ returns a list of locations (aka keys) in the json file
+
         """
         locs = []
         if self.json_exists(json_layer=json_layer):
@@ -275,6 +309,7 @@ class DataSeries():
 
     def map(self, locs):
         """ returns a list of mapped locations
+
         """
         if locs:
             locs = [self.map_(locs)]
@@ -282,6 +317,7 @@ class DataSeries():
 
     def add_json_entries(self, entry_dct):
         """ add DataFiles to the DataSeries
+
         """
         entry_dct = {} if entry_dct is None else entry_dct
 
@@ -293,6 +329,7 @@ class DataSeries():
 
     def json_create(self, json_layer=None):
         """ json file creation
+
         """
         if not self.json_exists():
             autofile.json_.write_json(
@@ -300,6 +337,7 @@ class DataSeries():
 
     def root_locator_count(self):
         """ count the number of root locator values recursively
+
         """
         if self.root is None:
             root_nlocs = 0
@@ -310,6 +348,7 @@ class DataSeries():
     # helpers
     def _self_locators(self, locs):
         """ locators for this DataSeriesDir
+
         """
         nlocs = len(locs)
         assert nlocs >= self.nlocs
@@ -318,6 +357,7 @@ class DataSeries():
 
     def _root_locators(self, locs):
         """ locators for the root DataSeriesDir, if there is one
+
         """
         nlocs = len(locs)
         assert nlocs >= self.nlocs, (
@@ -328,12 +368,14 @@ class DataSeries():
 
     def __repr__(self):
         """ represent this object as a string
+
         """
         return "DataSeries('{}', {})".format(self.prefix, self.map_.__name__)
 
 
 class DataSeriesFile():
     """ file manager mapping locator values to files in a directory series
+
     """
 
     def __init__(self, ds, dfile):
@@ -343,26 +385,31 @@ class DataSeriesFile():
 
     def path(self, locs=()):
         """ absolute file path
+
         """
         return self.file.path(self.dir.path(locs))
 
     def exists(self, locs=()):
         """ does this file exist?
+
         """
         return self.file.exists(self.dir.path(locs))
 
     def write(self, val, locs=()):
         """ write data to this file
+
         """
         self.file.write(val, self.dir.path(locs))
 
     def read(self, locs=()):
         """ read data from this file
+
         """
         return self.file.read(self.dir.path(locs))
 
     def remove(self, locs=()):
         """ remove this file
+
 
         (only possible if `removable` attribute is set to `True`)
         """
@@ -374,6 +421,7 @@ class DataSeriesFile():
 
     def __repr__(self):
         """ represent this object as a string
+
         """
         return ("DataSeriesFile('{}', {}, '{}')"
                 .format(self.dir.prefix, self.dir.map_.__name__,
@@ -382,10 +430,12 @@ class DataSeriesFile():
 
 class JSONObject():
     """ json manager """
+
     def __init__(
             self, name, json_prefix=(None, None), removable=False,
             writer_=(lambda _: _), reader_=(lambda _: _)):
         """
+
         :param name: the file name
         :type name: str
         :param json_prefix: static, top level keys
@@ -405,6 +455,7 @@ class JSONObject():
 
     def add_layer(self, key):
         """ add a key to the json loc list
+
         """
         layered_key = key
         if self.json_layer:
@@ -415,6 +466,7 @@ class JSONObject():
 
     def exists(self, key, path):
         """ check existance of a json
+
         """
         exists = True
         key = self.add_layer(key)
@@ -434,12 +486,14 @@ class JSONObject():
 
     def read(self, key, path):
         """ read a key out of a json file
+
         """
         json_data = read_json(path)
         return self._read(key, json_data)
 
     def _read(self, key, json_data):
         """ read a key out of a json file
+
         """
         exists = True
         key = self.add_layer(key)
@@ -458,6 +512,7 @@ class JSONObject():
 
     def read_all(self, keys, path):
         """ read a key out of a json file for
+
             many keys
         """
         json_data = read_json(path)
@@ -468,6 +523,7 @@ class JSONObject():
 
     def write(self, val, key, path):
         """ write a value for a key in a json
+
         """
         key = self.add_layer(key)
         current_json = read_json(path)
@@ -484,6 +540,7 @@ class JSONObject():
 
     def write_all(self, vals, all_keys, path):
         """ write values for multiple keys in a json
+
         """
         current_json = read_json(path)
         for key, val in zip(all_keys, vals):
@@ -502,9 +559,11 @@ class JSONObject():
 
 class JSONEntry():
     """ json manager for a given datatype
+
     """
     def __init__(self, jseries, jobject):
         """ json manager mapping locator values to objects in a json file
+
         """
         self.jseries = jseries
         self.json = jobject
@@ -512,6 +571,7 @@ class JSONEntry():
 
     def exists(self, key=('database_entry'), mapping=True):
         """ does this entry exist?
+
         """
         ret = False
         if mapping:
@@ -525,6 +585,7 @@ class JSONEntry():
 
     def existing(self, key=()):
         """ returns the keys nested under this key
+
         """
         return self.jseries.json_existing(
             locs=self.json.add_layer(key),
@@ -532,6 +593,7 @@ class JSONEntry():
 
     def write(self, val, key=('database_entry'), mapping=True):
         """ write data to this file
+
         """
         if not self.jseries.json_exists(json_layer=self.json.json_layer):
             self.jseries.json_create(json_layer=self.json.json_layer)
@@ -542,6 +604,7 @@ class JSONEntry():
 
     def write_all(self, vals, keys=(('database_entry')), mapping=True):
         """ write data to this file
+
         """
         if not self.jseries.json_exists(json_layer=self.json.json_layer):
             self.jseries.json_create(json_layer=self.json.json_layer)
@@ -556,6 +619,7 @@ class JSONEntry():
 
     def read(self, key=('database_entry'), mapping=True):
         """ read data from this file
+
         """
         ret = None
         if self.exists(key, mapping=mapping):
@@ -570,6 +634,7 @@ class JSONEntry():
 
     def read_all(self, keys=(('database_entry')), mapping=True):
         """ read data from this file
+
         """
         ret = []
         new_keys = []
@@ -587,18 +652,21 @@ class JSONEntry():
 
 def _path_is_relative(pth):
     """ is this a relative path?
+
     """
     return os.path.relpath(pth) == pth
 
 
 def _path_has_depth(pth, depth):
     """ does this path have the given depth?
+
     """
     return len(_os_path_split_all(pth)) == depth
 
 
 def _os_path_split_all(pth):
     """ grabbed this from the internet """
+
     allparts = []
     while 1:
         parts = os.path.split(pth)
@@ -622,18 +690,22 @@ def _remove_layer_from_path(path, json_layer):
 
 def read_json(path):
     """ read a json
+
     """
+
     return autofile.json_.read_json(path)
 
 
 def write_json(json_data, path):
     """ write a json
+
     """
     autofile.json_.write_json(json_data, path)
 
 
 def items(path):
     """ what are the parent keys in this json file
+
     """
     keys = []
     entries = []
@@ -644,6 +716,7 @@ def items(path):
 
 def _keys(path):
     """ return the keys of a json
+
     """
     keys_, _ = items(path)
     return keys_
@@ -651,6 +724,7 @@ def _keys(path):
 
 def _entries(path):
     """ return the entries of a json
+
     """
     _, entries_ = items(path)
     return entries_
