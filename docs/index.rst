@@ -1,18 +1,5 @@
-
-.. raw:: html
-
-    <style> .salmon {color:IndianRed; font-weight:bold; font-size:48px} </style>
-
-.. role:: salmon
-
-.. raw:: html
-
-    <style> .bgblue {background-color:LightBlue; width:100px} </style>
-
-.. role:: bgblue
-
-
-:salmon:`Autofile`
+Autofile
+=========
 
 *A Package of the AutoMech Suite*
 
@@ -22,7 +9,7 @@ Andreas V. Copan, Kevin B. Moore III, Sarah N. Elliott, and Stephen J. Klippenst
 
 .. toctree::
     :glob:
-    :maxdepth: 1
+    :maxdepth: 2
 
     index
 --------------------------------------------------------------------------------------

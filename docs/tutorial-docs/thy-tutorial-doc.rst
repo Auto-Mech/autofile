@@ -1,12 +1,6 @@
-.. raw:: html
-
-    <style> .salmon {color:IndianRed; font-weight:bold; font-size:32px} </style>
-
-.. role:: salmon
-
 .. _thy-tutorial-doc:
 
-:salmon:`Theory Tutorial`
+Theory Tutorial
 ==========================
 
 We can create a theory directory manager inside a given species

@@ -1,0 +1,131 @@
+}
+html{
+	 scroll-behavior: smooth;
+}
+
+h1 {
+  color:IndianRed;
+  font-weight:bold;
+  font-size:48px;
+  padding-top:50px;
+  text-decoration: none; 
+}
+
+h1 a {
+    color: white;
+}
+
+h1 a:visited {
+    color: white;
+}
+
+h2 {
+  color:black;
+  font-weight:bold;
+  font-size:32px}
+}
+
+h2 a {
+    color: white;
+}
+
+h2 a:visited {
+    color: white;
+}
+
+h3 {
+  font-weight:bold;
+}
+
+h3 a {
+    color: white;
+}
+
+h3 a:visited {
+    color: white;
+}
+
+a {
+    color: black; 
+    text-decoration: none; 
+}
+
+a:hover {
+    color:gray;
+    text-decoration: underline;
+}
+
+a:visited {
+    color:gray;
+    text-decoration: none; 
+}
+
+p {
+  color:black;
+  font-family: Georgia, serif;
+  font-size: 17px;
+}
+
+/* The sidebar menu */
+div.sphinxsidebar {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 250px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color:#03070a;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 50px;
+  padding-left: 5%;
+  padding-right: 50px;
+}
+
+div.sphinxsidebarwrapper {
+  color: #f1f1f1;
+}
+div.sphinxsidebar a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #f1f1f1;
+  display: block;
+}
+
+div.sphinxsidebar ul {
+  list-style-type: none; /* Remove bullets */
+  padding: 0;
+}
+
+div.sphinxsidebar h3 {
+  border-style:dotted;
+  border-color:#132639;
+  font-size:18pt;
+  padding: 8px;
+}
+
+div.sphinxsidebar ul a:hover {
+  color: gray;
+}
+
+div.sphinxsidebar a:hover {
+  color: gray;
+}
+
+div.sphinxsidebar a:visited {
+  color: #f1f1f1;
+}
+
+/* Style page content */
+div.body {
+  margin-left: 250px; /* Same as the width of the sidebar */
+  padding: 0px 10px;
+  padding-left: 18%;
+  padding-right: 18%;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  div.sphinxsidebar {padding-top: 15px;}
+  div.sphinxsidebarwrapper a {font-size: 18px;}
+}

@@ -1,12 +1,6 @@
-.. raw:: html
-
-    <style> .salmon {color:IndianRed; font-weight:bold; font-size:32px} </style>
-
-.. role:: salmon
-
 .. _tutorial-hub:
 
-:salmon:`Tutorial Hub`
+Tutorial Hub
 =======================
 * Species filesystem\: :ref:`spc-tutorial-doc`
 * Theory filesystem\: :ref:`thy-tutorial-doc`

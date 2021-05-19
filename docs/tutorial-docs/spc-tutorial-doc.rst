@@ -1,12 +1,6 @@
-.. raw:: html
-
-    <style> .salmon {color:IndianRed; font-weight:bold; font-size:32px} </style>
-
-.. role:: salmon
-
 .. _spc-tutorial-doc:
 
-:salmon:`Species Tutorial`
+Species Tutorial
 ==========================
 
 To begin, let us create a species filesystem in the current directory, ``'.'``.
