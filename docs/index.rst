@@ -18,9 +18,11 @@ Overview
 ~~~~~~~~
 
 Autofile directs the filesystem framework for the AutoMech suite.  It uses a dual architecture: the run/save filesystems. 
-Under each, Autofile defines rigid Dataseries trunks, branches, and leaves that each can stores specific data.
+Under each, Autofile defines rigid Dataseries trunks, branches, and leaves that each store specific data. The save system is the 
+database for AutoMech, storing molecular properties like electronic energies, hessians, and torsional profiles as well as
+and transition state information like transitory bonds and reaction types.
 
-.. image:: autofile.png
+. image:: autofile.png
   :width: 800
 
 
