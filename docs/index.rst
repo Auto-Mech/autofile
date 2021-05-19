@@ -22,9 +22,8 @@ Under each, Autofile defines rigid Dataseries trunks, branches, and leaves that 
 database for AutoMech, storing molecular properties like electronic energies, hessians, and torsional profiles as well as
 and transition state information like transitory bonds and reaction types.
 
-. image:: autofile.png
+.. image:: autofile.png
   :width: 800
-
 
 Getting Started
 ~~~~~~~~~~~~~~~
