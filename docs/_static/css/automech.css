@@ -3,16 +3,23 @@ html{
 	 scroll-behavior: smooth;
 }
 
+hr {
+  border-color:#132639;
+}
+
 h1 {
   color:IndianRed;
+  color:MediumSeaGreen;
   font-weight:bold;
   font-size:48px;
   padding-top:50px;
   text-decoration: none; 
+  font-family: Optima, sans-serif;
 }
 
 h1 a {
     color: white;
+    font-size:2px;
 }
 
 h1 a:visited {
@@ -22,11 +29,13 @@ h1 a:visited {
 h2 {
   color:black;
   font-weight:bold;
-  font-size:32px}
+  font-size:32px;
+  font-family: Optima, sans-serif;
 }
 
 h2 a {
     color: white;
+    font-size:2px;
 }
 
 h2 a:visited {
@@ -35,10 +44,12 @@ h2 a:visited {
 
 h3 {
   font-weight:bold;
+  font-family: Optima, sans-serif;
 }
 
 h3 a {
     color: white;
+    font-size:2px;
 }
 
 h3 a:visited {
@@ -62,8 +73,8 @@ a:visited {
 
 p {
   color:black;
-  font-family: Georgia, serif;
   font-size: 17px;
+  font-family: Optima, sans-serif;
 }
 
 /* The sidebar menu */
@@ -75,16 +86,18 @@ div.sphinxsidebar {
   top: 0; /* Stay at the top */
   left: 0;
   background-color:#03070a;
+  background-color:#000e1f;
+  background-image: url("https://www.transparenttextures.com/patterns/light-honeycomb-dark.png");
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 50px;
-  padding-left: 5%;
-  padding-right: 50px;
+  padding-left: 10%;
+  padding-right: 5%;
+  font-family: Optima, sans-serif;
 }
 
 div.sphinxsidebarwrapper {
   color: #f1f1f1;
 }
-
 div.sphinxsidebar a {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
@@ -99,9 +112,9 @@ div.sphinxsidebar ul {
 }
 
 div.sphinxsidebar h3 {
-  border-style:dotted;
-  border-color:#132639;
-  font-size:18pt;
+  text-transform: uppercase;
+  text-transform: full-width;
+  font-size:14pt;
   padding: 8px;
 }
 
@@ -111,6 +124,7 @@ div.sphinxsidebar ul a:hover {
 
 div.sphinxsidebar a:hover {
   color: gray;
+  background-color:#132639;
 }
 
 div.sphinxsidebar a:visited {
@@ -121,12 +135,47 @@ div.sphinxsidebar a:visited {
 div.body {
   margin-left: 250px; /* Same as the width of the sidebar */
   padding: 0px 10px;
-  padding-left: 18%;
-  padding-right: 18%;
+  padding-left: 20%;
+  padding-right: 20%;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
   div.sphinxsidebar {padding-top: 15px;}
   div.sphinxsidebarwrapper a {font-size: 18px;}
+}
+
+th, td {
+  text-align: left;
+  padding-right: 50px;
+  padding-left: 25px;
+  border-bottom: 1px solid #ddd;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+thead th {
+  background-color:IndianRed;
+  background-color:MediumSeaGreen;
+  color: white;
+}
+thead th p{
+  color: white;
+}
+
+table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.admonition.note{
+     -moz-border-radius: 6px;
+     -webkit-border-radius: 6px;
+     background-color: #c4e8d4;
+     background-image: url('https://css.gg/notes.css');
+     background-position: 9px 0px;
+     background-repeat: no-repeat;
+     border: solid 1px MediumSeaGreen;
+     border-radius: 6px;
+     line-height: 18px;
+     overflow: hidden;
+     padding: 10px 40px;
 }

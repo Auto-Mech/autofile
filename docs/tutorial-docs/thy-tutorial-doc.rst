@@ -87,6 +87,11 @@ out.
     5.7
 
 
-Move on to the next tutorial :ref:`cnf-tutorial-doc` to learn the conformer system
+|
+|
+|
 
-Or return to the tutorial hub :ref:`tutorial-hub` to check out more tutorials
+.. note::
+    Move on to the next tutorial :ref:`cnf-tutorial-doc` to learn the conformer system
+
+    Or return to the tutorial hub :ref:`tutorial-hub` to check out more tutorials
