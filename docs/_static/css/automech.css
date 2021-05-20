@@ -179,3 +179,7 @@ div.admonition.note{
      overflow: hidden;
      padding: 10px 40px;
 }
+
+div.toctree-wrapper.compound{
+    background: GhostWhite;
+}
