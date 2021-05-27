@@ -26,6 +26,17 @@ def information(inf_obj):
     return inf_str
 
 
+def instability(instab_rxn):
+    """ write a reaction to a string
+    :param instab_rxn: an automol Reaction object
+    :type instab_rxn: automol.reac.Reaction
+    :return: reaction string
+    :rtype: str
+    """
+    rxn_str = automol.reac.string(instab_rxn)
+    return rxn_str
+
+
 def energy(ene):
     """ write an energy (hartree) to a string (hartree)
 

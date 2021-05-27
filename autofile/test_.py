@@ -344,20 +344,6 @@ def test__energy_transfer():
     assert etrans_fs[-1].file.trajectory.read(locs) == ref_traj
 
 
-def test__instab():
-    """ test autofile.fs.instab
-    """
-    prefix = os.path.join(PREFIX, 'PREFIX')
-    os.mkdir(prefix)
-
-    instab_fs = autofile.fs.instab(prefix)
-    print(instab_fs[-1].path())
-
-    assert not instab_fs[-1].exists()
-    instab_fs[-1].create()
-    assert instab_fs[-1].exists()
-
-
 def test__run():
     """ test autofile.fs.run
     """

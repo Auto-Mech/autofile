@@ -105,6 +105,15 @@ def torsional_names(tors_ranges):
     return inf_obj
 
 
+def instability(instab_msg='species unstable'):
+    """ File to dente the presence of an unstable species. Currently,
+        contains no additional information.
+    """
+    inf_obj = autofile.info.Info(instab_msg=instab_msg)
+    assert autofile.info.matches_function_signature(inf_obj, instability)
+    return inf_obj
+
+
 def vpt2(fermi_treatment):
     """ vpt2 information
 

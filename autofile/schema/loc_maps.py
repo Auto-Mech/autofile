@@ -367,12 +367,6 @@ def vrctst_leaf(num):
     return '{:02d}'.format(int(num))
 
 
-def instab_trunk():
-    """ instab trunk directory name
-    """
-    return 'INSTAB'
-
-
 # Specifier mappings specific to the run file system
 def run_trunk():
     """ run trunk directory name
