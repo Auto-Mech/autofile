@@ -26,6 +26,16 @@ def information(inf_str):
     return inf_obj
 
 
+def instability(instab_str):
+    """ read information (any dict/list combination) from a string
+    :param inf_str: info yaml information
+    :type inf_str: str
+    :rtype: str
+    """
+    tra = automol.reac.from_string(instab_str)
+    return tra
+
+
 def energy(ene_str):
     """ read an energy (hartree) from a string (hartree)
 

@@ -37,6 +37,8 @@ class Extension():
     POLARIZABILITY = '.polar'
     # Transformation files
     REACTION = '.r.yaml'
+    # Instability Transformation files
+    INSTAB = '.yaml'
     # Various VaReCoF files
     VRC_TST = '.tst'
     VRC_DIVSUR = '.divsur'
@@ -79,6 +81,12 @@ def output_file(file_name):
     :rtype: str
     """
     return _add_extension(file_name, Extension.OUTPUT_LOG)
+
+
+def instability(file_name):
+    """ adds instability extension, if missing
+    """
+    return _add_extension(file_name, Extension.INSTAB)
 
 
 def projrot_file(file_name):
