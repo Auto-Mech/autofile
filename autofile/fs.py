@@ -1233,8 +1233,7 @@ def path(pfx, key_locs_lst):
         assert key in FILE_SYSTEM_MANAGER_DCT
 
         fs_ = FILE_SYSTEM_MANAGER_DCT[key](pth)
-        # run the create command for now
-        fs_[-1].create(locs)
+        # fs_[-1].create(locs)  # run create command to filesys fix
         pth = os.path.join(pth, fs_[-1].path(locs))
 
     return pth
