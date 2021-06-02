@@ -534,20 +534,6 @@ def vrctst_leaf(prefix, root_ds=None):
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
 
-def instab_trunk(prefix, root_ds=None):
-    """ instab trunk DataSeries
-
-    :param prefix: path to trunk
-    :type prefix: string
-    :return: dataseries filesystem object for trunk
-    :type: DataSeries
-    """
-    _map = _pack_arguments(loc_maps.instab_trunk)
-    nlocs = _count_arguments(loc_maps.instab_trunk)
-    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
-                            root_ds=root_ds)
-
-
 # DataSeries specific to the run file system
 def run_trunk(prefix, root_ds=None):
     """ run trunk DataSeries

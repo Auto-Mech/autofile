@@ -105,6 +105,15 @@ def torsional_names(tors_ranges):
     return inf_obj
 
 
+def instability(instab_msg='species unstable'):
+    """ File to dente the presence of an unstable species. Currently,
+        contains no additional information.
+    """
+    inf_obj = autofile.info.Info(instab_msg=instab_msg)
+    assert autofile.info.matches_function_signature(inf_obj, instability)
+    return inf_obj
+
+
 def vpt2(fermi_treatment):
     """ vpt2 information
 
@@ -134,19 +143,16 @@ def irc(idxs, coords):
     return inf_obj
 
 
-def lennard_jones(program, version, potential, param_lst):
+def lennard_jones(nsamp, program, version):
     """ energy transfer trunk """
 
+    assert isinstance(nsamp, int)
     assert isinstance(program, str)
     assert isinstance(version, str)
-    assert isinstance(potential, str)
-    assert all(isinstance(val1, float) and isinstance(val2, float)
-               for val1, val2 in param_lst)
 
-    params = autofile.info.Info(*param_lst)
-    inf_obj = autofile.info.Info(program=program, version=version,
-                                 potential=potential,
-                                 params=params)
+    inf_obj = autofile.info.Info(
+        nsamp=nsamp, program=program, version=version)
+
     assert autofile.info.matches_function_signature(
         inf_obj, lennard_jones)
     return inf_obj

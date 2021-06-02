@@ -84,6 +84,15 @@ def output_file(file_prefix):
     return model.DataFile(name=name)
 
 
+def instability(file_prefix):
+    """ Generate a data file for instabiliy
+    """
+    name = autofile.data_types.name.instability(file_prefix)
+    writer_ = autofile.data_types.swrite.instability
+    reader_ = autofile.data_types.sread.instability
+    return model.DataFile(name=name, writer_=writer_, reader_=reader_)
+
+
 def energy(file_prefix):
     """ generate energy DataFile
 
