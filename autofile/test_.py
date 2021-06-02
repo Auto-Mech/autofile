@@ -183,7 +183,7 @@ def test__zmatrix():
         zma_fs[-1].file.zmatrix.read(locs), ref_zma)
 
     ref_rxn = automol.reac.Reaction(
-        rxn_cls=automol.par.ReactionClass.HYDROGEN_ABSTRACTION,
+        rxn_cls=automol.par.ReactionClass.Typ.HYDROGEN_ABSTRACTION,
         forw_tsg=(
             {0: ('C', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
              3: ('H', 0, None), 4: ('H', 0, None), 5: ('O', 0, None),
