@@ -17,8 +17,8 @@ Andreas V. Copan, Kevin B. Moore III, Sarah N. Elliott, and Stephen J. Klippenst
 Overview
 ~~~~~~~~
 
-Autofile directs the filesystem framework for the AutoMech suite.  It uses a dual architecture: the run/save filesystems. 
-Under each, Autofile defines rigid Dataseries trunks, branches, and leaves that each store specific data. The save system is the 
+Autofile directs the filesystem framework for the AutoMech suite.  It uses a dual architecture: the run/save filesystems.
+Under each, Autofile defines rigid Dataseries trunks, branches, and leaves that each store specific data. The save system is the
 database for AutoMech, storing molecular properties like electronic energies, hessians, and torsional profiles as well as
 and transition state information like transitory bonds and reaction types.
 
@@ -29,10 +29,23 @@ Getting Started
 ~~~~~~~~~~~~~~~
 Installation
 ^^^^^^^^^^^^^
+
+We have conda packages on the anaconda cloud for all of our packages. To install them,
+set up an environment for AutoMech.  You can use the environment we have prepared for the
+suite auto-mech-env.  Then activate your environment and install the autofile package.
+
+
 .. code-block:: python
+
+    >>> conda env create auto-mech/auto-mech-env
+    >>> conda activate auto-mech-env
 
     >>> conda install autofile -c auto-mech
 
+For users new to conda, we have :ref:`conda-instructions`.
+Each AutoMech package is also available on `GitHub`_.
+
+.. _GitHub: https://github.com/Auto-Mech/autofile
 
 Tutorial
 ^^^^^^^^
@@ -58,7 +71,7 @@ Documentation
 ~~~~~~~~~~~~~
     .. toctree::
         :maxdepth: 4
-    
+
         submodule_fs
         submodule_model
         submodule_schema
