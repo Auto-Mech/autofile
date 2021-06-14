@@ -1,12 +1,6 @@
-.. raw:: html
-
-    <style> .salmon {color:IndianRed; font-weight:bold; font-size:32px} </style>
-
-.. role:: salmon
-
 .. _spc-tutorial-doc:
 
-:salmon:`Species Tutorial`
+Species Tutorial
 ==========================
 
 To begin, let us create a species filesystem in the current directory, ``'.'``.
@@ -119,7 +113,12 @@ Let's take a look at the paths for each leaf directory:
 Note that there is no correspondence between the number of locators and the
 number of directories.
 
-Move on to the next tutorial :ref:`thy-tutorial-doc` to learn the theory system and begin writing and reading
-molecular data.
+|
+|
+|
 
-Or return to the tutorial hub :ref:`tutorial-hub` to check out more tutorials
+.. note::
+    Move on to the next tutorial :ref:`thy-tutorial-doc` to learn the theory system and begin
+    writing and reading molecular data.
+
+    Or return to the tutorial hub :ref:`tutorial-hub` to check out more tutorials
