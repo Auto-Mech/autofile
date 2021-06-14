@@ -21,7 +21,7 @@ jobs:
                 command: |
                     source activate autofile-env
                     cd autofile
-                    pytest -v --disable-pytest-warnings --cov=autofile --pyargs autofile
+                    pytest -v --disable-pytest-warnings --cov=autofile --pyargs autofile --cov-report=html
                     flake8 --exit-zero ../autofile
                     pylint --rcfile=../.pylintrc autofile
             - store_test_results:
