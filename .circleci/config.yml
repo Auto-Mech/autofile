@@ -20,21 +20,17 @@ jobs:
                 name: Test autofile
                 command: |
                     source activate autofile-env
-                    pwd
                     cd autofile
-                    pwd
                     pytest -v --disable-pytest-warnings --cov=autofile --pyargs autofile --cov-report=html
             - run:
                 name: Test autofile
                 command: |
                     source activate autofile-env
-                    pwd
                     cd autofile
-                    pwd
                     flake8 --exit-zero ../autofile
                     pylint --rcfile=../.pylintrc autofile
             - store_test_results:
-                    path: htmlcov
+                    path: autofile/htmlcov
 workflows:
     version: 2
     build-all:
