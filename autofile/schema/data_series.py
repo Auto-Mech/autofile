@@ -16,6 +16,7 @@ SPEC_FILE_PREFIX = 'dir'
 # DataSeries for species-specific layers
 def species_trunk(prefix, root_ds=None):
     """ species trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -29,6 +30,7 @@ def species_trunk(prefix, root_ds=None):
 
 def species_leaf(prefix, root_ds=None):
     """ species leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -52,6 +54,7 @@ def species_leaf(prefix, root_ds=None):
 # DataSeries for reaction-specific layers
 def reaction_trunk(prefix, root_ds=None):
     """ reaction trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -65,6 +68,7 @@ def reaction_trunk(prefix, root_ds=None):
 
 def reaction_leaf(prefix, root_ds=None):
     """ reaction leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -91,6 +95,7 @@ def reaction_leaf(prefix, root_ds=None):
 
 def transition_state_trunk(prefix, root_ds=None):
     """ transition state trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -104,6 +109,7 @@ def transition_state_trunk(prefix, root_ds=None):
 
 def transition_state_leaf(prefix, root_ds=None):
     """ transition state leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -123,6 +129,7 @@ def transition_state_leaf(prefix, root_ds=None):
 # DataSeries for layers used by both species and reaction file systems
 def theory_leaf(prefix, root_ds=None):
     """ theory leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -145,6 +152,7 @@ def theory_leaf(prefix, root_ds=None):
 
 def conformer_trunk(prefix, root_ds=None):
     """ conformer trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -158,6 +166,7 @@ def conformer_trunk(prefix, root_ds=None):
 
 def conformer_branch(prefix, root_ds=None):
     """ conformer branch DataSeries
+
     :param prefix: path to branch
     :type prefix: string
     :return: dataseries filesystem object for branch
@@ -176,6 +185,7 @@ def conformer_branch(prefix, root_ds=None):
 
 def conformer_leaf(prefix, root_ds=None):
     """ conformer leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -196,6 +206,7 @@ def conformer_leaf(prefix, root_ds=None):
 
 def single_point_trunk(prefix, root_ds=None):
     """ single point trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -209,6 +220,7 @@ def single_point_trunk(prefix, root_ds=None):
 
 def single_point_leaf(prefix, root_ds=None):
     """ single-point leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -219,6 +231,7 @@ def single_point_leaf(prefix, root_ds=None):
 
 def high_spin_trunk(prefix, root_ds=None):
     """ high spin, single point trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -232,6 +245,7 @@ def high_spin_trunk(prefix, root_ds=None):
 
 def high_spin_leaf(prefix, root_ds=None):
     """ high-spin, single-point leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -242,6 +256,7 @@ def high_spin_leaf(prefix, root_ds=None):
 
 def symmetry_trunk(prefix, root_ds=None):
     """ symmetric-conformer trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -255,6 +270,7 @@ def symmetry_trunk(prefix, root_ds=None):
 
 def zmatrix_trunk(prefix, root_ds=None):
     """ zmatrix trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -268,6 +284,7 @@ def zmatrix_trunk(prefix, root_ds=None):
 
 def zmatrix_leaf(prefix, root_ds=None):
     """ zmatrix leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -286,6 +303,7 @@ def zmatrix_leaf(prefix, root_ds=None):
 
 def scan_trunk(prefix, root_ds=None):
     """ scan trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -299,6 +317,7 @@ def scan_trunk(prefix, root_ds=None):
 
 def scan_branch(prefix, root_ds=None):
     """ scan branch DataSeries
+
     :param prefix: path to branch
     :type prefix: string
     :return: dataseries filesystem object for branch
@@ -317,6 +336,7 @@ def scan_branch(prefix, root_ds=None):
 
 def scan_leaf(prefix, root_ds=None):
     """ scan leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -336,6 +356,7 @@ def scan_leaf(prefix, root_ds=None):
 
 def cscan_trunk(prefix, root_ds=None):
     """ constrained scan trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -349,6 +370,7 @@ def cscan_trunk(prefix, root_ds=None):
 
 def cscan_branch1(prefix, root_ds=None):
     """ constrained scan branch 2 DataSeries
+
     :param prefix: path to branch
     :type prefix: string
     :return: dataseries filesystem object for branch
@@ -374,6 +396,7 @@ def cscan_branch1(prefix, root_ds=None):
 
 def cscan_branch2(prefix, root_ds=None):
     """ constrained scan branch 1 DataSeries
+
     :param prefix: path to branch
     :type prefix: string
     :return: dataseries filesystem object for branch
@@ -392,6 +415,7 @@ def cscan_branch2(prefix, root_ds=None):
 
 def cscan_leaf(prefix, root_ds=None):
     """ constrained scan leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -410,6 +434,7 @@ def cscan_leaf(prefix, root_ds=None):
 
 def tau_trunk(prefix, root_ds=None):
     """ tau trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -423,6 +448,7 @@ def tau_trunk(prefix, root_ds=None):
 
 def tau_leaf(prefix, root_ds=None):
     """ tau leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -441,6 +467,7 @@ def tau_leaf(prefix, root_ds=None):
 
 def energy_transfer_trunk(prefix, root_ds=None):
     """ energy transfer trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -454,6 +481,7 @@ def energy_transfer_trunk(prefix, root_ds=None):
 
 def energy_transfer_branch(prefix, root_ds=None):
     """ energy transfer branch DataSeries
+
     :param prefix: path to branch
     :type prefix: string
     :return: dataseries filesystem object for branch
@@ -464,6 +492,7 @@ def energy_transfer_branch(prefix, root_ds=None):
 
 def energy_transfer_leaf(prefix, root_ds=None):
     """ energy transfer leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -474,6 +503,7 @@ def energy_transfer_leaf(prefix, root_ds=None):
 
 def vrctst_trunk(prefix, root_ds=None):
     """ vrctst trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -487,6 +517,7 @@ def vrctst_trunk(prefix, root_ds=None):
 
 def vrctst_leaf(prefix, root_ds=None):
     """ vrctst leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -503,22 +534,10 @@ def vrctst_leaf(prefix, root_ds=None):
                             loc_dfile=loc_dfile, root_ds=root_ds)
 
 
-def instab_trunk(prefix, root_ds=None):
-    """ instab trunk DataSeries
-    :param prefix: path to trunk
-    :type prefix: string
-    :return: dataseries filesystem object for trunk
-    :type: DataSeries
-    """
-    _map = _pack_arguments(loc_maps.instab_trunk)
-    nlocs = _count_arguments(loc_maps.instab_trunk)
-    return model.DataSeries(prefix, map_=_map, nlocs=nlocs, depth=1,
-                            root_ds=root_ds)
-
-
 # DataSeries specific to the run file system
 def run_trunk(prefix, root_ds=None):
     """ run trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -532,6 +551,7 @@ def run_trunk(prefix, root_ds=None):
 
 def run_leaf(prefix, root_ds=None):
     """ run leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -551,6 +571,7 @@ def run_leaf(prefix, root_ds=None):
 
 def subrun_leaf(prefix, root_ds=None):
     """ subrun leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf
@@ -570,6 +591,7 @@ def subrun_leaf(prefix, root_ds=None):
 
 def build_trunk(prefix, root_ds=None):
     """ build trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -588,6 +610,7 @@ def build_trunk(prefix, root_ds=None):
 
 def build_branch(prefix, root_ds=None):
     """ build trunk DataSeries
+
     :param prefix: path to trunk
     :type prefix: string
     :return: dataseries filesystem object for trunk
@@ -606,6 +629,7 @@ def build_branch(prefix, root_ds=None):
 
 def build_leaf(prefix, root_ds=None):
     """ build leaf DataSeries
+
     :param prefix: path to leaf
     :type prefix: string
     :return: dataseries filesystem object for leaf

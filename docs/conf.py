@@ -18,8 +18,8 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'autofile'
-copyright = '2020, Andreas V. Copan'
-author = 'Andreas V. Copan'
+copyright = '2021, Sarah N. Elliott'
+author = 'Sarah N. Elliott'
 
 # The full version, including alpha/beta/rc tags
 release = '0.1.0'
@@ -32,7 +32,7 @@ release = '0.1.0'
 # ones.
 extensions = ['sphinx.ext.autodoc']
 master_doc = 'index'
-autodoc_mock_imports = ['numpy', 'automol', 'yaml', 'autoparse', 'elstruct']
+autodoc_mock_imports = ['numpy', 'automol', 'yaml', 'elstruct', 'os', 'json', 'autoparse', 'glob', 'types', 'itertools', 'phydat']
 autodoc_member_order = 'bysource'
 
 # Add any paths that contain templates here, relative to this directory.
@@ -50,6 +50,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = 'alabaster'
+html_logo = 'logo.png'
+html_style = 'css/automech.css'
+html_sidebars = { '**': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'] }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

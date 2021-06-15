@@ -123,9 +123,6 @@ def test__conformer():
     ene = cnf_fs[-1].file.energy.read(locs)
     assert numpy.isclose(ene, ref_ene)
 
-    print(cnf_fs[-1].existing())
-    
-
 
 def test__single_point():
     """ test autofile.fs.single_point
@@ -186,7 +183,7 @@ def test__zmatrix():
         zma_fs[-1].file.zmatrix.read(locs), ref_zma)
 
     ref_rxn = automol.reac.Reaction(
-        rxn_cls=automol.par.ReactionClass.HYDROGEN_ABSTRACTION,
+        rxn_cls=automol.par.ReactionClass.Typ.HYDROGEN_ABSTRACTION,
         forw_tsg=(
             {0: ('C', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
              3: ('H', 0, None), 4: ('H', 0, None), 5: ('O', 0, None),
@@ -345,20 +342,6 @@ def test__energy_transfer():
     assert etrans_fs[-1].file.lennard_jones_input.read(locs) == ref_inp_str
     assert etrans_fs[-1].file.lennard_jones_elstruct.read(locs) == ref_temp_str
     assert etrans_fs[-1].file.trajectory.read(locs) == ref_traj
-
-
-def test__instab():
-    """ test autofile.fs.instab
-    """
-    prefix = os.path.join(PREFIX, 'PREFIX')
-    os.mkdir(prefix)
-
-    instab_fs = autofile.fs.instab(prefix)
-    print(instab_fs[-1].path())
-
-    assert not instab_fs[-1].exists()
-    instab_fs[-1].create()
-    assert instab_fs[-1].exists()
 
 
 def test__run():

@@ -1,10 +1,11 @@
-""" utilities
+""" read and write to files
 """
 import os
 
 
 def read_file(file_path):
     """ read a file as a string
+
     :param file_path: path of file to be read
     :type file_path: str
     :return: file contents
@@ -18,6 +19,7 @@ def read_file(file_path):
 
 def write_file(file_path, string):
     """ write a string to a file
+
     :param file_path: path of file to be written
     :type file_path: str
     :param file_path: string to be written

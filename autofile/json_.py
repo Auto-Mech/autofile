@@ -1,4 +1,4 @@
-""" utilities
+""" load and dump to json files
 """
 import os
 import json
@@ -8,6 +8,7 @@ import time
 
 def read_json(file_path):
     """ read a file as a string
+
     :param file_path: path of file to be read
     :type file_path: str
     :return: file contents
@@ -41,6 +42,7 @@ def read_json(file_path):
 
 def write_json(json_dct, file_path):
     """ write a string to a file
+
     :param file_path: path of file to be written
     :type file_path: str
     :param file_path: dictionry to be written

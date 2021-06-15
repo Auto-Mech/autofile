@@ -182,29 +182,28 @@ def test__vmatrix():
     assert vma == ref_vma
 
 
-# def test__torsions():
-#     """ test the torsion names read/write functions
-#     """
-#
-#     zma = automol.geom.zmatrix(automol.inchi.geometry(
-#             automol.smiles.inchi('CCO')))
-#     ref_tors_lst = automol.rotor.from_zmatrix(zma)
-#
-#     tors_file_name = autofile.data_types.name.torsions('test')
-#     tors_file_path = os.path.join(TMP_DIR, tors_file_name)
-#     tors_str = autofile.data_types.swrite.torsions(ref_tors_lst)
-#
-#     assert not os.path.isfile(tors_file_path)
-#     autofile.io_.write_file(tors_file_path, tors_str)
-#     assert os.path.isfile(tors_file_path)
-#
-#     tors_str = autofile.io_.read_file(tors_file_path)
-#     tors_lst = autofile.data_types.sread.torsions(tors_str)
-#     for tors, tors_ref in zip(tors_lst, ref_tors_lst):
-#         assert tors.name == tors_ref.name
-#         assert tors.symmetry == tors_ref.symmetry
-#
-# 
+def __torsions():
+    """ test the torsion names read/write functions
+    """
+
+    zma = automol.geom.zmatrix(automol.inchi.geometry(
+            automol.smiles.inchi('CCO')))
+    ref_tors_lst = automol.rotor.from_zmatrix(zma)
+
+    tors_file_name = autofile.data_types.name.torsions('test')
+    tors_file_path = os.path.join(TMP_DIR, tors_file_name)
+    tors_str = autofile.data_types.swrite.torsions(ref_tors_lst)
+
+    assert not os.path.isfile(tors_file_path)
+    autofile.io_.write_file(tors_file_path, tors_str)
+    assert os.path.isfile(tors_file_path)
+
+    tors_str = autofile.io_.read_file(tors_file_path)
+    tors_lst = autofile.data_types.sread.torsions(tors_str)
+    for tors, tors_ref in zip(tors_lst, ref_tors_lst):
+        assert tors.name == tors_ref.name
+        assert tors.symmetry == tors_ref.symmetry
+
 
 def test__gradient():
     """ test the gradient read/write functions
@@ -571,7 +570,7 @@ def test__reaction():
     """ test the reaction read/write functions
     """
     ref_rxn = automol.reac.Reaction(
-        rxn_cls=automol.par.ReactionClass.HYDROGEN_ABSTRACTION,
+        rxn_cls=automol.par.ReactionClass.Typ.HYDROGEN_ABSTRACTION,
         forw_tsg=(
             {0: ('C', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
              3: ('H', 0, None), 4: ('H', 0, None), 5: ('O', 0, None),
