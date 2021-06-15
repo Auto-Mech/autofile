@@ -29,6 +29,8 @@ jobs:
                     cd autofile
                     flake8 --exit-zero ../autofile
                     pylint --rcfile=../.pylintrc autofile
+            - store_artifacts:
+                    path: autofile/htmlcov
             - store_test_results:
                     path: autofile/htmlcov
 workflows:
