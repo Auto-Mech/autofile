@@ -36,4 +36,4 @@ workflows:
     version: 2
     build-all:
         jobs:
-            - build-debian
+            - build-and-test-autofile
