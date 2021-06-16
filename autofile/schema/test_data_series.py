@@ -69,7 +69,7 @@ def test__data_series__species_trunk():
     assert sorted(root_ds.existing()) == sorted(root_locs_lst)
 
 
-def __data_series__species_leaf():
+def test__data_series__species_leaf():
     """ test data_series.species_leaf
     """
     prefix = os.path.join(PREFIX, 'species_leaf')
@@ -88,8 +88,6 @@ def __data_series__species_leaf():
     branch_locs_lst = [
         ['InChI=1S/C2H2F2/c3-1-2-4/h1-2H/b2-1+', 0, 1],
         ['InChI=1S/C2H2F2/c3-1-2-4/h1-2H/b2-1-', 0, 1],
-        ['InChI=1S/C5H5O/c1-2-3-4-5-6/h1-5H/b4-3-', 0, 2],
-        # ['InChI=1S/C5H5O/c1-2-3-4-5-6/h1-5H/b2-1?,4-3-', 0, 2],
         ['InChI=1S/O', 0, 1],
         ['InChI=1S/O', 0, 3],
     ]
