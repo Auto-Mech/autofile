@@ -1,5 +1,6 @@
 """ test autofile.fs
 """
+
 import os
 import tempfile
 import numpy
