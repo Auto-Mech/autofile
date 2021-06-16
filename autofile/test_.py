@@ -46,19 +46,6 @@ def test__reaction():
     assert rxn_fs[-1].exists(locs)
 
 
-# def test__transition_state():
-#     """ test autofile.fs.transition_state
-#     """
-#     prefix = os.path.join(PREFIX, 'ts')
-#     os.mkdir(prefix)
-#
-#     ts_fs = autofile.fs.transition_state(prefix)
-#
-#     assert not ts_fs[0].exists()
-#     ts_fs[0].create()
-#     assert ts_fs[0].exists()
-
-
 def test__transition_state():
     """ test autofile.fs.transition_state
     """
@@ -99,9 +86,9 @@ def test__conformer():
     prefix = os.path.join(PREFIX, 'conformer')
     os.mkdir(prefix)
 
-    locs = [
-        autofile.schema.generate_new_ring_id(),
-        autofile.schema.generate_new_conformer_id()]
+    rid = autofile.schema.generate_new_ring_id()
+    cid = autofile.schema.generate_new_conformer_id()
+    locs = [rid, cid]
 
     cnf_fs = autofile.fs.conformer(prefix)
     assert not cnf_fs[-1].exists(locs)
@@ -111,10 +98,10 @@ def test__conformer():
     ref_inf_obj1 = autofile.schema.info_objects.conformer_trunk(1)
     ref_inf_obj2 = autofile.schema.info_objects.conformer_branch(1)
     cnf_fs[0].file.info.write(ref_inf_obj1)
-    cnf_fs[1].file.info.write(ref_inf_obj2, [locs[0]])
+    cnf_fs[1].file.info.write(ref_inf_obj2, [rid])
 
     inf_obj1 = cnf_fs[0].file.info.read()
-    inf_obj2 = cnf_fs[1].file.info.read([locs[0]])
+    inf_obj2 = cnf_fs[1].file.info.read([rid])
     assert inf_obj1 == ref_inf_obj1
     assert inf_obj2 == ref_inf_obj2
 
@@ -122,6 +109,33 @@ def test__conformer():
     cnf_fs[-1].file.energy.write(ref_ene, locs)
     ene = cnf_fs[-1].file.energy.read(locs)
     assert numpy.isclose(ene, ref_ene)
+
+    ref_vpt2_inf_obj = autofile.schema.info_objects.vpt2(
+        fermi_treatment='gaussian_default')
+    cnf_fs[-1].file.vpt2_info.write(ref_vpt2_inf_obj, locs)
+    assert cnf_fs[-1].file.vpt2_info.read(locs) == ref_vpt2_inf_obj
+
+
+def test__symmetry():
+    """ test autofile.fs.symmetry
+    """
+
+    prefix = os.path.join(PREFIX, 'symmetry')
+    os.mkdir(prefix)
+
+    symm_locs = [autofile.schema.generate_new_conformer_id()]
+
+    symm_fs = autofile.fs.symmetry(prefix)
+    symm_fs[-1].create(symm_locs)
+
+    ref_geo = (
+        ('O', (-1.1707387949811348, -0.8186819289555977, 0.1847602826946391)),
+        ('O', (1.2517867512044956, 0.33310347836345394, 0.7805302053715455)),
+        ('H', (-2.2059402840308078, 0.6739299449565304, 0.505211869486996)),
+        ('H', (2.124892327807454, -0.18835149436438584, -0.7582977119813665)))
+    symm_fs[-1].file.geometry.write(ref_geo, symm_locs)
+    geo = symm_fs[-1].file.geometry.read(symm_locs)
+    assert automol.geom.almost_equal_dist_matrix(ref_geo, geo)
 
 
 def test__single_point():
@@ -137,11 +151,6 @@ def test__single_point():
     sp_fs[-1].create(locs)
     sp_fs[-1].file.energy.write(ref_ene, locs)
     assert sp_fs[-1].file.energy.read(locs) == ref_ene
-    sp_fs[-1].removable = True
-    sp_fs[-1].file.energy.removable = True
-    sp_fs[-1].file.energy.remove(locs)
-    sp_fs[-1].remove(locs)
-    assert not sp_fs[-1].exists(locs)
 
 
 def test__high_spin():
@@ -157,11 +166,6 @@ def test__high_spin():
     sp_fs[-1].create(locs)
     sp_fs[-1].file.energy.write(ref_ene, locs)
     assert sp_fs[-1].file.energy.read(locs) == ref_ene
-    sp_fs[-1].removable = True
-    sp_fs[-1].file.energy.removable = True
-    sp_fs[-1].file.energy.remove(locs)
-    sp_fs[-1].remove(locs)
-    assert not sp_fs[-1].exists(locs)
 
 
 def test__zmatrix():
@@ -259,8 +263,13 @@ def test__tau():
     tau_fs[-1].create(locs)
     assert tau_fs[-1].exists(locs)
 
-    inf_obj = autofile.schema.info_objects.tau_trunk(0, {})
-    tau_fs[0].file.info.write(inf_obj)
+    ref_inf_obj = autofile.schema.info_objects.tau_trunk(
+        2, {'D1': (3.14159, 6.28319)})
+    tau_fs[0].file.info.write(ref_inf_obj)
+    inf_obj = tau_fs[0].file.info.read()
+    assert inf_obj.nsamp == ref_inf_obj.nsamp
+    assert numpy.allclose(dict(ref_inf_obj.tors_ranges)['D1'],
+                          dict(inf_obj.tors_ranges)['D1'])
 
 
 def test__vrctst():
@@ -315,10 +324,10 @@ def test__energy_transfer():
 
     etrans_fs = autofile.fs.energy_transfer(prefix)
 
-    # Create filesys
     bath_locs = ['InChI=1S/N2/c1-2', 0, 1]
     thy_locs = ['hf', 'sto-3g', 'R']
     locs = bath_locs + thy_locs
+
     etrans_fs[-1].create(locs)
 
     ref_eps = 300.0
@@ -329,12 +338,15 @@ def test__energy_transfer():
         ((('H', (0.0, 0.0, 0.0)),), 'comment 1'),
         ((('H', (0.0, 0.0, 0.0)),), 'comment 2')
     )
+    ref_inf_obj = autofile.schema.info_objects.lennard_jones(
+        nsamp=10, program='OneDMin', version='1.0')
 
     etrans_fs[-1].file.lennard_jones_epsilon.write(ref_eps, locs)
     etrans_fs[-1].file.lennard_jones_sigma.write(ref_sig, locs)
     etrans_fs[-1].file.lennard_jones_input.write(ref_inp_str, locs)
     etrans_fs[-1].file.lennard_jones_elstruct.write(ref_temp_str, locs)
     etrans_fs[-1].file.trajectory.write(ref_traj, locs)
+    etrans_fs[-1].file.lennard_jones_info.write(ref_inf_obj, locs)
     assert numpy.isclose(
         etrans_fs[-1].file.lennard_jones_epsilon.read(locs), ref_eps)
     assert numpy.isclose(
@@ -342,6 +354,7 @@ def test__energy_transfer():
     assert etrans_fs[-1].file.lennard_jones_input.read(locs) == ref_inp_str
     assert etrans_fs[-1].file.lennard_jones_elstruct.read(locs) == ref_temp_str
     assert etrans_fs[-1].file.trajectory.read(locs) == ref_traj
+    assert etrans_fs[-1].file.lennard_jones_info.read(locs) == ref_inf_obj
 
 
 def test__run():
@@ -351,11 +364,33 @@ def test__run():
     os.mkdir(prefix)
 
     run_fs = autofile.fs.run(prefix)
+    run_locs = ['gradient']
+
+    run_fs[-1].create(run_locs)
+
+    ref_inf_obj = autofile.schema.info_objects.run(
+        job='gradient', prog='psi4', version='1.0',
+        method='ccsd(t)', basis='cc-pvdz', status='succeeded')
+    ref_inf_obj.utc_start_time = autofile.schema.utc_time()
+
+    run_fs[-1].create(run_locs)
+    run_fs[-1].file.info.write(ref_inf_obj, run_locs)
+    assert run_fs[-1].file.info.read(run_locs) == ref_inf_obj
+
+
+def test__subrun():
+    """ test autofile.fs.subrun
+    """
+    prefix = os.path.join(PREFIX, 'subrun')
+    os.mkdir(prefix)
+
+    subrun_fs = autofile.fs.subrun(prefix)
+    subrun_locs = [0, 1]
 
     ref_inp_str = '<input string>'
-    run_fs[-1].create(['gradient'])
-    run_fs[-1].file.input.write(ref_inp_str, ['gradient'])
-    assert run_fs[-1].file.input.read(['gradient']) == ref_inp_str
+    subrun_fs[-1].create(subrun_locs)
+    subrun_fs[-1].file.input.write(ref_inp_str, subrun_locs)
+    assert subrun_fs[-1].file.input.read(subrun_locs) == ref_inp_str
 
 
 def test__build():
@@ -434,22 +469,66 @@ def test__json_tau_save():
     tau_fs[-1].json_existing(locs=sp_locs, json_layer=locs)
 
 
+def test__managers():
+    """ test autofile.fs.manager
+    """
+
+    # Create a small filesystem
+    prefix = os.path.join(PREFIX, 'small')
+    os.mkdir(prefix)
+
+    full_locs_sets = [
+        [['InChI=1S/H2O/h1H2', 0, 1],
+         ['hf', 'sto-3g', 'U'],
+         ['rQ5VxakIXDkDp', 'cdgZx6pwjFtcX']],
+        [['InChI=1S/H2O/h1H2', 0, 1],
+         ['hf', 'cc-pvdz', 'R'],
+         ['rTW2L_4wU-PVV', 'caI7Oi5445ya2']],
+        [['InChI=1S/CH4/h1H4', 0, 1],
+         ['hf', 'sto-3g', 'U'],
+         ['r5-8BlffIKsw_', 'cWgRuV5qGsBrK']],
+        [['InChI=1S/CH4/h1H4', 0, 1],
+         ['hf', 'cc-pvdz', 'R'],
+         ['ry0F_raMFxFnv', 'ckyd_uZJ-TmM7']]
+    ]
+
+    spc_fs = autofile.fs.species(prefix)
+    for locs_set in full_locs_sets:
+        spc_fs[-1].create(locs_set[0])
+        spc_path = spc_fs[-1].path(locs_set[0])
+        thy_fs = autofile.fs.theory(spc_path)
+        thy_fs[-1].create(locs_set[1])
+        thy_path = thy_fs[-1].path(locs_set[1])
+        cnf_fs = autofile.fs.conformer(thy_path)
+        cnf_fs[-1].create(locs_set[2])
+        cnf_fs[-1].file.geometry_input.write('<INPUT>', locs_set[2])
+
+    # Generate managers for grapping parts of fake fileystem
+    cnf_managers = tuple(autofile.fs.iterate_managers(
+        prefix, ['SPECIES', 'THEORY'], 'CONFORMER'))
+
+    # Get the first two of the 4 created filesystem for file/series operations
+    cnf_fs_1, cnf_locs_1 = cnf_managers[1], full_locs_sets[1][2]
+    cnf_fs_2, cnf_locs_2 = cnf_managers[2], full_locs_sets[2][2]
+
+    cnf_fs_1[-1].removable = True
+    if cnf_fs_1[-1].file.geometry_input.exists(cnf_locs_1):
+        cnf_fs_1[-1].file.geometry_input.removable = True
+        cnf_fs_1[-1].file.geometry_input.remove(cnf_locs_1)
+    cnf_fs_1[-1].remove(cnf_locs_1)
+
+    rem1, rem2 = False, False
+    try:
+        cnf_fs_2[-1].remove(cnf_locs_2)
+    except ValueError:
+        rem1 = True
+    try:
+        cnf_fs_2[-1].file.geometry_input.remove(cnf_locs_2)
+    except ValueError:
+        rem2 = True
+
+    assert rem1 and rem2
+
+
 if __name__ == '__main__':
-    # test__species()
-    # test__reaction()
-    # test__transition_state()
-    # test__theory()
-    test__conformer()
-    # test__tau()
-    # test__single_point()
-    # test__high_spin()
-    # test__energy_transfer()
-    # test__json_io()
-    # test__json_tau_save()
-    # test__vrctst()
-    # test__instab()
-    # test__scan()
-    # test__run()
-    # test__build()
-    # test__cscan()
-    # test__zmatrix()
+    test__managers()

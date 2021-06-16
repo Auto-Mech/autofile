@@ -31,8 +31,6 @@ jobs:
                     pylint --rcfile=../.pylintrc autofile
             - store_artifacts:
                     path: autofile/htmlcov
-            - store_test_results:
-                    path: autofile/htmlcov
 workflows:
     version: 2
     build-all:

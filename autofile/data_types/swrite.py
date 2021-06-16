@@ -214,18 +214,6 @@ def anharmonic_frequencies(freqs):
     return _frequencies(freqs)
 
 
-def projected_frequencies(freq):
-    """ write projected frequencies (cm^-1) to a string (cm^-1)
-
-    :param freqs: freq tuple of floats
-    :type freqs: tuple
-    :return: frequencies as string
-    :rtype: str
-    """
-    assert list(freq) == sorted(freq)
-    return _frequencies(freq)
-
-
 def cubic_force_constants(cfcs):
     """ Writes cubic force constants () to a string ().
 

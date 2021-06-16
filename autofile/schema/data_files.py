@@ -535,8 +535,3 @@ def vrctst_flux(file_prefix):
     name = autofile.data_types.name.vrctst_flux(file_prefix)
     return model.DataFile(name=name)
     # return model.DataFile(name=name, writer_=writer_, reader_=reader_)
-
-
-# helpers
-def _not_implemented(*_args, **_kwargs):
-    raise NotImplementedError
