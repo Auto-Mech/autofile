@@ -1,12 +1,10 @@
 """ implements an class for YAML-style information
 """
+
 import numbers
 from types import SimpleNamespace
 import yaml
-try:
-    from collections.abc import Collection as _Collection
-except ImportError:
-    from collections import Collection as _Collection
+from collections.abc import Collection as _Collection
 from autofile.info._inspect import function_keys as _function_keys
 
 
