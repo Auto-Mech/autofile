@@ -24,7 +24,7 @@ jobs:
                     pytest -v --disable-pytest-warnings --cov=autofile --pyargs autofile --cov-report=html
                     coverage report
             - run:
-                name: Test autofile
+                name: pylint autofile
                 command: |
                     source activate autofile-env
                     cd autofile
