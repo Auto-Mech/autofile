@@ -3,8 +3,8 @@
 
 import numbers
 from types import SimpleNamespace
-import yaml
 from collections.abc import Collection as _Collection
+import yaml
 from autofile.info._inspect import function_keys as _function_keys
 
 
