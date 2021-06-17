@@ -22,6 +22,7 @@ jobs:
                     source activate autofile-env
                     cd autofile
                     pytest -v --disable-pytest-warnings --cov=autofile --pyargs autofile --cov-report=html
+                    coverage report
             - run:
                 name: Test autofile
                 command: |
