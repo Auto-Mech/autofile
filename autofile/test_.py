@@ -529,6 +529,12 @@ def test__managers():
 
     assert rem1 and rem2
 
+    # Test path
+    # for spc_locs, in fs.iterate_locators(TMP_PFX, ['SPECIES']):
+    # ich, _, _ = spc_locs
+
+    # _fs = autofile.fs.manager(prefix, [spc_locs, thy_locs], 'CONFORMER')
+
 
 if __name__ == '__main__':
     test__managers()
