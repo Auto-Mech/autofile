@@ -1,9 +1,7 @@
 """ DataSeriess
 """
-try:
-    from inspect import getfullargspec as function_argspec
-except ImportError:
-    from inspect import getargspec as function_argspec
+
+from inspect import getfullargspec as function_argspec
 import automol
 from autofile import model
 from autofile.schema import loc_maps
