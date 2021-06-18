@@ -329,27 +329,32 @@ def test__hessian():
 def test__harmonic_frequencies():
     """ test the harmonic frequencies read/write functions
     """
-    ref_freqs = sorted([3123.20334, 2013.56563, 1830.34050, 745.33024,
-                        23.049560, 1.2344])
 
-    freqs_file_name = autofile.data_types.name.harmonic_frequencies('test')
-    freqs_file_path = os.path.join(TMP_DIR, freqs_file_name)
-    freqs_str = autofile.data_types.swrite.harmonic_frequencies(ref_freqs)
+    ref_freqs_set = (
+            sorted([3123.2, 2013.5, 1830.3, 745.3, 23.1, 1.2]),
+            [4462.4]
+    )
+    names = ('test', 'test2')
 
-    assert not os.path.isfile(freqs_file_path)
-    autofile.io_.write_file(freqs_file_path, freqs_str)
-    assert os.path.isfile(freqs_file_path)
+    for ref_freqs, name in zip(ref_freqs_set, names):
+        freqs_file_name = autofile.data_types.name.harmonic_frequencies(name)
+        freqs_file_path = os.path.join(TMP_DIR, freqs_file_name)
+        freqs_str = autofile.data_types.swrite.harmonic_frequencies(ref_freqs)
 
-    freqs_str = autofile.io_.read_file(freqs_file_path)
-    freqs = autofile.data_types.sread.harmonic_frequencies(freqs_str)
-    assert numpy.allclose(ref_freqs, freqs, atol=1e00)
+        assert not os.path.isfile(freqs_file_path)
+        autofile.io_.write_file(freqs_file_path, freqs_str)
+        assert os.path.isfile(freqs_file_path)
+
+        freqs_str = autofile.io_.read_file(freqs_file_path)
+        freqs = autofile.data_types.sread.harmonic_frequencies(freqs_str)
+        assert numpy.allclose(ref_freqs, freqs, atol=1e00)
 
 
 def test__anharmonic_frequencies():
     """ test the anharmonic frequencies read/write functions
     """
-    ref_freqs = sorted([3123.20334, 2013.56563, 1830.34050, 745.33024,
-                        23.049560, 1.2344])
+
+    ref_freqs = sorted([3123.2, 2013.5, 1830.3, 745.3, 23.1, 1.2])
 
     freqs_file_name = autofile.data_types.name.anharmonic_frequencies('test')
     freqs_file_path = os.path.join(TMP_DIR, freqs_file_name)
@@ -362,6 +367,24 @@ def test__anharmonic_frequencies():
     freqs_str = autofile.io_.read_file(freqs_file_path)
     freqs = autofile.data_types.sread.anharmonic_frequencies(freqs_str)
     assert numpy.allclose(ref_freqs, freqs, atol=1e00)
+
+
+def test__harmonic_zpve():
+    """ test the harmonic ZPVE read/write functions
+    """
+    ref_anh_zpve = -25.123455
+
+    anh_zpve_file_name = autofile.data_types.name.harmonic_zpve('test')
+    anh_zpve_file_path = os.path.join(TMP_DIR, anh_zpve_file_name)
+    anh_zpve_str = autofile.data_types.swrite.harmonic_zpve(ref_anh_zpve)
+
+    assert not os.path.isfile(anh_zpve_file_path)
+    autofile.io_.write_file(anh_zpve_file_path, anh_zpve_str)
+    assert os.path.isfile(anh_zpve_file_path)
+
+    anh_zpve_str = autofile.io_.read_file(anh_zpve_file_path)
+    anh_zpve = autofile.data_types.sread.harmonic_zpve(anh_zpve_str)
+    assert numpy.isclose(ref_anh_zpve, anh_zpve)
 
 
 def test__anharmonic_zpve():
@@ -386,21 +409,26 @@ def test__anharmonicity_matrix():
     """ test the anharmonicity matrix read/write functions
     """
 
-    ref_xmat = ((1.123, 2.451, 7.593),
-                (3.321, 4.123, 9.382),
-                (5.342, 6.768, 8.392))
+    ref_xmats = (
+        ((1.123, 2.451, 7.593),  # for polyatomic
+         (3.321, 4.123, 9.382),
+         (5.342, 6.768, 8.392)),
+        ((5.324,),)              # for diatomic
+    )
+    names = ('test', 'test2')
 
-    xmat_file_name = autofile.data_types.name.anharmonicity_matrix('test')
-    xmat_file_path = os.path.join(TMP_DIR, xmat_file_name)
-    xmat_str = autofile.data_types.swrite.anharmonicity_matrix(ref_xmat)
+    for ref_xmat, name in zip(ref_xmats, names):
+        xmat_file_name = autofile.data_types.name.anharmonicity_matrix(name)
+        xmat_file_path = os.path.join(TMP_DIR, xmat_file_name)
+        xmat_str = autofile.data_types.swrite.anharmonicity_matrix(ref_xmat)
 
-    assert not os.path.isfile(xmat_file_path)
-    autofile.io_.write_file(xmat_file_path, xmat_str)
-    assert os.path.isfile(xmat_file_path)
+        assert not os.path.isfile(xmat_file_path)
+        autofile.io_.write_file(xmat_file_path, xmat_str)
+        assert os.path.isfile(xmat_file_path)
 
-    xmat_str = autofile.io_.read_file(xmat_file_path)
-    xmat = autofile.data_types.sread.anharmonicity_matrix(xmat_str)
-    assert numpy.allclose(ref_xmat, xmat)
+        xmat_str = autofile.io_.read_file(xmat_file_path)
+        xmat = autofile.data_types.sread.anharmonicity_matrix(xmat_str)
+        assert numpy.allclose(ref_xmat, xmat)
 
 
 def test__vibro_rot_alpha_matrix():
