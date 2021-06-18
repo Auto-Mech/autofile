@@ -1,4 +1,4 @@
-""" test autofile.fs functions
+""" test autofile.fs
 """
 
 import os
