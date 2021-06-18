@@ -473,7 +473,7 @@ def test__manager():
     """ test
     """
 
-    prefix = 'data1'
+    prefix = os.path.join(PREFIX, 'data1')
     _build_fs(prefix)
 
     # Set locs for this test
@@ -503,6 +503,7 @@ def test__manager():
     if cnf_fs[-1].file.geometry_input.exists(cnf_locs_2):
         cnf_fs[-1].file.geometry_input.removable = True
         cnf_fs[-1].file.geometry_input.remove(cnf_locs_2)
+    assert not cnf_fs[-1].file.geometry_input.exists(cnf_locs_2)
     cnf_fs[-1].remove(cnf_locs_2)
 
 
@@ -520,7 +521,7 @@ def test__iterate_managers():
         return set_name
 
     # Build fs
-    prefix = 'data2'
+    prefix = os.path.join(PREFIX, 'data2')
     _build_fs(prefix)
 
     # Generate managers for grapping parts of fake fileystem
@@ -531,7 +532,7 @@ def test__iterate_managers():
     for cnf_fs in cnf_managers:
         for locs in cnf_fs[-1].existing():
             inp_str = cnf_fs[-1].file.geometry_input.read(locs)
-            assert inp_str == _get_set(list(locs))
+            assert inp_str == FAKE_NAMES_DCT[_get_set(list(locs))]
 
 
 def test__iterate_locators():
@@ -539,7 +540,7 @@ def test__iterate_locators():
     """
 
     # Build fs
-    prefix = 'data3'
+    prefix = os.path.join(PREFIX, 'data3')
     _build_fs(prefix)
 
     # Generate managers for grapping parts of fake fileystem
@@ -548,7 +549,6 @@ def test__iterate_locators():
 
     # Loop over species locs (generate geo from ich and match filesys)
     for spc_locs, in spc_locators:
-
         ich, _, _ = spc_locs
         ref_geo = automol.inchi.geometry(ich)
 
@@ -565,7 +565,6 @@ def _build_fs(prefix):
     """ Construct a filesystem to do stuff
     """
 
-    prefix = os.path.join(PREFIX, prefix)
     os.mkdir(prefix)
 
     spc_fs = autofile.fs.species(prefix)
@@ -607,9 +606,3 @@ FAKE_NAMES_DCT = {
     'set3': 'inp3',
     'set4': 'inp4'
 }
-
-
-if __name__ == '__main__':
-    test__manager()
-    test__iterate_managers()
-    test__iterate_locators()
