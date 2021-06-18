@@ -236,6 +236,18 @@ def quartic_force_constants(qfcs):
     return automol.util.highd_mat.string(qfcs, val_format='{0:>14.6f}')
 
 
+def harmonic_zpve(zpve):
+    """ write the harmonic ZPVE (hartree) to a string (hartree)
+
+    :param harm_zpve: zpve float
+    :type harm_zpve: float
+    :return: zpve as string
+    :rtype: str
+    """
+    harm_zpve_str = _float(zpve)
+    return harm_zpve_str
+
+
 def anharmonic_zpve(zpve):
     """ write the anharmonic ZPVE (hartree) to a string (hartree)
 

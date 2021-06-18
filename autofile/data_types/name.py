@@ -88,17 +88,6 @@ def instability(file_name):
     return _add_extension(file_name, Extension.INSTAB)
 
 
-def projrot_file(file_name):
-    """ adds projrot file extension, if missing
-
-    :param file_name: name of file
-    :type file_name: str
-    :returns: file with extension added
-    :rtype: str
-    """
-    return _add_extension(file_name, Extension.PROJROT_LOG)
-
-
 def run_script(file_name):
     """ adds run script extension, if missing
 
