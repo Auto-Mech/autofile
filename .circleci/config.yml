@@ -20,10 +20,8 @@ jobs:
                 name: Test autofile
                 command: |
                     source activate autofile-env
-                    pwd
                     cd autofile
-                    pwd
-                    pytest -v --disable-pytest-warnings --cov=autofile --pyargs autofile --cov-report=html
+                    pytest -v --disable-pytest-warnings --cov=autofile --cov-report=html
                     coverage report
             - run:
                 name: pylint autofile
