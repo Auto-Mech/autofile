@@ -1,9 +1,7 @@
-""" handles annoying Python 2/3 compatibility issue
+""" handles argument specification
 """
-try:
-    from inspect import getfullargspec as function_argspec
-except ImportError:
-    from inspect import getargspec as function_argspec
+
+from inspect import getfullargspec as function_argspec
 
 
 def function_keys(function):

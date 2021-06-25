@@ -214,18 +214,6 @@ def anharmonic_frequencies(freqs):
     return _frequencies(freqs)
 
 
-def projected_frequencies(freq):
-    """ write projected frequencies (cm^-1) to a string (cm^-1)
-
-    :param freqs: freq tuple of floats
-    :type freqs: tuple
-    :return: frequencies as string
-    :rtype: str
-    """
-    assert list(freq) == sorted(freq)
-    return _frequencies(freq)
-
-
 def cubic_force_constants(cfcs):
     """ Writes cubic force constants () to a string ().
 
@@ -246,6 +234,18 @@ def quartic_force_constants(qfcs):
         :rtype: str
     """
     return automol.util.highd_mat.string(qfcs, val_format='{0:>14.6f}')
+
+
+def harmonic_zpve(zpve):
+    """ write the harmonic ZPVE (hartree) to a string (hartree)
+
+    :param harm_zpve: zpve float
+    :type harm_zpve: float
+    :return: zpve as string
+    :rtype: str
+    """
+    harm_zpve_str = _float(zpve)
+    return harm_zpve_str
 
 
 def anharmonic_zpve(zpve):

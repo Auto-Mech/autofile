@@ -14,7 +14,3 @@ def test_():
         {'a': ['b', 'c', 'd', 'e'], 'x': {'y': 1, 'z': 2}}))
     print(dict(autofile.info.object_(
         {'a': ['b', 'c', 'd', 'e'], 'x': {'y': 1, 'z': 2}})))
-
-
-if __name__ == '__main__':
-    test_()

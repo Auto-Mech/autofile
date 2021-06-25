@@ -199,17 +199,6 @@ def anharmonic_frequencies(freq_str):
     return _frequencies(freq_str)
 
 
-def projected_frequencies(freq_str):
-    """ read projected frequencies (cm^-1) from a string (cm^-1)
-
-    :param freq_str: freq string
-    :type freq_str: str
-    :return: tuple of float frequencies
-    :rtype: tuple
-    """
-    return _frequencies(freq_str)
-
-
 def cubic_force_constants(cfc_str):
     """ Writes cubic force constants () to a string ().
 
@@ -228,6 +217,18 @@ def quartic_force_constants(qfc_str):
     :rtype: numpy.ndarray
     """
     return automol.util.highd_mat.from_string(qfc_str, fill_perms=True)
+
+
+def harmonic_zpve(harm_zpve_str):
+    """ read the harmonic zpve (hartree) from a string (hartree)
+
+    :param harm_zpve_str: zpve string
+    :type harm_zpve_str: str
+    :return: zpve as float
+    :rtype: float
+    """
+    harm_zpve = _float(harm_zpve_str)
+    return harm_zpve
 
 
 def anharmonic_zpve(anh_zpve_str):
@@ -405,13 +406,3 @@ def _frequencies(freq_str):
         freqs = numpy.loadtxt(freq_str_io)
         assert freqs.ndim == 1
     return tuple(freqs)
-
-
-def _2d_square_matrix(mat_str):
-    """ comma seperated string to 2D tuple of floats
-    """
-    mat_str_io = _StringIO(mat_str)
-    mat = numpy.loadtxt(mat_str_io)
-    assert mat.ndim == 2
-    assert mat.shape[0] == mat.shape[1]
-    return tuple(map(tuple, mat))
