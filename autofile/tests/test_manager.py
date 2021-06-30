@@ -2,8 +2,8 @@
 """
 import os
 import tempfile
-import numpy
-import pytest
+# import numpy
+# import pytest
 
 import automol
 import autofile.fs
