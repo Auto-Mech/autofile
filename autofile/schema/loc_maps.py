@@ -179,13 +179,25 @@ def theory_leaf(method, basis, orb_type):
         unrestricted orbitals
     :type orb_type: str
     """
-    assert elstruct.Method.contains(method)
+
+    # Pull apart the method
+    core_method, pfxs = elstruct.Method.evaluate_method_type(method)
+
+    # Build a hash of the prefixes
+    if pfxs:
+        ord_pfx_str = ''.join(list(pfxs))
+        hashed_pfx = _short_hash(ord_pfx_str.lower()) + '-'
+    else:
+        hashed_pfx = ''
+
+    assert elstruct.Method.contains(core_method)
     assert elstruct.Basis.contains(basis)
     assert orb_type in ('R', 'U'), (
         'orb_type {} is not R or U'.format(orb_type)
     )
 
-    dir_name = ''.join([_short_hash(method.lower()),
+    dir_name = ''.join([hashed_pfx,
+                        _short_hash(core_method.lower()),
                         _short_hash(basis.lower()),
                         orb_type])
     return dir_name
