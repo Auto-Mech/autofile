@@ -75,10 +75,9 @@ def test__theory():
     thy_fs = autofile.fs.theory(prefix)
     locs = ['hf', 'sto-3g', 'U']
 
-    ref_ene = 5.7
     thy_fs[-1].create(locs)
-    thy_fs[-1].file.energy.write(ref_ene, locs)
-    assert thy_fs[-1].file.energy.read(locs) == ref_ene
+    thy_path = thy_fs[-1].path(locs)
+    assert os.path.exists(thy_path)
 
 
 def test__conformer():
@@ -106,10 +105,14 @@ def test__conformer():
     assert inf_obj1 == ref_inf_obj1
     assert inf_obj2 == ref_inf_obj2
 
-    ref_ene = 5.7
-    cnf_fs[-1].file.energy.write(ref_ene, locs)
-    ene = cnf_fs[-1].file.energy.read(locs)
-    assert numpy.isclose(ene, ref_ene)
+    ref_geo = (
+        ('O', (-1.1707387949811348, -0.8186819289555977, 0.1847602826946391)),
+        ('O', (1.2517867512044956, 0.33310347836345394, 0.7805302053715455)),
+        ('H', (-2.2059402840308078, 0.6739299449565304, 0.505211869486996)),
+        ('H', (2.124892327807454, -0.18835149436438584, -0.7582977119813665)))
+    cnf_fs[-1].file.geometry.write(ref_geo, locs)
+    geo = cnf_fs[-1].file.geometry.read(locs)
+    assert automol.geom.almost_equal_dist_matrix(ref_geo, geo)
 
     ref_vpt2_inf_obj = autofile.schema.info_objects.vpt2(
         fermi_treatment='gaussian_default')

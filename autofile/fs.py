@@ -237,16 +237,6 @@ def transition_state(prefix):
     trunk_ds = data_series.transition_state_trunk(prefix)
     leaf_ds = data_series.transition_state_leaf(prefix, root_ds=trunk_ds)
 
-    geom_dfile = data_files.geometry(_FilePrefix.GEOM)
-    ene_dfile = data_files.energy(_FilePrefix.GEOM)
-    zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
-    vmat_dfile = data_files.vmatrix(_FilePrefix.GEOM)
-    leaf_ds.add_data_files({
-        FileAttributeName.ENERGY: ene_dfile,
-        FileAttributeName.GEOM: geom_dfile,
-        FileAttributeName.ZMAT: zmat_dfile,
-        FileAttributeName.VMATRIX: vmat_dfile})
-
     return (trunk_ds, leaf_ds)
 
 
@@ -255,29 +245,14 @@ def theory(prefix):
     """ construct the theory filesystem (1 layer)
 
     locators:
-        0 - [method, basis, orb_type]
-                files:
-                - energy
-                - geometry
-                - hessian
-                - zmatrix
+        [0] "leaf" layer"
+             Specifiers:
+             [method, basis, orb_type]
 
     :param prefix: sets the path where this filesystem will sit
     :type prefix: str
     """
     leaf_ds = data_series.theory_leaf(prefix)
-
-    geom_dfile = data_files.geometry(_FilePrefix.GEOM)
-    ene_dfile = data_files.energy(_FilePrefix.GEOM)
-    zmat_dfile = data_files.zmatrix(_FilePrefix.GEOM)
-    hess_dfile = data_files.hessian(_FilePrefix.HESS)
-
-    leaf_ds.add_data_files({
-        FileAttributeName.ENERGY: ene_dfile,
-        FileAttributeName.GEOM: geom_dfile,
-        FileAttributeName.HESS: hess_dfile,
-        FileAttributeName.ZMAT: zmat_dfile})
-
     return (leaf_ds,)
 
 
@@ -313,7 +288,6 @@ def conformer(prefix):
                 - geometry_input
                 - gradient_input
                 - hessian_input
-                - energy
                 - geometry
                 - gradient
                 - hessian
@@ -371,7 +345,6 @@ def conformer(prefix):
     grad_inp_dfile = data_files.input_file(_FilePrefix.GRAD)
     hess_inp_dfile = data_files.input_file(_FilePrefix.HESS)
     vpt2_inp_dfile = data_files.input_file(_FilePrefix.VPT2)
-    ene_dfile = data_files.energy(_FilePrefix.GEOM)
     geom_dfile = data_files.geometry(_FilePrefix.GEOM)
     grad_dfile = data_files.gradient(_FilePrefix.GRAD)
     hess_dfile = data_files.hessian(_FilePrefix.HESS)
@@ -394,7 +367,6 @@ def conformer(prefix):
         FileAttributeName.GEOM_INPUT: geom_inp_dfile,
         FileAttributeName.GRAD_INPUT: grad_inp_dfile,
         FileAttributeName.HESS_INPUT: hess_inp_dfile,
-        FileAttributeName.ENERGY: ene_dfile,
         FileAttributeName.GEOM: geom_dfile,
         FileAttributeName.GRAD: grad_dfile,
         FileAttributeName.HESS: hess_dfile,
@@ -567,7 +539,6 @@ def zmatrix(prefix):
     rtors_dfile = data_files.ring_torsions(_FilePrefix.ZMAT)
 
     zmat_dfile = data_files.zmatrix(_FilePrefix.ZMAT)
-    vma_dfile = data_files.vmatrix(_FilePrefix.ZMAT)
     reac_dfile = data_files.reaction(_FilePrefix.ZMAT)
 
     leaf_ds.add_data_files({
@@ -577,7 +548,6 @@ def zmatrix(prefix):
         FileAttributeName.RTORS: rtors_dfile,
         FileAttributeName.GEOM_INPUT: zmat_inp_dfile,
         FileAttributeName.ZMAT: zmat_dfile,
-        FileAttributeName.VMATRIX: vma_dfile,
         FileAttributeName.REAC: reac_dfile})
 
     return (trunk_ds, leaf_ds)
