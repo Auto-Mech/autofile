@@ -70,10 +70,10 @@ def scan_branch(grids):
             grid_dct[key] = rng_deg
 
     for key, vals in grid_dct.items():
-        assert isinstance(key, str), '{} is not a string'.format(key)
-        assert numpy.ndim(vals) == 1, '{} is not 1D'.format(vals)
+        assert isinstance(key, str), f'{key} is not a string'
+        assert numpy.ndim(vals) == 1, f'{vals} is not 1D'
         assert all(isinstance(x, numbers.Real) for x in vals), (
-            '{} contains non-Real numbers'.format(vals)
+            f'{vals} contains non-Real numbers'
         )
 
     grids = autofile.info.Info(**grid_dct)

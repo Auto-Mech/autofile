@@ -136,7 +136,7 @@ def ring_torsions(ring_tors_dct):
         tors_str = yaml.dump(
             sorted_dct, default_flow_style=True, sort_keys=False)
 
-        ring_tors_str.append('ring: {}\n{}'.format(ring, tors_str))
+        ring_tors_str.append(f'ring: {ring}\n{tors_str}')
 
     return os.linesep.join(ring_tors_str)
 
@@ -269,7 +269,7 @@ def anharmonicity_matrix(xmat):
     :rtype: str
     """
     mat = numpy.array(xmat)
-    assert mat.ndim == 2 or mat.ndim == 0
+    assert mat.ndim in (0, 2)
     if mat.ndim == 2:
         assert mat.shape[0] == mat.shape[1]
 
@@ -309,8 +309,7 @@ def quartic_centrifugal_dist_consts(qcd_consts):
     """
     qcd_consts_str = ''
     for const in qcd_consts:
-        qcd_consts_str += "{0:<6s}{1:>16.12f}\n".format(
-            const[0], const[1])
+        qcd_consts_str += f'{const[0]:<6s}{const[1]:>16.12f}\n'
     return qcd_consts_str
 
 
@@ -436,5 +435,5 @@ def _frequencies(freq):
     assert freq.ndim == 1
     freq_str = ""
     for val in freq:
-        freq_str += "{:>8.1f}\n".format(val)
+        freq_str += f'{val:>8.1f}\n'
     return freq_str
