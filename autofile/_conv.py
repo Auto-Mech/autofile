@@ -17,7 +17,7 @@ def directory_to_dictionary(dir_path):
     for path in Path(dir_path).glob('*'):
         fullpath = path.absolute().resolve()
         if path.is_file():
-            with open(fullpath, 'r') as fobj:
+            with open(fullpath, mode='r', encoding='utf-8') as fobj:
                 tmp = fobj.read()
             _dic2 = {
                 'type': 'file',

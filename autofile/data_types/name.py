@@ -475,5 +475,5 @@ def vrctst_flux(file_name):
 
 def _add_extension(file_name, ext):
     if not str(file_name).endswith(ext):
-        file_name = '{}{}'.format(file_name, ext)
+        file_name = f'{file_name}{ext}'
     return file_name

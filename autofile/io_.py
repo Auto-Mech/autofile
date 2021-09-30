@@ -12,7 +12,7 @@ def read_file(file_path):
     :rtype: str
     """
     assert os.path.isfile(file_path)
-    with open(file_path, 'r') as file_obj:
+    with open(file_path, mode='r', encoding='utf-8') as file_obj:
         file_str = file_obj.read()
     return file_str
 
@@ -25,5 +25,5 @@ def write_file(file_path, string):
     :param file_path: string to be written
     :type file_path: str
     """
-    with open(file_path, 'w') as file_obj:
+    with open(file_path, mode='w', encoding='utf-8') as file_obj:
         file_obj.write(string)

@@ -254,7 +254,7 @@ def anharmonicity_matrix(xmat_str):
     """
     mat_str_io = _StringIO(xmat_str)
     mat = numpy.loadtxt(mat_str_io)
-    assert mat.ndim == 2 or mat.ndim == 0
+    assert mat.ndim in (0, 2)
     if mat.ndim == 2:
         assert mat.shape[0] == mat.shape[1]
         xmat = tuple(map(tuple, mat))
@@ -274,7 +274,7 @@ def vibro_rot_alpha_matrix(vibro_rot_str):
     """
     mat_str_io = _StringIO(vibro_rot_str)
     mat = numpy.loadtxt(mat_str_io)
-    assert mat.ndim == 2 or mat.ndim == 0
+    assert mat.ndim in (0, 2)
     if mat.ndim == 2:
         assert mat.shape[0] == mat.shape[1]
     return tuple(map(tuple, mat))

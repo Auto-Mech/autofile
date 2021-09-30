@@ -64,7 +64,7 @@ def matches_function_signature(inf_obj, function):
     """ does the information object match this function signature?
     """
     assert isinstance(inf_obj, Info), (
-        'No! {} != {}'.format(type(inf_obj), 'Info')
+        f'No! {type(inf_obj)} != Info'
     )
     return inf_obj.keys_() == _function_keys(function)
 
@@ -102,14 +102,18 @@ class Info(SimpleNamespace):
 
     def __repr__(self):
         dct = dict_(self)
-        items = ("{}={!r}".format(k, dct[k]) for k in sorted(dct.keys()))
-        return "Info({})".format(", ".join(items))
+        items = []
+        for k in sorted(dct.keys()):
+            items.append(f"{k}={dct[k]}")
+        item_str = ', '.join(items)
+        return f"Info({item_str})"
 
     def __setattr__(self, key, value):
         """ prevent adding new keys after the object is frozen """
         if self._frozen and not hasattr(self, key):
-            raise TypeError("'{}' object does not support item assignment"
-                            .format(self.__class__.__name__))
+            raise TypeError(
+                f"'{self.__class__.__name__}'"
+                " object does not support item assignment")
         object.__setattr__(self, key, value)
 
 
