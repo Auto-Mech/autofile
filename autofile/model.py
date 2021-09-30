@@ -190,10 +190,13 @@ class DataSeries():
             if self.loc_dfile is not None:
                 locs = self._self_locators(locs)
                 self.loc_dfile.write(locs, pth)
-        # if self.loc_dfile is not None:
-        #     pth = self.path(locs)
-        #     locs = self._self_locators(locs)
-        #     self.loc_dfile.write(locs, pth)
+        if self.loc_dfile is not None:
+            try:
+                pth = self.path(locs)
+                locs = self._self_locators(locs)
+                self.loc_dfile.write(locs, pth)
+            except AssertionError:
+                pass
 
     def existing(self, root_locs=(), relative=False, ignore_bad_formats=True):
         """ return the list of locators for existing paths
