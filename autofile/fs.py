@@ -43,6 +43,7 @@ Each function in this module returns a tuple of autofile.model.DataSeries
 objects for interacting with successive layers in a file system.
 """
 import os
+import pathlib
 from autofile.schema import data_files
 from autofile.schema import data_series
 from autofile.schema import info_objects
@@ -1150,3 +1151,18 @@ def iterate_managers(pfx, keys, key):
     """
     for pth in iterate_paths(pfx, keys):
         yield _manager(pth, key)
+
+
+# Extra path manipulations
+def path_prefix(path, keys):
+    """ Given a path and some layer keys, find the prefix
+
+        :param path: The path to some point in the file system
+        :param keys: Keys to layers on top of the desired prefix
+        :returns: The prefix path (the original path, without the layers
+            specified by keys)
+    """
+    mgrs = [_manager('', key) for key in keys]
+    depth = sum(ds.depth for m in mgrs for ds in m)
+    pfx = os.path.join(*pathlib.PurePath(path).parts[:-depth])
+    return pfx
