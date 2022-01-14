@@ -205,12 +205,6 @@ def test__data_files__vmatrix():
     assert vma == ref_vma
 
 
-def __data_files__torsional_names():
-    """ test autofile.schema.data_files.torsional_names
-    """
-    return NotImplementedError
-
-
 def test__data_files__trajectory():
     """ test autofile.schema.data_files.trajectory
     """

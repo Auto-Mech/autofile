@@ -136,7 +136,7 @@ def ring_torsions(ring_tors_dct):
         tors_str = yaml.dump(
             sorted_dct, default_flow_style=True, sort_keys=False)
 
-        ring_tors_str.append('ring: {}\n{}'.format(ring, tors_str))
+        ring_tors_str.append(f'ring: {ring}\n{tors_str}')
 
     return os.linesep.join(ring_tors_str)
 
@@ -214,18 +214,6 @@ def anharmonic_frequencies(freqs):
     return _frequencies(freqs)
 
 
-def projected_frequencies(freq):
-    """ write projected frequencies (cm^-1) to a string (cm^-1)
-
-    :param freqs: freq tuple of floats
-    :type freqs: tuple
-    :return: frequencies as string
-    :rtype: str
-    """
-    assert list(freq) == sorted(freq)
-    return _frequencies(freq)
-
-
 def cubic_force_constants(cfcs):
     """ Writes cubic force constants () to a string ().
 
@@ -246,6 +234,18 @@ def quartic_force_constants(qfcs):
         :rtype: str
     """
     return automol.util.highd_mat.string(qfcs, val_format='{0:>14.6f}')
+
+
+def harmonic_zpve(zpve):
+    """ write the harmonic ZPVE (hartree) to a string (hartree)
+
+    :param harm_zpve: zpve float
+    :type harm_zpve: float
+    :return: zpve as string
+    :rtype: str
+    """
+    harm_zpve_str = _float(zpve)
+    return harm_zpve_str
 
 
 def anharmonic_zpve(zpve):
@@ -269,7 +269,7 @@ def anharmonicity_matrix(xmat):
     :rtype: str
     """
     mat = numpy.array(xmat)
-    assert mat.ndim == 2 or mat.ndim == 0
+    assert mat.ndim in (0, 2)
     if mat.ndim == 2:
         assert mat.shape[0] == mat.shape[1]
 
@@ -309,8 +309,7 @@ def quartic_centrifugal_dist_consts(qcd_consts):
     """
     qcd_consts_str = ''
     for const in qcd_consts:
-        qcd_consts_str += "{0:<6s}{1:>16.12f}\n".format(
-            const[0], const[1])
+        qcd_consts_str += f'{const[0]:<6s}{const[1]:>16.12f}\n'
     return qcd_consts_str
 
 
@@ -436,5 +435,5 @@ def _frequencies(freq):
     assert freq.ndim == 1
     freq_str = ""
     for val in freq:
-        freq_str += "{:>8.1f}\n".format(val)
+        freq_str += f'{val:>8.1f}\n'
     return freq_str

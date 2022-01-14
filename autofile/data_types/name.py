@@ -25,7 +25,6 @@ class Extension():
     ANHARMONIC_ZPVE = '.azpve'
     HARMONIC_FREQUENCIES = '.hfrq'
     ANHARMONIC_FREQUENCIES = '.afrq'
-    PROJECTED_FREQUENCIES = '.pfrq'
     ANHARMONICITY_MATRIX = '.xmat'
     VIBRO_ROT_MATRIX = '.vrmat'
     CENTRIF_DIST_CONSTS = '.qcd'
@@ -87,17 +86,6 @@ def instability(file_name):
     """ adds instability extension, if missing
     """
     return _add_extension(file_name, Extension.INSTAB)
-
-
-def projrot_file(file_name):
-    """ adds projrot file extension, if missing
-
-    :param file_name: name of file
-    :type file_name: str
-    :returns: file with extension added
-    :rtype: str
-    """
-    return _add_extension(file_name, Extension.PROJROT_LOG)
 
 
 def run_script(file_name):
@@ -252,17 +240,6 @@ def anharmonic_frequencies(file_name):
     :rtype: str
     """
     return _add_extension(file_name, Extension.ANHARMONIC_FREQUENCIES)
-
-
-def projected_frequencies(file_name):
-    """ adds projected frequencies extension, if missing
-
-    :param file_name: name of file
-    :type file_name: str
-    :returns: file with extension added
-    :rtype: str
-    """
-    return _add_extension(file_name, Extension.PROJECTED_FREQUENCIES)
 
 
 def cubic_force_constants(file_name):
@@ -498,5 +475,5 @@ def vrctst_flux(file_name):
 
 def _add_extension(file_name, ext):
     if not str(file_name).endswith(ext):
-        file_name = '{}{}'.format(file_name, ext)
+        file_name = f'{file_name}{ext}'
     return file_name

@@ -31,7 +31,8 @@ def species_leaf(ich, chg, mul):
 
     assert isinstance(chg, numbers.Integral)
     assert isinstance(mul, numbers.Integral), (
-        'Multiplicity {} is not an integer'.format(mul))
+        f'Multiplicity {mul} is not an integer'
+    )
 
     assert _is_valid_inchi_multiplicity(ich, mul)
 
@@ -160,9 +161,9 @@ def transition_state_leaf(num):
     """ transition state leaf directory name
     """
     assert isinstance(num, numbers.Integral) and 0 <= num <= 99, (
-        'Num {} must be integer between 0 and 99'.format(num)
+        f'Num {num} must be integer between 0 and 99'
     )
-    return '{:02d}'.format(int(num))
+    return f'{int(num):02d}'
 
 
 # Specifier mappings for layers used by both species and reaction file systems
@@ -179,13 +180,25 @@ def theory_leaf(method, basis, orb_type):
         unrestricted orbitals
     :type orb_type: str
     """
-    assert elstruct.Method.contains(method)
+
+    # Pull apart the method
+    core_method, pfxs = elstruct.Method.evaluate_method_type(method)
+
+    # Build a hash of the prefixes
+    if pfxs:
+        ord_pfx_str = ''.join(list(pfxs))
+        hashed_pfx = _short_hash(ord_pfx_str.lower()) + '-'
+    else:
+        hashed_pfx = ''
+
+    assert elstruct.Method.contains(core_method)
     assert elstruct.Basis.contains(basis)
     assert orb_type in ('R', 'U'), (
-        'orb_type {} is not R or U'.format(orb_type)
+        f'orb_type {orb_type} is not R or U'
     )
 
-    dir_name = ''.join([_short_hash(method.lower()),
+    dir_name = ''.join([hashed_pfx,
+                        _short_hash(core_method.lower()),
                         _short_hash(basis.lower()),
                         orb_type])
     return dir_name
@@ -201,7 +214,8 @@ def conformer_branch(rid):
     """ ring conformer leaf directory name
     """
     assert rid[0] == 'r', (
-        'rid {} does not start with r'.format(rid))
+        f'rid {rid} does not start with r'
+    )
     assert _is_random_string_identifier(rid[1:])
     return rid
 
@@ -209,14 +223,11 @@ def conformer_branch(rid):
 def conformer_leaf(cid):
     """ torsion conformer leaf directory name
     """
-    # assert rid[0] == 'r', (
-    #     'rid {} does not start with r'.format(rid))
-    # assert _is_random_string_identifier(rid[1:])
     assert cid[0] == 'c', (
-        'cid {} does not start with c'.format(cid))
+        f'cid {cid} does not start with c'
+    )
     assert _is_random_string_identifier(cid[1:])
 
-    # return os.path.join(rid, cid)
     return cid
 
 
@@ -260,9 +271,9 @@ def zmatrix_leaf(num):
     """ zmatrix leaf directory name
     """
     assert isinstance(num, numbers.Integral) and 0 <= num <= 99, (
-        'Num {} must be integer between 0 and 99'.format(num)
+        f'Num {num} must be integer between 0 and 99'
     )
-    return '{:02d}'.format(int(num))
+    return f'{int(num):02d}'
 
 
 def scan_trunk():
@@ -280,7 +291,7 @@ def scan_branch(coo_names):
 def scan_leaf(coo_vals):
     """ scan leaf directory name
     """
-    return '_'.join(map('{:.2f}'.format, coo_vals))
+    return '_'.join((f'{val:.2f}' for val in coo_vals))
 
 
 def cscan_trunk():
@@ -323,7 +334,7 @@ def cscan_branch2(coo_names):
 def cscan_leaf(coo_vals):
     """ constrained scan leaf directory name
     """
-    return '_'.join(map('{:.2f}'.format, coo_vals))
+    return '_'.join((f'{val:.2f}' for val in coo_vals))
 
 
 def tau_trunk():
@@ -362,9 +373,9 @@ def vrctst_leaf(num):
     """ vrctst leaf directory name
     """
     assert isinstance(num, numbers.Integral) and 0 <= num <= 99, (
-        'Num {} must be integer between 0 and 99'.format(num)
+        f'Num {num} must be integer between 0 and 99'
     )
-    return '{:02d}'.format(int(num))
+    return f'{int(num):02d}'
 
 
 # Specifier mappings specific to the run file system
@@ -389,7 +400,7 @@ def subrun_leaf(macro_idx, micro_idx):
     assert isinstance(micro_idx, numbers.Integral)
     assert macro_idx < 26  # for now -- if needed we can add AA, AB, etc.
     macro_str = string.ascii_uppercase[macro_idx]
-    micro_str = '{:0>2d}'.format(micro_idx)
+    micro_str = f'{micro_idx:0>2d}'
     return ''.join([macro_str, micro_str])
 
 

@@ -182,13 +182,39 @@ def test__vmatrix():
     assert vma == ref_vma
 
 
-def __torsions():
+def test__torsions():
     """ test the torsion names read/write functions
     """
 
-    zma = automol.geom.zmatrix(automol.inchi.geometry(
-            automol.smiles.inchi('CCO')))
+    zma = (
+        ('C', (None, None, None), (None, None, None),
+         (None, None, None)),
+        ('C', (0, None, None), ('R1', None, None),
+         (2.8621866421132123, None, None)),
+        ('H', (0, 1, None), ('R2', 'A2', None),
+         (2.0691950317120837, 1.9320905931404335, None)),
+        ('H', (0, 1, 2), ('R3', 'A3', 'D3'),
+         (2.0665277363750003, 1.9353637583977303, 2.108686322109069)),
+        ('H', (0, 1, 2), ('R4', 'A4', 'D4'),
+         (2.069152234029259, 1.930351996269131, 4.218481783495319)),
+        ('O', (1, 0, 2), ('R5', 'A5', 'D5'),
+         (2.683747067528887, 1.9194991329920528, 1.0492575691901376)),
+        ('H', (1, 0, 5), ('R6', 'A6', 'D6'),
+         (2.067751813667005, 1.9377163905267163, 4.182292202036946)),
+        ('H', (1, 0, 5), ('R7', 'A7', 'D7'),
+         (2.0671092193398275, 1.928341045304867, 2.082936263972801)),
+        ('H', (5, 1, 0), ('R8', 'A8', 'D8'),
+         (1.8376095698733521, 1.8770195234414855, 5.238498010242486)))
     ref_tors_lst = automol.rotor.from_zmatrix(zma)
+
+    ref_tors_dct = {
+        'D5': {'axis': (0, 1),
+               'groups': ((2, 3, 4), (5, 6, 7, 8)),
+               'symmetry': 3},
+        'D8': {'axis': (1, 5),
+               'groups': ((0, 2, 3, 4, 6, 7), (8,)),
+               'symmetry': 1}
+    }
 
     tors_file_name = autofile.data_types.name.torsions('test')
     tors_file_path = os.path.join(TMP_DIR, tors_file_name)
@@ -199,10 +225,44 @@ def __torsions():
     assert os.path.isfile(tors_file_path)
 
     tors_str = autofile.io_.read_file(tors_file_path)
-    tors_lst = autofile.data_types.sread.torsions(tors_str)
-    for tors, tors_ref in zip(tors_lst, ref_tors_lst):
-        assert tors.name == tors_ref.name
-        assert tors.symmetry == tors_ref.symmetry
+    tors_dct = autofile.data_types.sread.torsions(tors_str)
+
+    for ref_name, name in zip(ref_tors_dct, tors_dct):
+        assert ref_name == name
+        ref_ddct = ref_tors_dct[ref_name]
+        ddct = ref_tors_dct[name]
+        for key in ('axis', 'groups', 'symmetry'):
+            assert ref_ddct[key] == ddct[key]
+
+
+def test__ring_torsions():
+    """ test the ring torsion names read/write functions
+    """
+
+    ref_tors_dct = {
+        '1-2-5-8-11-14': {'D7': [0.16168073524433701, 1.7324770620392336],
+                          'D10': [4.550708773750596, 6.121505100545493],
+                          'D13': [0.16167968490856266, 1.7324760117034592]}
+    }
+
+    tors_file_name = autofile.data_types.name.ring_torsions('test')
+    tors_file_path = os.path.join(TMP_DIR, tors_file_name)
+    tors_str = autofile.data_types.swrite.ring_torsions(ref_tors_dct)
+
+    assert not os.path.isfile(tors_file_path)
+    autofile.io_.write_file(tors_file_path, tors_str)
+    assert os.path.isfile(tors_file_path)
+
+    tors_str = autofile.io_.read_file(tors_file_path)
+    tors_dct = autofile.data_types.sread.ring_torsions(tors_str)
+
+    assert tuple(ref_tors_dct.keys()) == tuple(tors_dct.keys())
+    ref_ring_dct = ref_tors_dct['1-2-5-8-11-14']
+    ring_dct = tors_dct['1-2-5-8-11-14']
+
+    assert tuple(ref_ring_dct.keys()) == tuple(ring_dct.keys())
+    for name in ref_ring_dct:
+        assert numpy.allclose(ref_ring_dct[name], ring_dct[name])
 
 
 def test__gradient():
@@ -266,11 +326,35 @@ def test__hessian():
     assert numpy.allclose(ref_hess, hess)
 
 
+def test__harmonic_frequencies():
+    """ test the harmonic frequencies read/write functions
+    """
+
+    ref_freqs_set = (
+            sorted([3123.2, 2013.5, 1830.3, 745.3, 23.1, 1.2]),
+            [4462.4]
+    )
+    names = ('test', 'test2')
+
+    for ref_freqs, name in zip(ref_freqs_set, names):
+        freqs_file_name = autofile.data_types.name.harmonic_frequencies(name)
+        freqs_file_path = os.path.join(TMP_DIR, freqs_file_name)
+        freqs_str = autofile.data_types.swrite.harmonic_frequencies(ref_freqs)
+
+        assert not os.path.isfile(freqs_file_path)
+        autofile.io_.write_file(freqs_file_path, freqs_str)
+        assert os.path.isfile(freqs_file_path)
+
+        freqs_str = autofile.io_.read_file(freqs_file_path)
+        freqs = autofile.data_types.sread.harmonic_frequencies(freqs_str)
+        assert numpy.allclose(ref_freqs, freqs, atol=1e00)
+
+
 def test__anharmonic_frequencies():
     """ test the anharmonic frequencies read/write functions
     """
-    ref_freqs = sorted([3123.20334, 2013.56563, 1830.34050, 745.33024,
-                        23.049560, 1.2344])
+
+    ref_freqs = sorted([3123.2, 2013.5, 1830.3, 745.3, 23.1, 1.2])
 
     freqs_file_name = autofile.data_types.name.anharmonic_frequencies('test')
     freqs_file_path = os.path.join(TMP_DIR, freqs_file_name)
@@ -283,6 +367,24 @@ def test__anharmonic_frequencies():
     freqs_str = autofile.io_.read_file(freqs_file_path)
     freqs = autofile.data_types.sread.anharmonic_frequencies(freqs_str)
     assert numpy.allclose(ref_freqs, freqs, atol=1e00)
+
+
+def test__harmonic_zpve():
+    """ test the harmonic ZPVE read/write functions
+    """
+    ref_anh_zpve = -25.123455
+
+    anh_zpve_file_name = autofile.data_types.name.harmonic_zpve('test')
+    anh_zpve_file_path = os.path.join(TMP_DIR, anh_zpve_file_name)
+    anh_zpve_str = autofile.data_types.swrite.harmonic_zpve(ref_anh_zpve)
+
+    assert not os.path.isfile(anh_zpve_file_path)
+    autofile.io_.write_file(anh_zpve_file_path, anh_zpve_str)
+    assert os.path.isfile(anh_zpve_file_path)
+
+    anh_zpve_str = autofile.io_.read_file(anh_zpve_file_path)
+    anh_zpve = autofile.data_types.sread.harmonic_zpve(anh_zpve_str)
+    assert numpy.isclose(ref_anh_zpve, anh_zpve)
 
 
 def test__anharmonic_zpve():
@@ -307,21 +409,26 @@ def test__anharmonicity_matrix():
     """ test the anharmonicity matrix read/write functions
     """
 
-    ref_xmat = ((1.123, 2.451, 7.593),
-                (3.321, 4.123, 9.382),
-                (5.342, 6.768, 8.392))
+    ref_xmats = (
+        ((1.123, 2.451, 7.593),  # for polyatomic
+         (3.321, 4.123, 9.382),
+         (5.342, 6.768, 8.392)),
+        ((5.324,),)              # for diatomic
+    )
+    names = ('test', 'test2')
 
-    xmat_file_name = autofile.data_types.name.anharmonicity_matrix('test')
-    xmat_file_path = os.path.join(TMP_DIR, xmat_file_name)
-    xmat_str = autofile.data_types.swrite.anharmonicity_matrix(ref_xmat)
+    for ref_xmat, name in zip(ref_xmats, names):
+        xmat_file_name = autofile.data_types.name.anharmonicity_matrix(name)
+        xmat_file_path = os.path.join(TMP_DIR, xmat_file_name)
+        xmat_str = autofile.data_types.swrite.anharmonicity_matrix(ref_xmat)
 
-    assert not os.path.isfile(xmat_file_path)
-    autofile.io_.write_file(xmat_file_path, xmat_str)
-    assert os.path.isfile(xmat_file_path)
+        assert not os.path.isfile(xmat_file_path)
+        autofile.io_.write_file(xmat_file_path, xmat_str)
+        assert os.path.isfile(xmat_file_path)
 
-    xmat_str = autofile.io_.read_file(xmat_file_path)
-    xmat = autofile.data_types.sread.anharmonicity_matrix(xmat_str)
-    assert numpy.allclose(ref_xmat, xmat)
+        xmat_str = autofile.io_.read_file(xmat_file_path)
+        xmat = autofile.data_types.sread.anharmonicity_matrix(xmat_str)
+        assert numpy.allclose(ref_xmat, xmat)
 
 
 def test__vibro_rot_alpha_matrix():
@@ -604,28 +711,53 @@ def test__reaction():
     assert rxn == ref_rxn
 
 
-if __name__ == '__main__':
-    test__energy()
-    # test__geometry()
-    # test__zmatrix()
-    # test__file()
-    # test__information()
-    # test__gradient()
-    # test__hessian()
-    # test__trajectory()
-    # test__vmatrix()
-    # test__torsions()
-    # test__anharmonic_frequencies()
-    # test__anharmonic_zpve()
-    # test__anharmonicity_matrix()
-    # test__vibro_rot_alpha_matrix()
-    # test__quartic_centrifugal_distortion_constants()
-    test__force_constants()
-    # test__lennard_jones_epsilon()
-    # test__lennard_jones_sigma()
-    # test__external_symmetry_number()
-    # test__internal_symmetry_number()
-    # test__dipole_moment()
-    # test__polarizability()
-    # test__graph()
-    # test__reaction()
+def test__instabiliy():
+    """ test the instability read/write functions
+    """
+
+    ref_instab = automol.reac.from_string("""
+    reaction class: beta scission
+    forward TS atoms:
+      1: {symbol: C, implicit_hydrogen_valence: 0, stereo_parity: null}
+      2: {symbol: O, implicit_hydrogen_valence: 0, stereo_parity: null}
+      3: {symbol: H, implicit_hydrogen_valence: 0, stereo_parity: null}
+      4: {symbol: H, implicit_hydrogen_valence: 0, stereo_parity: null}
+      5: {symbol: O, implicit_hydrogen_valence: 0, stereo_parity: null}
+      6: {symbol: H, implicit_hydrogen_valence: 0, stereo_parity: null}
+    forward TS bonds:
+      1-2: {order: 1, stereo_parity: null}
+      1-3: {order: 1, stereo_parity: null}
+      1-4: {order: 1, stereo_parity: null}
+      2-5: {order: 0.9, stereo_parity: null}
+      5-6: {order: 1, stereo_parity: null}
+    reactants keys:
+    - [1, 2, 3, 4, 5, 6]
+    backward TS atoms:
+      1: {symbol: C, implicit_hydrogen_valence: 0, stereo_parity: null}
+      2: {symbol: O, implicit_hydrogen_valence: 0, stereo_parity: null}
+      3: {symbol: H, implicit_hydrogen_valence: 0, stereo_parity: null}
+      4: {symbol: H, implicit_hydrogen_valence: 0, stereo_parity: null}
+      5: {symbol: O, implicit_hydrogen_valence: 0, stereo_parity: null}
+      6: {symbol: H, implicit_hydrogen_valence: 0, stereo_parity: null}
+    backward TS bonds:
+      1-2: {order: 1, stereo_parity: null}
+      1-3: {order: 1, stereo_parity: null}
+      1-4: {order: 1, stereo_parity: null}
+      2-5: {order: 0.1, stereo_parity: null}
+      5-6: {order: 1, stereo_parity: null}
+    products keys:
+    - [1, 2, 3, 4]
+    - [5, 6]
+    """)
+
+    instab_file_name = autofile.data_types.name.instability('test2')
+    instab_file_path = os.path.join(TMP_DIR, instab_file_name)
+    instab_str = autofile.data_types.swrite.instability(ref_instab)
+
+    assert not os.path.isfile(instab_file_path)
+    autofile.io_.write_file(instab_file_path, instab_str)
+    assert os.path.isfile(instab_file_path)
+
+    instab_str = autofile.io_.read_file(instab_file_path)
+    instab = autofile.data_types.sread.instability(instab_str)
+    assert instab == ref_instab

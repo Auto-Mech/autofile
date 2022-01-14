@@ -1,5 +1,6 @@
 """ Info objects
 """
+
 import numbers
 import numpy
 import autofile.info
@@ -69,48 +70,15 @@ def scan_branch(grids):
             grid_dct[key] = rng_deg
 
     for key, vals in grid_dct.items():
-        assert isinstance(key, str), '{} is not a string'.format(key)
-        assert numpy.ndim(vals) == 1, '{} is not 1D'.format(vals)
+        assert isinstance(key, str), f'{key} is not a string'
+        assert numpy.ndim(vals) == 1, f'{vals} is not 1D'
         assert all(isinstance(x, numbers.Real) for x in vals), (
-            '{} contains non-Real numbers'.format(vals)
+            f'{vals} contains non-Real numbers'
         )
 
     grids = autofile.info.Info(**grid_dct)
     inf_obj = autofile.info.Info(grids=grids)
     assert autofile.info.matches_function_signature(inf_obj, scan_branch)
-    return inf_obj
-
-
-def torsional_names(tors_ranges):
-    """ conformer trunk information
-
-    :param nsamp: the number of samples
-    :type nsamp: int
-    :param tors_ranges: sampling ranges [(start, end)] for each torsional
-        coordinate, by z-matrix coordinate name
-    :type tors_ranges: dict[str: (float, float)]
-    """
-    tors_range_dct = dict(tors_ranges)
-    for key, rng in tors_range_dct.items():
-        tors_range_dct[key] = (rng[0]*180./numpy.pi, rng[1]*180./numpy.pi)
-
-    assert all(isinstance(key, str) and len(rng) == 2
-               and all(isinstance(x, numbers.Real) for x in rng)
-               for key, rng in tors_range_dct.items())
-
-    tors_ranges = autofile.info.Info(**tors_range_dct)
-
-    inf_obj = autofile.info.Info(tors_ranges=tors_ranges)
-    assert autofile.info.matches_function_signature(inf_obj, tors_ranges)
-    return inf_obj
-
-
-def instability(instab_msg='species unstable'):
-    """ File to dente the presence of an unstable species. Currently,
-        contains no additional information.
-    """
-    inf_obj = autofile.info.Info(instab_msg=instab_msg)
-    assert autofile.info.matches_function_signature(inf_obj, instability)
     return inf_obj
 
 
@@ -122,24 +90,8 @@ def vpt2(fermi_treatment):
     """
 
     assert isinstance(fermi_treatment, str)
-    inf_obj = autofile.info.Info(fermi=fermi_treatment)
+    inf_obj = autofile.info.Info(fermi_treatment=fermi_treatment)
     assert autofile.info.matches_function_signature(inf_obj, vpt2)
-    return inf_obj
-
-
-def irc(idxs, coords):
-    """ irc information
-
-    :param idxs: indexes describing position along the IRC
-    :type idxs: list of floats
-    :param coords: mass-weighted coordinates along the IRC
-    :type coords: list of floats
-    """
-
-    assert isinstance(idxs, list)
-    assert isinstance(coords, list)
-    inf_obj = autofile.info.Info(idxs=idxs, coords=coords)
-    assert autofile.info.matches_function_signature(inf_obj, irc)
     return inf_obj
 
 

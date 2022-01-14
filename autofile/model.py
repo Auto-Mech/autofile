@@ -57,7 +57,7 @@ class DataFile():
         :type dir_pth: str
         """
         assert os.path.exists(dir_pth), (
-            'No path exists: {}'.format(dir_pth)
+            f'No path exists: {dir_pth}'
         )
         pth = self.path(dir_pth)
         val_str = self.writer_(val)
@@ -72,8 +72,8 @@ class DataFile():
         :return type: int/float/str/tuple
         """
         assert self.exists(dir_pth), (
-            'Either requested file {}'.format(self),
-            'or requested path does not exist {}'.format(dir_pth)
+            f'Either requested file {self}',
+            f'or requested path does not exist {dir_pth}'
         )
 
         pth = self.path(dir_pth)
@@ -99,7 +99,7 @@ class DataFile():
         """ represent this object as a string
 
         """
-        return "DataFile('{}')".format(self.name)
+        return f"DataFile('{self.name}')"
 
 
 class DataSeries():
@@ -190,10 +190,13 @@ class DataSeries():
             if self.loc_dfile is not None:
                 locs = self._self_locators(locs)
                 self.loc_dfile.write(locs, pth)
-        # if self.loc_dfile is not None:
-        #     pth = self.path(locs)
-        #     locs = self._self_locators(locs)
-        #     self.loc_dfile.write(locs, pth)
+        if self.loc_dfile is not None:
+            try:
+                pth = self.path(locs)
+                locs = self._self_locators(locs)
+                self.loc_dfile.write(locs, pth)
+            except AssertionError:
+                pass
 
     def existing(self, root_locs=(), relative=False, ignore_bad_formats=True):
         """ return the list of locators for existing paths
@@ -224,7 +227,7 @@ class DataSeries():
                     for root_locs_ in self.root.existing(root_locs))))
             else:
                 assert root_nlocs == len(root_locs), (
-                    '{} != {}'.format(root_nlocs, len(root_locs))
+                    f'{root_nlocs} != {len(root_locs)}'
                 )
                 pths = self._existing_paths(root_locs)
                 if ignore_bad_formats:
@@ -236,8 +239,8 @@ class DataSeries():
                                 locs_lst.append(pth_loc)
                             except ValueError() as exception:
                                 print(
-                                    'currently allowing '
-                                    + 'exception {}'.format(exception) +
+                                    'currently allowing ' +
+                                    f'exception {exception}' +
                                     ' in existing to avoid crashes from' +
                                     '  CONF/cid in RUN')
                 else:
@@ -361,7 +364,7 @@ class DataSeries():
         """
         nlocs = len(locs)
         assert nlocs >= self.nlocs, (
-            '{} != {}'.format(nlocs, self.nlocs)
+            f'{nlocs} != {self.nlocs}'
         )
         root_nlocs = nlocs - self.nlocs
         return locs[:root_nlocs]
@@ -370,7 +373,7 @@ class DataSeries():
         """ represent this object as a string
 
         """
-        return "DataSeries('{}', {})".format(self.prefix, self.map_.__name__)
+        return f"DataSeries('{self.prefix}', {self.map_.__name__})"
 
 
 class DataSeriesFile():
@@ -423,9 +426,11 @@ class DataSeriesFile():
         """ represent this object as a string
 
         """
-        return ("DataSeriesFile('{}', {}, '{}')"
-                .format(self.dir.prefix, self.dir.map_.__name__,
-                        self.file.name))
+        return (
+            "DataSeriesFile("
+            f"{self.dir.prefix}, {self.dir.map_.__name__}, {self.file.name}"
+            ")"
+        )
 
 
 class JSONObject():
