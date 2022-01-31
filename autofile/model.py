@@ -134,7 +134,7 @@ class DataSeries():
         for name, dfile in dfile_dct.items():
             assert isinstance(name, str)
             assert isinstance(dfile, DataFile)
-            dsfile = DataSeriesFile(ds=self, dfile=dfile)
+            dsfile = DataSeriesFile(dseries=self, dfile=dfile)
             setattr(self.file, name, dsfile)
 
     def path(self, locs=()):
@@ -381,8 +381,8 @@ class DataSeriesFile():
 
     """
 
-    def __init__(self, ds, dfile):
-        self.dir = ds
+    def __init__(self, dseries, dfile):
+        self.dir = dseries
         self.file = dfile
         self.removable = False
 
