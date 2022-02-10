@@ -1154,15 +1154,15 @@ def iterate_managers(pfx, keys, key):
 
 
 # Extra path manipulations
-def path_prefix(path, keys):
+def path_prefix(pth, keys):
     """ Given a path and some layer keys, find the prefix
 
-        :param path: The path to some point in the file system
+        :param pth: The path to some point in the file system
         :param keys: Keys to layers on top of the desired prefix
         :returns: The prefix path (the original path, without the layers
             specified by keys)
     """
     mgrs = [_manager('', key) for key in keys]
     depth = sum(ds.depth for m in mgrs for ds in m)
-    pfx = os.path.join(*pathlib.PurePath(path).parts[:-depth])
+    pfx = os.path.join(*pathlib.PurePath(pth).parts[:-depth])
     return pfx
