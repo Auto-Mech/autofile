@@ -90,7 +90,9 @@ def zmatrix(zma):
     :return: zmatrix as string
     :rtype: str
     """
-    assert automol.zmat.is_valid(zma)
+    assert automol.zmat.is_valid(zma), (
+        f'invalid zmatrix: {zma}'
+    )
     zma_str = automol.zmat.string(zma)
     return zma_str
 
