@@ -185,7 +185,7 @@ class DataSeries():
         # create this directory in the chain, if it doesn't already exist
         if not self.exists(locs):
             pth = self.path(locs)
-            os.makedirs(pth)
+            os.makedirs(pth, exist_ok=True)
 
             if self.loc_dfile is not None:
                 locs = self._self_locators(locs)
