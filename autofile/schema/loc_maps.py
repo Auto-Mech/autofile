@@ -411,11 +411,11 @@ def build_trunk(head):
     return head.upper()[:4]
 
 
-def build_branch(string):
+def build_branch(_string):
     """ build branch directory name
     """
-    assert isinstance(string, str)
-    return string.upper()
+    assert isinstance(_string, str)
+    return _string.upper()
 
 
 def build_leaf(val):
