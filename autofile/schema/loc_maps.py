@@ -26,8 +26,8 @@ def species_leaf(ich, chg, mul):
     """ species leaf directory name
     """
     if safemode_is_on():
-        assert automol.inchi.is_standard_form(ich)
-        assert automol.inchi.is_complete(ich)
+        assert automol.chi.is_standard_form(ich)
+        assert automol.chi.is_complete(ich)
 
     assert isinstance(chg, numbers.Integral)
     assert isinstance(mul, numbers.Integral), (
@@ -36,11 +36,11 @@ def species_leaf(ich, chg, mul):
 
     assert _is_valid_inchi_multiplicity(ich, mul)
 
-    ick = automol.inchi.inchi_key(ich)
+    ick = automol.chi.inchi_key(ich)
     chg_str = str(chg)
     mul_str = str(mul)
 
-    dir_names = (automol.inchi.formula_sublayer(ich),
+    dir_names = (automol.chi.formula_string(ich),
                  automol.inchi_key.first_hash(ick),
                  chg_str,
                  mul_str,
@@ -111,7 +111,7 @@ def sort_together(rxn_ichs, rxn_chgs, rxn_muls):
 
 
 def _sort_together(ichs, chgs, muls):
-    idxs = automol.inchi.argsort(ichs)
+    idxs = automol.chi.argsort(ichs)
     ichs = tuple(ichs[idx] for idx in idxs)
     chgs = tuple(chgs[idx] for idx in idxs)
     muls = tuple(muls[idx] for idx in idxs)
@@ -119,7 +119,7 @@ def _sort_together(ichs, chgs, muls):
 
 
 def _sortable_representation(ichs, chgs, muls):
-    idxs = automol.inchi.argsort(ichs)
+    idxs = automol.chi.argsort(ichs)
     ichs = tuple(ichs[idx] for idx in idxs)
     return (len(ichs), ichs, chgs, muls)
 
@@ -128,9 +128,9 @@ def _reactant_leaf(ichs, chgs, muls):
     """ reactant leaf directory name
     """
     if safemode_is_on():
-        assert all(map(automol.inchi.is_standard_form, ichs))
-        assert all(map(automol.inchi.is_complete, ichs))
-        assert tuple(ichs) == automol.inchi.sorted_(ichs)
+        assert all(map(automol.chi.is_standard_form, ichs))
+        assert all(map(automol.chi.is_complete, ichs))
+        assert tuple(ichs) == automol.chi.sorted_(ichs)
 
     assert len(ichs) == len(chgs) == len(muls)
     assert all(isinstance(chg, numbers.Integral) for chg in chgs)
@@ -138,12 +138,12 @@ def _reactant_leaf(ichs, chgs, muls):
     assert all(_is_valid_inchi_multiplicity(ich, mul)
                for ich, mul in zip(ichs, muls))
 
-    ich = automol.inchi.standard_form(automol.inchi.join(ichs))
-    ick = automol.inchi.inchi_key(ich)
+    ich = automol.chi.standard_form(automol.chi.join(ichs))
+    ick = automol.chi.inchi_key(ich)
     chg_str = '_'.join(map(str, chgs))
     mul_str = '_'.join(map(str, muls))
 
-    dir_names = (automol.inchi.formula_sublayer(ich),
+    dir_names = (automol.chi.formula_string(ich),
                  automol.inchi_key.first_hash(ick),
                  chg_str,
                  mul_str,
