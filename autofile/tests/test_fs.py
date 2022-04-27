@@ -574,6 +574,27 @@ def test__iterate_locators():
                 assert automol.geom.almost_equal_dist_matrix(ref_geo, geo)
 
 
+def test__path_prefix():
+    """ test autofile.fs.path_prefix
+    """
+    prefix = os.path.join(PREFIX, 'data4')
+    _build_fs(prefix)
+
+    # Set locs for this test
+    spc_locs = ['InChI=1S/H2O/h1H2', 0, 1]
+    thy_locs = ['hf', 'sto-3g', 'U']
+    cnf_locs_1 = ['rQ5VxakIXDkDp', 'cdgZx6pwjFtcX']
+
+    # Set cnf fs using the manager
+    cnf_fs = autofile.fs.manager(
+        prefix, [['SPECIES', spc_locs], ['THEORY', thy_locs]], 'CONFORMER')
+    spc_fs = autofile.fs.species(prefix)
+    spc_prefix = spc_fs[-1].path(spc_locs)
+    path_prefix = autofile.fs.path_prefix(
+        cnf_fs[-1].path(cnf_locs_1), ['THEORY', 'CONFORMER'])
+    assert spc_prefix == path_prefix
+
+
 def _build_fs(prefix):
     """ Construct a filesystem to do stuff
     """
