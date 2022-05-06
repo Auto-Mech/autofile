@@ -128,8 +128,11 @@ def _reactant_leaf(ichs, chgs, muls):
     """ reactant leaf directory name
     """
     if safemode_is_on():
-        assert all(map(automol.chi.is_standard_form, ichs))
-        assert all(map(automol.chi.is_complete, ichs))
+        for ich in ichs:
+            assert automol.chi.is_standard_form(ich), (
+                f'{ich} not standard form')
+            assert automol.chi.is_complete(ich), (
+                f'{ich} not complete')
         assert tuple(ichs) == automol.chi.sorted_(ichs)
 
     assert len(ichs) == len(chgs) == len(muls)
