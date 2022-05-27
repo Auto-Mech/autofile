@@ -411,18 +411,17 @@ def build_trunk(head):
     return head.upper()[:4]
 
 
-def build_branch(fml_str):
+def build_branch(_string):
     """ build branch directory name
     """
-    assert isinstance(fml_str, str)
-    return fml_str.upper()
+    assert isinstance(_string, str)
+    return _string.upper()
 
 
-def build_leaf(num):
+def build_leaf(val):
     """ build leaf directory name
     """
-    assert isinstance(num, numbers.Integral) and num >= 0
-    return str(num)
+    return str(val)
 
 
 def get_next_build_number(num):
