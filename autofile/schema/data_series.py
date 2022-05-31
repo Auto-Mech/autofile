@@ -40,7 +40,7 @@ def species_leaf(prefix, root_ds=None):
             'inchi': lambda locs: locs[0],
             'charge': lambda locs: locs[1],
             'multiplicity': lambda locs: locs[2],
-            'smiles': lambda locs: automol.inchi.smiles(locs[0])},
+            'smiles': lambda locs: automol.chi.smiles(locs[0])},
         loc_keys=['inchi', 'charge', 'multiplicity'])
 
     _map = _pack_arguments(loc_maps.species_leaf)
@@ -80,8 +80,8 @@ def reaction_leaf(prefix, root_ds=None):
             'multiplicities': lambda locs: locs[2],
             'ts_multiplicity': lambda locs: locs[3],
             'smiles': lambda locs: [
-                list(map(automol.inchi.smiles, locs[0][0])),
-                list(map(automol.inchi.smiles, locs[0][1]))],
+                list(map(automol.chi.smiles, locs[0][0])),
+                list(map(automol.chi.smiles, locs[0][1]))],
         },
         loc_keys=['inchis', 'charges', 'multiplicities', 'ts_multiplicity'])
 

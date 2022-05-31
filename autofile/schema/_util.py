@@ -23,7 +23,7 @@ def is_valid_inchi_multiplicity(ich, mul):
     """
     assert isinstance(mul, numbers.Integral)
     return mul in automol.graph.possible_spin_multiplicities(
-        automol.inchi.graph(ich, stereo=False))
+        automol.chi.graph(ich, stereo=False))
 
 
 def short_hash(obj):

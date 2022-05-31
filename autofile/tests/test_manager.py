@@ -93,7 +93,7 @@ def test__iterate_locators():
     # Loop over species locs (generate geo from ich and match filesys)
     for spc_locs, in spc_locators:
         ich, _, _ = spc_locs
-        ref_geo = automol.inchi.geometry(ich)
+        ref_geo = automol.chi.geometry(ich)
 
         spc_fs = autofile.fs.species(prefix)
         thy_fs = autofile.fs.theory(spc_fs[-1].path(spc_locs))
@@ -125,7 +125,7 @@ def _build_fs(prefix):
         cnf_fs = autofile.fs.conformer(thy_path)
         cnf_fs[-1].create(locs_set[2])
         cnf_fs[-1].file.geometry_input.write(inp_name, locs_set[2])
-        geo = automol.inchi.geometry(locs_set[0][0])
+        geo = automol.chi.geometry(locs_set[0][0])
         cnf_fs[-1].file.geometry.write(geo, locs_set[2])
 
 
