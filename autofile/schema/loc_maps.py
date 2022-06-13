@@ -196,14 +196,23 @@ def theory_leaf(method, basis, orb_type):
 
     assert elstruct.Method.contains(core_method)
     assert elstruct.Basis.contains(basis)
-    assert orb_type in ('R', 'U'), (
-        f'orb_type {orb_type} is not R or U'
-    )
+
+    if orb_type in ('R', 'U'):
+        orb_hash = orb_type
+    else:
+        assert (
+            isinstance(orb_type, list) and len(orb_type) == 2 and
+            all(isinstance(x, int) for x in orb_type)
+        ), (
+            f"orb_type can only be 'R', 'U', or [int, int]\n"
+            f"\tvalue received: {orb_type}")
+
+        orb_hash = '@' + _short_hash(orb_type).upper()
 
     dir_name = ''.join([hashed_pfx,
                         _short_hash(core_method.lower()),
                         _short_hash(basis.lower()),
-                        orb_type])
+                        orb_hash])
     return dir_name
 
 

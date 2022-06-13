@@ -77,6 +77,15 @@ def test__theory():
 
     thy_fs[-1].create(locs)
     thy_path = thy_fs[-1].path(locs)
+    print(thy_path)
+    assert os.path.exists(thy_path)
+
+    # active space test
+    locs = ['casscf', '6-31g', [1104, 1103]]
+
+    thy_fs[-1].create(locs)
+    thy_path = thy_fs[-1].path(locs)
+    print(thy_path)
     assert os.path.exists(thy_path)
 
 
@@ -610,3 +619,7 @@ FAKE_NAMES_DCT = {
     'set3': 'inp3',
     'set4': 'inp4'
 }
+
+
+if __name__ == '__main__':
+    test__theory()
