@@ -34,7 +34,9 @@ def species_leaf(ich, chg, mul):
         f'Multiplicity {mul} is not an integer'
     )
 
-    assert _is_valid_inchi_multiplicity(ich, mul)
+    assert _is_valid_inchi_multiplicity(ich, mul), (
+        f'inchi is {ich} multiplicity is {mul}'
+    )
 
     ick = automol.chi.inchi_key(ich)
     chg_str = str(chg)
