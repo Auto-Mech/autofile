@@ -11,7 +11,7 @@ import autoparse.pattern as app
 import autoparse.find as apf
 
 
-def is_valid_inchi_multiplicity(ich, mul):
+def is_valid_inchi_multiplicity(ich, mul, chg=0):
     """ is this multiplicity compatible with this inchi string?
 
     :param ich: inchi
@@ -22,7 +22,9 @@ def is_valid_inchi_multiplicity(ich, mul):
     :rtype: bool
     """
     assert isinstance(mul, numbers.Integral)
-    return mul in automol.graph.possible_spin_multiplicities(
+    assert isinstance(chg, numbers.Integral)
+    ele = mul + chg 
+    return ele in automol.graph.possible_spin_multiplicities(
         automol.chi.graph(ich, stereo=False))
 
 
