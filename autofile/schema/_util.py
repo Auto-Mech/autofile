@@ -23,7 +23,7 @@ def is_valid_inchi_multiplicity(ich, mul, chg=0):
     """
     assert isinstance(mul, numbers.Integral)
     assert isinstance(chg, numbers.Integral)
-    ele = mul + chg 
+    ele = mul - chg if (mul - chg > 0) else mul + chg 
     return ele in automol.graph.possible_spin_multiplicities(
         automol.chi.graph(ich, stereo=False))
 
