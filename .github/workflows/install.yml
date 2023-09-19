@@ -29,10 +29,13 @@ jobs:
         conda activate amech-deps
         conda info
         conda list
-    - name: Activate environment and run pytest on submodules
+    - name: Activate environment, install other dependencies and run pytest on submodules
       shell: bash -l {0}
       continue-on-error: true
       run: |
         conda activate amech-deps
-        export PYTHONPATH=/automech/autofile:/automech/autochem:/automech/autoio/autoio-base:/automech/autoio/autoio-interfaces
+        pip install git+https://github.com/Auto-Mech/autoio.git@dev#subdirectory=autoio-base
+        pip install git+https://github.com/Auto-Mech/autoio.git@dev#subdirectory=autoio-interfaces
+        pip install git+https://github.com/Auto-Mech/autochem.git@dev
+        pip install .
         pytest
