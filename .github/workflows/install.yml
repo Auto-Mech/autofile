@@ -31,7 +31,7 @@ jobs:
         conda list
     - name: Activate environment, install other dependencies and run pytest on submodules
       shell: bash -l {0}
-      continue-on-error: true
+      continue-on-error: false
       run: |
         conda activate amech-deps
         pip install git+https://github.com/Auto-Mech/autoio.git@dev#subdirectory=autoio-base
