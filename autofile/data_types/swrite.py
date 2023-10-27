@@ -151,7 +151,7 @@ def torsions(tors_lst):
         :type tors_lst: tuple(automol torsion objects)
         :rtype: str
     """
-    tors_str = automol.rotor.string(tors_lst)
+    tors_str = automol.data.tors.torsions_string(tors_lst)
     return tors_str
 
 
@@ -224,7 +224,7 @@ def cubic_force_constants(cfcs):
         :type cfcs: numpy.ndarray
         :rtype: str
     """
-    return automol.util.highd_mat.string(cfcs, val_format='{0:>14.6f}')
+    return automol.util.tensor.string(cfcs, val_format='{0:>14.6f}')
 
 
 def quartic_force_constants(qfcs):
@@ -235,7 +235,7 @@ def quartic_force_constants(qfcs):
         :type cfcs: numpy.ndarray
         :rtype: str
     """
-    return automol.util.highd_mat.string(qfcs, val_format='{0:>14.6f}')
+    return automol.util.tensor.string(qfcs, val_format='{0:>14.6f}')
 
 
 def harmonic_zpve(zpve):

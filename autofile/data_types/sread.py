@@ -159,7 +159,7 @@ def torsions(tors_str):
         :type tors_str: str
         :rtype: tuple(automol torsion objects)
     """
-    return automol.rotor.from_string(tors_str)
+    return automol.data.tors.torsions_from_string(tors_str)
 
 
 def hessian(hess_str):
@@ -206,7 +206,7 @@ def cubic_force_constants(cfc_str):
     :type cfc_str: str
     :rtype: numpy.ndarray
     """
-    return automol.util.highd_mat.from_string(cfc_str, fill_perms=True)
+    return automol.util.tensor.from_string(cfc_str, fill_perms=True)
 
 
 def quartic_force_constants(qfc_str):
@@ -216,7 +216,7 @@ def quartic_force_constants(qfc_str):
     :type qfc_str: numpy.ndarray
     :rtype: numpy.ndarray
     """
-    return automol.util.highd_mat.from_string(qfc_str, fill_perms=True)
+    return automol.util.tensor.from_string(qfc_str, fill_perms=True)
 
 
 def harmonic_zpve(harm_zpve_str):
