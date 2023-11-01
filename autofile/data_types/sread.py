@@ -32,7 +32,7 @@ def instability(instab_str):
     :type inf_str: str
     :rtype: str
     """
-    tra = automol.reac.from_string(instab_str)
+    tra = automol.reac.from_string_transitional(instab_str)
     return tra
 
 
@@ -384,7 +384,7 @@ def reaction(rxn_str):
     :return: an automol Reaction object
     :rtype: automol.reac.Reaction
     """
-    tra = automol.reac.from_string(rxn_str)
+    tra = automol.reac.from_string_transitional(rxn_str)
     return tra
 
 
