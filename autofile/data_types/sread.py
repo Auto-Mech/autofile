@@ -276,7 +276,8 @@ def vibro_rot_alpha_matrix(vibro_rot_str):
     mat = numpy.loadtxt(mat_str_io)
     assert mat.ndim in (0, 2)
     if mat.ndim == 2:
-        assert mat.shape[0] == mat.shape[1]
+        assert mat.shape[1] == 3
+        # assert mat.shape[0] == mat.shape[1]
     return tuple(map(tuple, mat))
 
 
