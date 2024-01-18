@@ -274,11 +274,16 @@ def vibro_rot_alpha_matrix(vibro_rot_str):
     """
     mat_str_io = _StringIO(vibro_rot_str)
     mat = numpy.loadtxt(mat_str_io)
-    assert mat.ndim in (0, 2)
+    ret = ((),)
+    assert mat.ndim in (0, 1, 2)
     if mat.ndim == 2:
         assert mat.shape[1] == 3
+        ret = tuple(map(tuple, mat))
+    elif mat.ndim == 1:
+        assert mat.shape[0] == 3
+        ret = (tuple(mat),)
         # assert mat.shape[0] == mat.shape[1]
-    return tuple(map(tuple, mat))
+    return ret
 
 
 def quartic_centrifugal_dist_consts(qcd_consts_str):
