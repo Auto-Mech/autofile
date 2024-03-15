@@ -32,7 +32,7 @@ def instability(instab_str):
     :type inf_str: str
     :rtype: str
     """
-    tra = automol.reac.from_string(instab_str)
+    tra = automol.reac.from_string_transitional(instab_str)
     return tra
 
 
@@ -159,7 +159,7 @@ def torsions(tors_str):
         :type tors_str: str
         :rtype: tuple(automol torsion objects)
     """
-    return automol.rotor.from_string(tors_str)
+    return automol.data.tors.torsions_from_string(tors_str)
 
 
 def hessian(hess_str):
@@ -206,7 +206,7 @@ def cubic_force_constants(cfc_str):
     :type cfc_str: str
     :rtype: numpy.ndarray
     """
-    return automol.util.highd_mat.from_string(cfc_str, fill_perms=True)
+    return automol.util.tensor.from_string(cfc_str, fill_perms=True)
 
 
 def quartic_force_constants(qfc_str):
@@ -216,7 +216,7 @@ def quartic_force_constants(qfc_str):
     :type qfc_str: numpy.ndarray
     :rtype: numpy.ndarray
     """
-    return automol.util.highd_mat.from_string(qfc_str, fill_perms=True)
+    return automol.util.tensor.from_string(qfc_str, fill_perms=True)
 
 
 def harmonic_zpve(harm_zpve_str):
@@ -390,7 +390,7 @@ def reaction(rxn_str):
     :return: an automol Reaction object
     :rtype: automol.reac.Reaction
     """
-    tra = automol.reac.from_string(rxn_str)
+    tra = automol.reac.from_string_transitional(rxn_str)
     return tra
 
 

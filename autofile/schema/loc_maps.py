@@ -42,7 +42,7 @@ def species_leaf(ich, chg, mul):
     chg_str = str(chg)
     mul_str = str(mul)
 
-    dir_names = (automol.chi.formula_string(ich),
+    dir_names = (automol.chi.formula_layer(ich),
                  automol.inchi_key.first_hash(ick),
                  chg_str,
                  mul_str,
@@ -148,7 +148,7 @@ def _reactant_leaf(ichs, chgs, muls):
     chg_str = '_'.join(map(str, chgs))
     mul_str = '_'.join(map(str, muls))
 
-    dir_names = (automol.chi.formula_string(ich),
+    dir_names = (automol.chi.formula_layer(ich),
                  automol.inchi_key.first_hash(ick),
                  chg_str,
                  mul_str,

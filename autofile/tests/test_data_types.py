@@ -205,16 +205,9 @@ def test__torsions():
          (2.0671092193398275, 1.928341045304867, 2.082936263972801)),
         ('H', (5, 1, 0), ('R8', 'A8', 'D8'),
          (1.8376095698733521, 1.8770195234414855, 5.238498010242486)))
-    ref_tors_lst = automol.rotor.from_zmatrix(zma)
-
-    ref_tors_dct = {
-        'D5': {'axis': (0, 1),
-               'groups': ((2, 3, 4), (5, 6, 7, 8)),
-               'symmetry': 3},
-        'D8': {'axis': (1, 5),
-               'groups': ((0, 2, 3, 4, 6, 7), (8,)),
-               'symmetry': 1}
-    }
+    ref_rotors = automol.data.rotor.rotors_from_zmatrix(zma)
+    ref_tors_lst = automol.data.rotor.rotors_torsions(ref_rotors, sort=True)
+    print(ref_tors_lst)
 
     tors_file_name = autofile.data_types.name.torsions('test')
     tors_file_path = os.path.join(TMP_DIR, tors_file_name)
@@ -225,14 +218,11 @@ def test__torsions():
     assert os.path.isfile(tors_file_path)
 
     tors_str = autofile.io_.read_file(tors_file_path)
-    tors_dct = autofile.data_types.sread.torsions(tors_str)
+    tors_lst = autofile.data_types.sread.torsions(tors_str)
+    assert tors_lst == ref_tors_lst
 
-    for ref_name, name in zip(ref_tors_dct, tors_dct):
-        assert ref_name == name
-        ref_ddct = ref_tors_dct[ref_name]
-        ddct = ref_tors_dct[name]
-        for key in ('axis', 'groups', 'symmetry'):
-            assert ref_ddct[key] == ddct[key]
+    rotors = automol.data.rotor.rotors_from_data(zma, tors_lst)
+    assert rotors == ref_rotors
 
 
 def test__ring_torsions():
@@ -676,9 +666,9 @@ def test__dipole_moment():
 def test__reaction():
     """ test the reaction read/write functions
     """
-    ref_rxn = automol.reac.Reaction(
-        rxn_cls=automol.par.ReactionClass.Typ.HYDROGEN_ABSTRACTION,
-        forw_tsg=(
+    ref_rxn = automol.reac.from_forward_reverse(
+        cla=automol.ReactionClass.HYDROGEN_ABSTRACTION,
+        ftsg=(
             {0: ('C', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
              3: ('H', 0, None), 4: ('H', 0, None), 5: ('O', 0, None),
              6: ('H', 0, None)},
@@ -686,7 +676,7 @@ def test__reaction():
              frozenset({4, 5}): (0.1, None),
              frozenset({0, 1}): (1, None), frozenset({0, 2}): (1, None),
              frozenset({0, 4}): (0.9, None)}),
-        back_tsg=(
+        rtsg=(
             {0: ('O', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
              3: ('C', 0, None), 4: ('H', 0, None), 5: ('H', 0, None),
              6: ('H', 0, None)},
@@ -715,7 +705,7 @@ def test__instabiliy():
     """ test the instability read/write functions
     """
 
-    ref_instab = automol.reac.from_string("""
+    ref_instab = automol.reac.from_old_string("""
     reaction class: beta scission
     forward TS atoms:
       1: {symbol: C, implicit_hydrogen_valence: 0, stereo_parity: null}
@@ -761,3 +751,9 @@ def test__instabiliy():
     instab_str = autofile.io_.read_file(instab_file_path)
     instab = autofile.data_types.sread.instability(instab_str)
     assert instab == ref_instab
+
+
+if __name__ == "__main__":
+    # test__torsions()
+    # test__zmatrix()
+    test__reaction()
