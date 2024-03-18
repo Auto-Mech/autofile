@@ -199,9 +199,9 @@ def test__zmatrix():
     assert automol.zmat.almost_equal(
         zma_fs[-1].file.zmatrix.read(locs), ref_zma)
 
-    ref_rxn = automol.reac.Reaction(
-        rxn_cls=automol.par.ReactionClass.Typ.HYDROGEN_ABSTRACTION,
-        forw_tsg=(
+    ref_rxn = automol.reac.from_forward_reverse(
+        cla=automol.ReactionClass.HYDROGEN_ABSTRACTION,
+        ftsg=(
             {0: ('C', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
              3: ('H', 0, None), 4: ('H', 0, None), 5: ('O', 0, None),
              6: ('H', 0, None)},
@@ -209,7 +209,7 @@ def test__zmatrix():
              frozenset({4, 5}): (0.1, None),
              frozenset({0, 1}): (1, None), frozenset({0, 2}): (1, None),
              frozenset({0, 4}): (0.9, None)}),
-        back_tsg=(
+        rtsg=(
             {0: ('O', 0, None), 1: ('H', 0, None), 2: ('H', 0, None),
              3: ('C', 0, None), 4: ('H', 0, None), 5: ('H', 0, None),
              6: ('H', 0, None)},
