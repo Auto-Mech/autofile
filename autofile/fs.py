@@ -492,11 +492,13 @@ def symmetry(prefix):
 
     traj_dfile = data_files.trajectory(_FilePrefix.CONF)
     geom_dfile = data_files.geometry(_FilePrefix.GEOM)
-
+    geom_inf_dfile = data_files.information(_FilePrefix.GEOM,
+                                            function=info_objects.run)
     trunk_ds.add_data_files({
         FileAttributeName.TRAJ: traj_dfile})
     leaf_ds.add_data_files({
-        FileAttributeName.GEOM: geom_dfile})
+        FileAttributeName.GEOM: geom_dfile,
+        FileAttributeName.GEOM_INFO: geom_inf_dfile})
 
     return (trunk_ds, leaf_ds)
 
