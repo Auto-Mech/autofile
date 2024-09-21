@@ -213,7 +213,7 @@ def theory_leaf(method, basis, orb_type):
 
     dir_name = ''.join([hashed_pfx,
                         _short_hash(core_method.lower()),
-                        _short_hash(basis.lower()),
+                        _short_hash(None if basis is None else basis.lower()),
                         orb_hash])
     return dir_name
 
