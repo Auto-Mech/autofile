@@ -1,25 +1,67 @@
 [project]
 name = "autofile"
-version = "2025.7.28"
-description = "Filesystem database manager for AutoMech "
+version = "2025.10.0"
+description = "Filesystem database manager for AutoMech"
 readme = "README.md"
-requires-python = ">=3.11"
-dependencies = [
-    "numpy",
-    "pyyaml",
-]
+dependencies = []
+requires-python = ">= 3.11"
+
+[dependency-groups]
+test = ["pytest"]
 
 [build-system]
-requires = ["hatchling"]
 build-backend = "hatchling.build"
+requires = ["hatchling"]
 
+# Hatchling configurations
 [tool.hatch.build.targets.sdist]
 include = ["autofile"]
 
 [tool.hatch.build.targets.wheel]
 include = ["autofile"]
 
-[dependency-groups]
-dev = [
-    "pytest",
-]
+# Pixi configurations
+[tool.pixi.workspace]
+channels = ["conda-forge", "Auto-Mech"]
+platforms = ["linux-64"]
+preview = ["pixi-build"]
+
+#   - Build
+[tool.pixi.package] 
+name = "autofile"
+
+[tool.pixi.package.build] 
+backend = { name = "pixi-build-python", version = "==0.3.2" }
+
+[tool.pixi.package.host-dependencies] 
+hatchling = "==1.26.3"
+
+[tool.pixi.package.run-dependencies] 
+numpy = ">=1.26"
+pyyaml = ">=6.0.3"
+autochem = ">=2025.10.0"
+autoio = ">=2025.10.0"
+
+#   - Other
+[tool.pixi.pypi-dependencies]
+autofile = { path = ".", editable = true }
+
+[tool.pixi.dependencies]
+numpy = ">=1.26"
+pyyaml = ">=6.0.3"
+autochem = ">=2025.10.0"
+autoio = ">=2025.10.0"
+
+[tool.pixi.feature.build.dependencies]
+rattler-build = ">=0.47.1"
+
+[tool.pixi.environments]
+test = ["test"]
+build = ["build"]
+dev = ["test", "build"]
+
+[tool.pixi.feature.test.tasks]
+test = "pytest -v"
+
+[tool.pixi.feature.build.tasks]
+upload = "rattler-build upload anaconda -o Auto-Mech *.conda"
