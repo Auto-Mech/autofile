@@ -1,6 +1,6 @@
 [project]
 name = "autofile"
-version = "2025.10.0"
+version = "2025.10.1"
 description = "Filesystem database manager for AutoMech"
 readme = "README.md"
 dependencies = []
@@ -14,11 +14,8 @@ build-backend = "hatchling.build"
 requires = ["hatchling"]
 
 # Hatchling configurations
-[tool.hatch.build.targets.sdist]
-include = ["autofile"]
-
-[tool.hatch.build.targets.wheel]
-include = ["autofile"]
+[tool.hatch.build.targets.whell]
+packages = ["src/autofile"]
 
 # Pixi configurations
 [tool.pixi.workspace]
@@ -31,7 +28,7 @@ preview = ["pixi-build"]
 name = "autofile"
 
 [tool.pixi.package.build] 
-backend = { name = "pixi-build-python", version = "==0.3.2" }
+backend = { name = "pixi-build-python", version = "*" }
 
 [tool.pixi.package.host-dependencies] 
 hatchling = "==1.26.3"
@@ -42,7 +39,7 @@ pyyaml = ">=6.0.3"
 autochem = ">=2025.10.0"
 autoio = ">=2025.10.0"
 
-#   - Other
+#   - Environments
 [tool.pixi.pypi-dependencies]
 autofile = { path = ".", editable = true }
 
@@ -58,10 +55,10 @@ rattler-build = ">=0.47.1"
 [tool.pixi.environments]
 test = ["test"]
 build = ["build"]
-dev = ["test", "build"]
 
+#   - Tasks
 [tool.pixi.feature.test.tasks]
-test = "pytest -v"
+test = "pytest -v src/autofile"
 
 [tool.pixi.feature.build.tasks]
 upload = "rattler-build upload anaconda -o Auto-Mech *.conda"
