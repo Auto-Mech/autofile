@@ -14,6 +14,8 @@ from autofile._safemode import turn_on_safemode
 from autofile._safemode import safemode_is_on
 
 
+__version__ = "2025.10.1"
+
 __all__ = [
     'io_',
     'json_',
