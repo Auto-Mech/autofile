@@ -2,14 +2,14 @@ name: version
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
 
 permissions:
   contents: write
 
 jobs:
   version:
-    if: ${{ github.ref_name == 'dev' && github.repository_owner == 'Auto-Mech'}}
+    if: github.repository_owner == 'Auto-Mech'
     runs-on: ubuntu-latest
     steps:
       # Repository
