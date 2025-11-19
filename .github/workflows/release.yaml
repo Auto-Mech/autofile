@@ -1,0 +1,40 @@
+name: version
+
+on:
+  push:
+    branches: [ dev ]
+
+permissions:
+  contents: write
+
+jobs:
+  version:
+    if: github.repository_owner == 'Auto-Mech'
+    runs-on: ubuntu-latest
+    steps:
+      # Repository
+      - name: Checkout the code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # BumpVer needs tags
+
+      # Environment
+      - name: Set up Pixi
+        uses: prefix-dev/setup-pixi@v0.8.9
+
+      - name: Set Git identity
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Bump version
+        run: |
+          pixi run -e build bumpver update
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: "Release ${{ github.ref_name }}"
