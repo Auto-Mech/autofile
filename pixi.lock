@@ -616,8 +616,8 @@ packages:
   timestamp: 1759948672799
 - pypi: ./
   name: autofile
-  version: 0.2024.0
-  sha256: 57931c6171509340396333b0bf25a6fcd1919544bcb034e1a124ad19d584b8b3
+  version: 0.2025.0
+  sha256: bddc2c55c04c31fdc376068c359e93a446ae0b96d7d4401a7165a97518349dba
   requires_python: '>=3.11'
   editable: true
 - conda: https://conda.anaconda.org/Auto-Mech/noarch/autoio-2025.10.0-pyh4616a5c_0.conda
