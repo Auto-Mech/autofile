@@ -14,7 +14,7 @@ from autofile._safemode import turn_on_safemode
 from autofile._safemode import safemode_is_on
 
 
-__version__ = "0.2024.0"
+__version__ = "0.2025.0"
 
 __all__ = [
     'io_',
