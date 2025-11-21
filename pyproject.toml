@@ -36,8 +36,8 @@ hatchling = "==1.26.3"
 [tool.pixi.package.run-dependencies] 
 numpy = ">=1.26"
 pyyaml = ">=6.0.3"
-autochem = ">=2025.10.0"
-autoio = ">=2025.10.0"
+autochem = ">=0.2025.0,<2.0.0"
+autoio = ">=0.2025.0,<2.0.0"
 
 #   - Environments
 [tool.pixi.pypi-dependencies]
@@ -46,8 +46,8 @@ autofile = { path = ".", editable = true }
 [tool.pixi.dependencies]
 numpy = ">=1.26"
 pyyaml = ">=6.0.3"
-autochem = ">=2025.10.0"
-autoio = ">=2025.10.0"
+autochem = ">=0.2025.0,<2.0.0"
+autoio = ">=0.2025.0,<2.0.0"
 
 [tool.pixi.feature.build.dependencies]
 rattler-build = ">=0.47.1"
