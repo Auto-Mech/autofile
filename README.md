@@ -1,9 +1,7 @@
 # Package: Autofile 
 [//]: # (Badges)
-[![CircleCI](https://circleci.com/gh/Auto-Mech/autofile/tree/dev.svg?style=shield)](https://circleci.com/gh/Auto-Mech/autofile/tree/dev)
 [![Anaconda-Server Badge](https://anaconda.org/auto-mech/autofile/badges/version.svg)](https://anaconda.org/auto-mech/autofile)
 [![Anaconda-Server Badge](https://anaconda.org/auto-mech/autofile/badges/platforms.svg)](https://anaconda.org/auto-mech/autofile)
-[![Anaconda-Server Badge](https://anaconda.org/auto-mech/autofile/badges/installer/conda.svg)](https://conda.anaconda.org/auto-mech/autofile)
 
 Andreas V. Copan, Kevin B. Moore III, Sarah N. Elliott, and Stephen J. Klippenstein
 
